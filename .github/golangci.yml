@@ -1,0 +1,40 @@
+version: "2"
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - unconvert
+    - unparam
+    - misspell
+  exclusions:
+    generated: lax
+    paths:
+      - kql_lexer\.go
+      - kql_parser\.go
+      - kqlparser_base_listener\.go
+      - kqlparser_base_visitor\.go
+      - kqlparser_listener\.go
+      - kqlparser_visitor\.go
+  settings:
+    misspell:
+      locale: US
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+    goimports:
+      local-prefixes:
+        - github.com/craftedsignal/kql-parser
