@@ -782,7 +782,29 @@ func main() {
 			fmt.Sprintf("deep field pipeline %s", f))
 	}
 
-	// 35. More pipeline combos to reach target
+	// 35. from() clause
+	logTypes := []string{"asset_auth", "vpn", "firewall", "dns", "endpoint", "cloud", "syslog", "windows_event"}
+	for i := 0; i < 200; i++ {
+		lt := pick(rng, logTypes)
+		cond := randCondition(rng)
+		add(fmt.Sprintf(`from(event_type = "%s") where(%s)`, lt, cond),
+			fmt.Sprintf("from %s", lt))
+		gf := pick(rng, fields)
+		add(fmt.Sprintf(`from(log_type = "%s") where(%s) groupby(%s) calculate(count)`, lt, cond, gf),
+			fmt.Sprintf("from %s pipeline", lt))
+	}
+
+	// 36. loose modifier
+	for i := 0; i < 200; i++ {
+		cond := randCondition(rng)
+		add(fmt.Sprintf("where(%s, loose)", cond), "loose condition")
+		v := pick(rng, stringValues)
+		add(fmt.Sprintf(`where("%s", loose)`, v), "loose keyword")
+		gf := pick(rng, fields)
+		add(fmt.Sprintf(`where("%s", loose) groupby(%s)`, v, gf), "loose keyword groupby")
+	}
+
+	// 37. More pipeline combos to reach target
 	for i := 0; i < 40000; i++ {
 		q := randFullQuery(rng)
 		add(q, "random pipeline")

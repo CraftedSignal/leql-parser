@@ -1100,6 +1100,41 @@
     "source": "rapid7-additional"
   },
   {
+    "query": "from(event_type = \"asset_auth\") where(result = \"FAILED_ACCOUNT_LOCKED\")",
+    "description": "From clause with where",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "from(event_type = \"vpn\") where(result = SUCCESS) groupby(user)",
+    "description": "From VPN source",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "from(log_type = \"firewall\") where(direction = \"OUTBOUND\") groupby(destination_address)",
+    "description": "From firewall logs",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(user=admin, loose)",
+    "description": "Loose matching user",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(\"mimikatz\", loose) groupby(hostname, process.cmd_line)",
+    "description": "Loose keyword search",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(\"password reset\", loose) groupby(user)",
+    "description": "Loose phrase search",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(action = \"login\" AND status = \"failed\", loose) groupby(source_address)",
+    "description": "Loose compound condition",
+    "source": "rapid7-additional"
+  },
+  {
     "query": "where(\"login failed\")",
     "description": "Keyword search phrase",
     "source": "rapid7-additional"

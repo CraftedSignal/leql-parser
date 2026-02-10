@@ -10,6 +10,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#query.
 	VisitQuery(ctx *QueryContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#fromClause.
+	VisitFromClause(ctx *FromClauseContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#selectClause.
 	VisitSelectClause(ctx *SelectClauseContext) interface{}
 

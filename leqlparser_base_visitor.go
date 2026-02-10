@@ -11,6 +11,10 @@ func (v *BaseLEQLParserVisitor) VisitQuery(ctx *QueryContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitFromClause(ctx *FromClauseContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitSelectClause(ctx *SelectClauseContext) interface{} {
 	return v.VisitChildren(ctx)
 }

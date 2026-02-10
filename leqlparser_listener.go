@@ -10,6 +10,9 @@ type LEQLParserListener interface {
 	// EnterQuery is called when entering the query production.
 	EnterQuery(c *QueryContext)
 
+	// EnterFromClause is called when entering the fromClause production.
+	EnterFromClause(c *FromClauseContext)
+
 	// EnterSelectClause is called when entering the selectClause production.
 	EnterSelectClause(c *SelectClauseContext)
 
@@ -192,6 +195,9 @@ type LEQLParserListener interface {
 
 	// ExitQuery is called when exiting the query production.
 	ExitQuery(c *QueryContext)
+
+	// ExitFromClause is called when exiting the fromClause production.
+	ExitFromClause(c *FromClauseContext)
 
 	// ExitSelectClause is called when exiting the selectClause production.
 	ExitSelectClause(c *SelectClauseContext)

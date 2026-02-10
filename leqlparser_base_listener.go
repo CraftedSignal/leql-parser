@@ -26,6 +26,12 @@ func (s *BaseLEQLParserListener) EnterQuery(ctx *QueryContext) {}
 // ExitQuery is called when production query is exited.
 func (s *BaseLEQLParserListener) ExitQuery(ctx *QueryContext) {}
 
+// EnterFromClause is called when production fromClause is entered.
+func (s *BaseLEQLParserListener) EnterFromClause(ctx *FromClauseContext) {}
+
+// ExitFromClause is called when production fromClause is exited.
+func (s *BaseLEQLParserListener) ExitFromClause(ctx *FromClauseContext) {}
+
 // EnterSelectClause is called when production selectClause is entered.
 func (s *BaseLEQLParserListener) EnterSelectClause(ctx *SelectClauseContext) {}
 

@@ -160,6 +160,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 	switch ctx := tree.(type) {
 	case *QueryContext:
 		e.visitQuery(ctx)
+	case *FromClauseContext:
+		e.visitFromClause(ctx)
 	case *WhereClauseContext:
 		e.visitWhereClause(ctx)
 	case *GroupbyClauseContext:
@@ -249,6 +251,9 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 
 // visitQuery processes the top-level query rule.
 func (e *conditionExtractor) visitQuery(ctx *QueryContext) {
+	if ctx.FromClause() != nil {
+		e.visit(ctx.FromClause().(antlr.ParseTree))
+	}
 	if ctx.SelectClause() != nil {
 		e.visit(ctx.SelectClause().(antlr.ParseTree))
 	}
@@ -272,6 +277,14 @@ func (e *conditionExtractor) visitQuery(ctx *QueryContext) {
 	}
 	if ctx.TimesliceClause() != nil {
 		e.visit(ctx.TimesliceClause().(antlr.ParseTree))
+	}
+}
+
+// visitFromClause handles the from(...) clause (log source selection).
+func (e *conditionExtractor) visitFromClause(ctx *FromClauseContext) {
+	e.commands = append(e.commands, "from")
+	if ctx.Expression() != nil {
+		e.visit(ctx.Expression().(antlr.ParseTree))
 	}
 }
 

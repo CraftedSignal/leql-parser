@@ -318,6 +318,15 @@ additional = [
     # Triple quotes
     ("where(description='''This is a \"complex\" value''')", 'Triple single quote value'),
     ('where(description="""Another \'complex\' value""")', 'Triple double quote value'),
+    # from() clause - log source selection
+    ('from(event_type = "asset_auth") where(result = "FAILED_ACCOUNT_LOCKED")', 'From clause with where'),
+    ('from(event_type = "vpn") where(result = SUCCESS) groupby(user)', 'From VPN source'),
+    ('from(log_type = "firewall") where(direction = "OUTBOUND") groupby(destination_address)', 'From firewall logs'),
+    # loose modifier
+    ('where(user=admin, loose)', 'Loose matching user'),
+    ('where("mimikatz", loose) groupby(hostname, process.cmd_line)', 'Loose keyword search'),
+    ('where("password reset", loose) groupby(user)', 'Loose phrase search'),
+    ('where(action = "login" AND status = "failed", loose) groupby(source_address)', 'Loose compound condition'),
     # Keyword AND regex search
     ('where("login failed")', 'Keyword search phrase'),
     ('where(/error.*timeout/i)', 'Regex error timeout'),

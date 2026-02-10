@@ -9,6 +9,8 @@ CALCULATE   : [Cc][Aa][Ll][Cc][Uu][Ll][Aa][Tt][Ee] ;
 SORT        : [Ss][Oo][Rr][Tt] ;
 LIMIT       : [Ll][Ii][Mm][Ii][Tt] ;
 TIMESLICE   : [Tt][Ii][Mm][Ee][Ss][Ll][Ii][Cc][Ee] ;
+FROM        : [Ff][Rr][Oo][Mm] ;
+LOOSE       : [Ll][Oo][Oo][Ss][Ee] ;
 
 // Logical operators (case-insensitive)
 AND         : [Aa][Nn][Dd] ;

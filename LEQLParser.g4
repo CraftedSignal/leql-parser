@@ -5,7 +5,12 @@ options { tokenVocab = LEQLLexer; }
 // Entry point: LEQL query is a sequence of clauses in a defined order
 // All clauses are optional; a bare keyword/regex search has no clauses
 query
-    : selectClause? whereClause? groupbyClause? calculateClause? havingClause? sortClause? limitClause? timesliceClause? EOF
+    : fromClause? selectClause? whereClause? groupbyClause? calculateClause? havingClause? sortClause? limitClause? timesliceClause? EOF
+    ;
+
+// FROM clause: from(logset) - specifies the log source
+fromClause
+    : FROM LPAREN expression RPAREN
     ;
 
 // SELECT clause: select(key1 as alias1, key2 as alias2, ...)
@@ -21,9 +26,9 @@ selectField
     : fieldName (IDENTIFIER IDENTIFIER)?
     ;
 
-// WHERE clause: where(condition)
+// WHERE clause: where(condition) or where(condition, loose)
 whereClause
-    : WHERE LPAREN expression RPAREN
+    : WHERE LPAREN expression (COMMA LOOSE)? RPAREN
     ;
 
 // Boolean expressions with AND/OR/NOT and parenthesized grouping
@@ -96,6 +101,8 @@ fieldName
     | MAX
     | SUM
     | SD
+    | FROM
+    | LOOSE
     ;
 
 // Comparison operators
