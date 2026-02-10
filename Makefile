@@ -14,8 +14,8 @@ fmt:
 
 generate:
 	@echo "Generating parser from ANTLR grammar..."
-	@command -v antlr4 >/dev/null 2>&1 || { echo "antlr4 is required but not installed. Install with: brew install antlr"; exit 1; }
-	antlr4 -Dlanguage=Go -visitor -listener -o . LEQLLexer.g4 LEQLParser.g4
+	@command -v antlr >/dev/null 2>&1 || { echo "antlr is required but not installed. Install with: brew install antlr"; exit 1; }
+	antlr -Dlanguage=Go -visitor -listener -package leql -o . LEQLLexer.g4 LEQLParser.g4
 	@echo "Done."
 
 clean:

@@ -74,6 +74,12 @@ func (s *BaseLEQLParserListener) EnterRegexExpr(ctx *RegexExprContext) {}
 // ExitRegexExpr is called when production regexExpr is exited.
 func (s *BaseLEQLParserListener) ExitRegexExpr(ctx *RegexExprContext) {}
 
+// EnterNestedWhereExpr is called when production nestedWhereExpr is entered.
+func (s *BaseLEQLParserListener) EnterNestedWhereExpr(ctx *NestedWhereExprContext) {}
+
+// ExitNestedWhereExpr is called when production nestedWhereExpr is exited.
+func (s *BaseLEQLParserListener) ExitNestedWhereExpr(ctx *NestedWhereExprContext) {}
+
 // EnterKeywordExpr is called when production keywordExpr is entered.
 func (s *BaseLEQLParserListener) EnterKeywordExpr(ctx *KeywordExprContext) {}
 
@@ -142,6 +148,38 @@ func (s *BaseLEQLParserListener) EnterNegatedListStringCondition(ctx *NegatedLis
 
 // ExitNegatedListStringCondition is called when production negatedListStringCondition is exited.
 func (s *BaseLEQLParserListener) ExitNegatedListStringCondition(ctx *NegatedListStringConditionContext) {
+}
+
+// EnterPostfixNegatedComparisonCondition is called when production postfixNegatedComparisonCondition is entered.
+func (s *BaseLEQLParserListener) EnterPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) {
+}
+
+// ExitPostfixNegatedComparisonCondition is called when production postfixNegatedComparisonCondition is exited.
+func (s *BaseLEQLParserListener) ExitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) {
+}
+
+// EnterPostfixNegatedStringCondition is called when production postfixNegatedStringCondition is entered.
+func (s *BaseLEQLParserListener) EnterPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) {
+}
+
+// ExitPostfixNegatedStringCondition is called when production postfixNegatedStringCondition is exited.
+func (s *BaseLEQLParserListener) ExitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) {
+}
+
+// EnterPostfixNegatedSetCondition is called when production postfixNegatedSetCondition is entered.
+func (s *BaseLEQLParserListener) EnterPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) {
+}
+
+// ExitPostfixNegatedSetCondition is called when production postfixNegatedSetCondition is exited.
+func (s *BaseLEQLParserListener) ExitPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) {
+}
+
+// EnterPostfixNegatedListStringCondition is called when production postfixNegatedListStringCondition is entered.
+func (s *BaseLEQLParserListener) EnterPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) {
+}
+
+// ExitPostfixNegatedListStringCondition is called when production postfixNegatedListStringCondition is exited.
+func (s *BaseLEQLParserListener) ExitPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) {
 }
 
 // EnterNocaseCondition is called when production nocaseCondition is entered.
@@ -325,6 +363,12 @@ func (s *BaseLEQLParserListener) EnterSortClause(ctx *SortClauseContext) {}
 
 // ExitSortClause is called when production sortClause is exited.
 func (s *BaseLEQLParserListener) ExitSortClause(ctx *SortClauseContext) {}
+
+// EnterSortSpec is called when production sortSpec is entered.
+func (s *BaseLEQLParserListener) EnterSortSpec(ctx *SortSpecContext) {}
+
+// ExitSortSpec is called when production sortSpec is exited.
+func (s *BaseLEQLParserListener) ExitSortSpec(ctx *SortSpecContext) {}
 
 // EnterSortDirection is called when production sortDirection is entered.
 func (s *BaseLEQLParserListener) EnterSortDirection(ctx *SortDirectionContext) {}

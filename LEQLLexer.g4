@@ -79,6 +79,9 @@ DOT         : '.' ;
 STAR        : '*' ;
 HASH        : '#' ;
 
+// IP CIDR notation (must come before REGEX to avoid /mask being lexed as regex start)
+IP_CIDR     : DIGIT+ '.' DIGIT+ '.' DIGIT+ '.' DIGIT+ '/' DIGIT+ ;
+
 // Regex literal: /pattern/ or /pattern/i
 REGEX       : '/' REGEX_BODY '/' REGEX_FLAGS? ;
 fragment REGEX_BODY : ( ~[/\\] | '\\' . )+ ;

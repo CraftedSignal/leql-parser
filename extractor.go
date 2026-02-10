@@ -185,6 +185,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitNotExpr(ctx)
 	case *ParenExprContext:
 		e.visitParenExpr(ctx)
+	case *NestedWhereExprContext:
+		e.visitNestedWhereExpr(ctx)
 	case *ConditionExprContext:
 		e.visitConditionExpr(ctx)
 	case *KeywordExprContext:
@@ -208,6 +210,14 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitNegatedSetCondition(ctx)
 	case *NegatedListStringConditionContext:
 		e.visitNegatedListStringCondition(ctx)
+	case *PostfixNegatedComparisonConditionContext:
+		e.visitPostfixNegatedComparisonCondition(ctx)
+	case *PostfixNegatedStringConditionContext:
+		e.visitPostfixNegatedStringCondition(ctx)
+	case *PostfixNegatedSetConditionContext:
+		e.visitPostfixNegatedSetCondition(ctx)
+	case *PostfixNegatedListStringConditionContext:
+		e.visitPostfixNegatedListStringCondition(ctx)
 	case *NocaseConditionContext:
 		e.visitNocaseCondition(ctx)
 	case *IpConditionContext:
@@ -273,7 +283,7 @@ func (e *conditionExtractor) visitWhereClause(ctx *WhereClauseContext) {
 func (e *conditionExtractor) visitGroupbyClause(ctx *GroupbyClauseContext) {
 	e.commands = append(e.commands, "groupby")
 	for _, fn := range ctx.AllFieldName() {
-		e.groupByFields = append(e.groupByFields, fn.GetText())
+		e.groupByFields = append(e.groupByFields, stripQuotes(fn.GetText()))
 	}
 }
 
@@ -341,6 +351,12 @@ func (e *conditionExtractor) visitNotExpr(ctx *NotExprContext) {
 }
 
 func (e *conditionExtractor) visitParenExpr(ctx *ParenExprContext) {
+	if ctx.Expression() != nil {
+		e.visit(ctx.Expression().(antlr.ParseTree))
+	}
+}
+
+func (e *conditionExtractor) visitNestedWhereExpr(ctx *NestedWhereExprContext) {
 	if ctx.Expression() != nil {
 		e.visit(ctx.Expression().(antlr.ParseTree))
 	}
@@ -581,6 +597,98 @@ func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStr
 	e.currentLogicalOp = "AND"
 }
 
+// Postfix negation: field NOT op value (e.g., field NOT IN [...])
+
+func (e *conditionExtractor) visitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) {
+	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := extractComparisonOp(ctx.ComparisonOp())
+	val := extractValue(ctx.Value())
+
+	for i, f := range fields {
+		logOp := e.currentLogicalOp
+		if i > 0 {
+			logOp = "OR"
+		}
+		e.conditions = append(e.conditions, Condition{
+			Field:     f,
+			Operator:  op,
+			Value:     val,
+			Negated:   true,
+			LogicalOp: logOp,
+		})
+	}
+	e.currentLogicalOp = "AND"
+}
+
+func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) {
+	if ctx.FieldList() == nil || ctx.StringOp() == nil || ctx.Value() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := extractStringOp(ctx.StringOp())
+	val := extractValue(ctx.Value())
+
+	for i, f := range fields {
+		logOp := e.currentLogicalOp
+		if i > 0 {
+			logOp = "OR"
+		}
+		e.conditions = append(e.conditions, Condition{
+			Field:     f,
+			Operator:  op,
+			Value:     val,
+			Negated:   true,
+			LogicalOp: logOp,
+		})
+	}
+	e.currentLogicalOp = "AND"
+}
+
+func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) {
+	if ctx.FieldList() == nil || ctx.SetOp() == nil || ctx.ValueList() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := extractSetOp(ctx.SetOp())
+	alternatives := extractValueList(ctx.ValueList())
+
+	for _, f := range fields {
+		e.conditions = append(e.conditions, Condition{
+			Field:        f,
+			Operator:     op,
+			Value:        strings.Join(alternatives, ", "),
+			Negated:      true,
+			LogicalOp:    e.currentLogicalOp,
+			Alternatives: alternatives,
+		})
+	}
+	e.currentLogicalOp = "AND"
+}
+
+func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) {
+	if ctx.FieldList() == nil || ctx.ListStringOp() == nil || ctx.ValueList() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := extractListStringOp(ctx.ListStringOp())
+	alternatives := extractValueList(ctx.ValueList())
+
+	for _, f := range fields {
+		e.conditions = append(e.conditions, Condition{
+			Field:        f,
+			Operator:     op,
+			Value:        strings.Join(alternatives, ", "),
+			Negated:      true,
+			LogicalOp:    e.currentLogicalOp,
+			Alternatives: alternatives,
+		})
+	}
+	e.currentLogicalOp = "AND"
+}
+
 func (e *conditionExtractor) visitNocaseCondition(ctx *NocaseConditionContext) {
 	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.NocaseValue() == nil {
 		return
@@ -618,11 +726,7 @@ func (e *conditionExtractor) visitIpCondition(ctx *IpConditionContext) {
 	fields := extractFieldNames(ctx.FieldList())
 
 	// Unwrap IP(cidr) to get the CIDR value
-	val := ""
-	ipCtx := ctx.IpValue()
-	if ipCtx != nil && ipCtx.Value() != nil {
-		val = extractValue(ipCtx.Value())
-	}
+	val := extractIPValue(ctx.IpValue())
 
 	for i, f := range fields {
 		logOp := e.currentLogicalOp
@@ -710,10 +814,10 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 }
 
 func (e *conditionExtractor) visitFieldExistsCondition(ctx *FieldExistsConditionContext) {
-	if ctx.FieldName() == nil {
+	if ctx.IDENTIFIER() == nil {
 		return
 	}
-	field := ctx.FieldName().GetText()
+	field := ctx.IDENTIFIER().GetText()
 	e.addCondition(field, "exists", "*")
 }
 
@@ -742,7 +846,7 @@ func extractFieldNames(ctx IFieldListContext) []string {
 	}
 	var fields []string
 	for _, fn := range flCtx.AllFieldName() {
-		fields = append(fields, fn.GetText())
+		fields = append(fields, stripQuotes(fn.GetText()))
 	}
 	return fields
 }
@@ -758,7 +862,7 @@ func extractAllFieldNames(ctx IAllFieldListContext) []string {
 	}
 	var fields []string
 	for _, fn := range aflCtx.AllFieldName() {
-		fields = append(fields, fn.GetText())
+		fields = append(fields, stripQuotes(fn.GetText()))
 	}
 	return fields
 }
@@ -870,11 +974,7 @@ func extractValueList(ctx IValueListContext) []string {
 			continue
 		}
 		if itemCtx.IpValue() != nil {
-			// Unwrap IP(value)
-			ipCtx := itemCtx.IpValue()
-			if ipValCtx, ok := ipCtx.(*IpValueContext); ok && ipValCtx.Value() != nil {
-				values = append(values, extractValue(ipValCtx.Value()))
-			}
+			values = append(values, extractIPValue(itemCtx.IpValue()))
 		} else if itemCtx.Value() != nil {
 			values = append(values, extractValue(itemCtx.Value()))
 		}
@@ -886,6 +986,25 @@ func extractValueList(ctx IValueListContext) []string {
 // It unwraps IP() wrappers from value list items.
 func extractValueListWithIP(ctx IValueListContext) []string {
 	return extractValueList(ctx)
+}
+
+// extractIPValue unwraps IP(cidr) or IP(value) to get the inner value string.
+func extractIPValue(ctx IIpValueContext) string {
+	if ctx == nil {
+		return ""
+	}
+	ipCtx, ok := ctx.(*IpValueContext)
+	if !ok {
+		return ""
+	}
+	// IP_CIDR token takes priority
+	if ipCtx.IP_CIDR() != nil {
+		return ipCtx.IP_CIDR().GetText()
+	}
+	if ipCtx.Value() != nil {
+		return extractValue(ipCtx.Value())
+	}
+	return ""
 }
 
 // --- String processing helpers ---

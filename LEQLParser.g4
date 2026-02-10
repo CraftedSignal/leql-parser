@@ -5,7 +5,7 @@ options { tokenVocab = LEQLLexer; }
 // Entry point: LEQL query is a sequence of clauses in a defined order
 // All clauses are optional; a bare keyword/regex search has no clauses
 query
-    : selectClause? whereClause? groupbyClause? havingClause? calculateClause? sortClause? limitClause? timesliceClause? EOF
+    : selectClause? whereClause? groupbyClause? calculateClause? havingClause? sortClause? limitClause? timesliceClause? EOF
     ;
 
 // SELECT clause: select(key1 as alias1, key2 as alias2, ...)
@@ -29,6 +29,7 @@ whereClause
 // Boolean expressions with AND/OR/NOT and parenthesized grouping
 expression
     : LPAREN expression RPAREN                          # parenExpr
+    | WHERE LPAREN expression RPAREN                    # nestedWhereExpr
     | NOT expression                                    # notExpr
     | expression AND expression                         # andExpr
     | expression OR expression                          # orExpr
@@ -47,12 +48,16 @@ condition
     | NOT fieldList stringOp value                      # negatedStringCondition
     | NOT fieldList setOp valueList                     # negatedSetCondition
     | NOT fieldList listStringOp valueList              # negatedListStringCondition
+    | fieldList NOT comparisonOp value                  # postfixNegatedComparisonCondition
+    | fieldList NOT stringOp value                      # postfixNegatedStringCondition
+    | fieldList NOT setOp valueList                     # postfixNegatedSetCondition
+    | fieldList NOT listStringOp valueList              # postfixNegatedListStringCondition
     | fieldList comparisonOp nocaseValue                # nocaseCondition
     | fieldList comparisonOp ipValue                    # ipCondition
     | fieldList setOp valueList                          # ipSetCondition
     | allFieldList comparisonOp value                   # allFieldsComparisonCondition
     | allFieldList setOp valueList                      # allFieldsSetCondition
-    | fieldName                                         # fieldExistsCondition
+    | IDENTIFIER                                        # fieldExistsCondition
     ;
 
 // Keyword search: bare string or quoted phrase
@@ -76,9 +81,11 @@ allFieldList
     : ALL_FUNC LPAREN fieldName (COMMA fieldName)* RPAREN
     ;
 
-// Field name: simple or dotted path (handled by IDENTIFIER token which includes dots)
+// Field name: simple or dotted path, optionally quoted
 fieldName
     : IDENTIFIER
+    | DOUBLE_STRING
+    | SINGLE_STRING
     ;
 
 // Comparison operators
@@ -111,6 +118,7 @@ value
     | NUMBER
     | TIME_UNIT
     | REGEX
+    | IP_CIDR
     | IDENTIFIER
     ;
 
@@ -121,7 +129,7 @@ nocaseValue
 
 // IP(cidr) wrapper
 ipValue
-    : IP_FUNC LPAREN value RPAREN
+    : IP_FUNC LPAREN ( IP_CIDR | value ) RPAREN
     ;
 
 // Value list: [v1, v2, ...]
@@ -172,9 +180,13 @@ percentileFunction
     : ( PERCENTILE | PCTL ) LPAREN NUMBER RPAREN (COLON fieldName)?
     ;
 
-// SORT clause: sort(asc) or sort(desc)
+// SORT clause: sort(asc), sort(desc), sort(asc#key), sort(asc, desc#key)
 sortClause
-    : SORT LPAREN sortDirection RPAREN
+    : SORT LPAREN sortSpec (COMMA sortSpec)* RPAREN
+    ;
+
+sortSpec
+    : sortDirection (HASH IDENTIFIER | IDENTIFIER)?
     ;
 
 sortDirection

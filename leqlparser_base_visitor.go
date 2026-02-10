@@ -43,6 +43,10 @@ func (v *BaseLEQLParserVisitor) VisitRegexExpr(ctx *RegexExprContext) interface{
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitNestedWhereExpr(ctx *NestedWhereExprContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitKeywordExpr(ctx *KeywordExprContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -84,6 +88,22 @@ func (v *BaseLEQLParserVisitor) VisitNegatedSetCondition(ctx *NegatedSetConditio
 }
 
 func (v *BaseLEQLParserVisitor) VisitNegatedListStringCondition(ctx *NegatedListStringConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -204,6 +224,10 @@ func (v *BaseLEQLParserVisitor) VisitPercentileFunction(ctx *PercentileFunctionC
 }
 
 func (v *BaseLEQLParserVisitor) VisitSortClause(ctx *SortClauseContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitSortSpec(ctx *SortSpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

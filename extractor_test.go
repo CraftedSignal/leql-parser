@@ -278,6 +278,76 @@ func TestExtractConditions_LogicalOperators(t *testing.T) {
 	}
 }
 
+// --- 5b. Nested where() ---
+
+func TestExtractConditions_NestedWhere(t *testing.T) {
+	tests := []struct {
+		name     string
+		query    string
+		expected []Condition
+	}{
+		{
+			name:  "nested where with equality",
+			query: `where(where(access_types = "ReadData"))`,
+			expected: []Condition{
+				{Field: "access_types", Operator: "=", Value: "ReadData", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "nested where with quoted field name",
+			query: `where(where("access_types" = "ReadData"))`,
+			expected: []Condition{
+				{Field: "access_types", Operator: "=", Value: "ReadData", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "nested where with AND",
+			query: `where(where(source_address = "10.0.0.1") AND status > 400)`,
+			expected: []Condition{
+				{Field: "source_address", Operator: "=", Value: "10.0.0.1", LogicalOp: "AND"},
+				{Field: "status", Operator: ">", Value: "400", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "double nested where",
+			query: `where(where(where(user = "admin")))`,
+			expected: []Condition{
+				{Field: "user", Operator: "=", Value: "admin", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "quoted field without nested where",
+			query: `where("source_address" = "111.161.118.40")`,
+			expected: []Condition{
+				{Field: "source_address", Operator: "=", Value: "111.161.118.40", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "quoted dotted field name",
+			query: `where("env_vars.7.parent_val" = "C:\ProgramData\chocolatey")`,
+			expected: []Condition{
+				{Field: "env_vars.7.parent_val", Operator: "=", Value: `C:\ProgramData\chocolatey`, LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "nested where with NOT IN and quoted fields",
+			query: `where(where("geoip_country_code" NOT IN ["PL", "UK"] and "result" = "SUCCESS" and "service" = "sslvpn-session"))`,
+			expected: []Condition{
+				{Field: "geoip_country_code", Operator: "in", Value: "PL, UK", Negated: true, LogicalOp: "AND"},
+				{Field: "result", Operator: "=", Value: "SUCCESS", LogicalOp: "AND"},
+				{Field: "service", Operator: "=", Value: "sslvpn-session", LogicalOp: "AND"},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := ExtractConditions(tt.query)
+			assertConditions(t, result, tt.expected)
+		})
+	}
+}
+
 // --- 6. Negation ---
 
 func TestExtractConditions_Negation(t *testing.T) {

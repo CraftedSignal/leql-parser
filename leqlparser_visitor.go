@@ -34,6 +34,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#regexExpr.
 	VisitRegexExpr(ctx *RegexExprContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#nestedWhereExpr.
+	VisitNestedWhereExpr(ctx *NestedWhereExprContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#keywordExpr.
 	VisitKeywordExpr(ctx *KeywordExprContext) interface{}
 
@@ -66,6 +69,18 @@ type LEQLParserVisitor interface {
 
 	// Visit a parse tree produced by LEQLParser#negatedListStringCondition.
 	VisitNegatedListStringCondition(ctx *NegatedListStringConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#postfixNegatedComparisonCondition.
+	VisitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#postfixNegatedStringCondition.
+	VisitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#postfixNegatedSetCondition.
+	VisitPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#postfixNegatedListStringCondition.
+	VisitPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#nocaseCondition.
 	VisitNocaseCondition(ctx *NocaseConditionContext) interface{}
@@ -156,6 +171,9 @@ type LEQLParserVisitor interface {
 
 	// Visit a parse tree produced by LEQLParser#sortClause.
 	VisitSortClause(ctx *SortClauseContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#sortSpec.
+	VisitSortSpec(ctx *SortSpecContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#sortDirection.
 	VisitSortDirection(ctx *SortDirectionContext) interface{}

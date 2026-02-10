@@ -34,6 +34,9 @@ type LEQLParserListener interface {
 	// EnterRegexExpr is called when entering the regexExpr production.
 	EnterRegexExpr(c *RegexExprContext)
 
+	// EnterNestedWhereExpr is called when entering the nestedWhereExpr production.
+	EnterNestedWhereExpr(c *NestedWhereExprContext)
+
 	// EnterKeywordExpr is called when entering the keywordExpr production.
 	EnterKeywordExpr(c *KeywordExprContext)
 
@@ -66,6 +69,18 @@ type LEQLParserListener interface {
 
 	// EnterNegatedListStringCondition is called when entering the negatedListStringCondition production.
 	EnterNegatedListStringCondition(c *NegatedListStringConditionContext)
+
+	// EnterPostfixNegatedComparisonCondition is called when entering the postfixNegatedComparisonCondition production.
+	EnterPostfixNegatedComparisonCondition(c *PostfixNegatedComparisonConditionContext)
+
+	// EnterPostfixNegatedStringCondition is called when entering the postfixNegatedStringCondition production.
+	EnterPostfixNegatedStringCondition(c *PostfixNegatedStringConditionContext)
+
+	// EnterPostfixNegatedSetCondition is called when entering the postfixNegatedSetCondition production.
+	EnterPostfixNegatedSetCondition(c *PostfixNegatedSetConditionContext)
+
+	// EnterPostfixNegatedListStringCondition is called when entering the postfixNegatedListStringCondition production.
+	EnterPostfixNegatedListStringCondition(c *PostfixNegatedListStringConditionContext)
 
 	// EnterNocaseCondition is called when entering the nocaseCondition production.
 	EnterNocaseCondition(c *NocaseConditionContext)
@@ -157,6 +172,9 @@ type LEQLParserListener interface {
 	// EnterSortClause is called when entering the sortClause production.
 	EnterSortClause(c *SortClauseContext)
 
+	// EnterSortSpec is called when entering the sortSpec production.
+	EnterSortSpec(c *SortSpecContext)
+
 	// EnterSortDirection is called when entering the sortDirection production.
 	EnterSortDirection(c *SortDirectionContext)
 
@@ -193,6 +211,9 @@ type LEQLParserListener interface {
 	// ExitRegexExpr is called when exiting the regexExpr production.
 	ExitRegexExpr(c *RegexExprContext)
 
+	// ExitNestedWhereExpr is called when exiting the nestedWhereExpr production.
+	ExitNestedWhereExpr(c *NestedWhereExprContext)
+
 	// ExitKeywordExpr is called when exiting the keywordExpr production.
 	ExitKeywordExpr(c *KeywordExprContext)
 
@@ -225,6 +246,18 @@ type LEQLParserListener interface {
 
 	// ExitNegatedListStringCondition is called when exiting the negatedListStringCondition production.
 	ExitNegatedListStringCondition(c *NegatedListStringConditionContext)
+
+	// ExitPostfixNegatedComparisonCondition is called when exiting the postfixNegatedComparisonCondition production.
+	ExitPostfixNegatedComparisonCondition(c *PostfixNegatedComparisonConditionContext)
+
+	// ExitPostfixNegatedStringCondition is called when exiting the postfixNegatedStringCondition production.
+	ExitPostfixNegatedStringCondition(c *PostfixNegatedStringConditionContext)
+
+	// ExitPostfixNegatedSetCondition is called when exiting the postfixNegatedSetCondition production.
+	ExitPostfixNegatedSetCondition(c *PostfixNegatedSetConditionContext)
+
+	// ExitPostfixNegatedListStringCondition is called when exiting the postfixNegatedListStringCondition production.
+	ExitPostfixNegatedListStringCondition(c *PostfixNegatedListStringConditionContext)
 
 	// ExitNocaseCondition is called when exiting the nocaseCondition production.
 	ExitNocaseCondition(c *NocaseConditionContext)
@@ -315,6 +348,9 @@ type LEQLParserListener interface {
 
 	// ExitSortClause is called when exiting the sortClause production.
 	ExitSortClause(c *SortClauseContext)
+
+	// ExitSortSpec is called when exiting the sortSpec production.
+	ExitSortSpec(c *SortSpecContext)
 
 	// ExitSortDirection is called when exiting the sortDirection production.
 	ExitSortDirection(c *SortDirectionContext)
