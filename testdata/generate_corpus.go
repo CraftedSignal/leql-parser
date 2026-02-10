@@ -686,20 +686,20 @@ func randFullQuery(rng *rand.Rand) string {
 		parts = append(parts, fmt.Sprintf("groupby(%s)", strings.Join(fs, ", ")))
 	}
 
-	// having (10%)
-	if rng.Intn(10) == 0 {
-		op := pick(rng, compOps[:6])
-		n := pick(rng, numbers)
-		parts = append(parts, fmt.Sprintf("having(count%s%s)", op, n))
-	}
-
-	// calculate (30%)
+	// calculate (30%) — must come before having in LEQL
 	if rng.Intn(3) == 0 {
 		if rng.Intn(2) == 0 {
 			parts = append(parts, fmt.Sprintf("calculate(%s)", pick(rng, calcFuncs)))
 		} else {
 			parts = append(parts, fmt.Sprintf("calculate(%s:%s)", pick(rng, calcFieldFuncs), pick(rng, fields)))
 		}
+	}
+
+	// having (10%)
+	if rng.Intn(10) == 0 {
+		op := pick(rng, compOps[:6])
+		n := pick(rng, numbers)
+		parts = append(parts, fmt.Sprintf("having(count%s%s)", op, n))
 	}
 
 	// sort (15%)
