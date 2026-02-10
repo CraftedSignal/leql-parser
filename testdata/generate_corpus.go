@@ -552,7 +552,237 @@ func main() {
 		add(fmt.Sprintf("where(((%s) AND (%s)))", c, c2), "double paren AND")
 	}
 
-	// 34. More pipeline combos to reach target
+	// 34. Complex real-world-style queries
+	// Long regex patterns (like Windows event code lists from PCI packs)
+	eventCodes := []string{"4624", "4625", "4648", "4672", "4688", "4720", "4722", "4724", "4725", "4726",
+		"4728", "4732", "4735", "4740", "4756", "4767", "4781", "5136", "5137", "5141",
+		"7036", "1102", "4719", "4697", "4698", "4699"}
+	for i := 0; i < 200; i++ {
+		n := 3 + rng.Intn(15) // 3-17 codes
+		codes := pickN(rng, eventCodes, n)
+		regexPat := strings.Join(codes, "|")
+		f := pick(rng, []string{"data.eventCode", "source_json.eventCode", "xml.system.eventid", "EventCode"})
+		gf := pick(rng, []string{"data.computerName", "source_json.computerName", "destination_account", "user"})
+		add(fmt.Sprintf("where(%s=/%s/)groupby(%s) limit(10000)", f, regexPat, gf),
+			fmt.Sprintf("event code regex %d codes", n))
+		add(fmt.Sprintf("where(%s=/%s/) groupby(%s) calculate(count) limit(10000)", f, regexPat, gf),
+			fmt.Sprintf("event code regex+calc %d codes", n))
+	}
+
+	// Multi-OR regex chains (separate OR'd field conditions)
+	for i := 0; i < 200; i++ {
+		n := 2 + rng.Intn(4)
+		parts := make([]string, n)
+		for j := 0; j < n; j++ {
+			codes := pickN(rng, eventCodes, 2+rng.Intn(8))
+			f := pick(rng, []string{"data.eventCode", "source_json.eventCode"})
+			parts[j] = fmt.Sprintf("%s=/%s/", f, strings.Join(codes, "|"))
+		}
+		gf := pick(rng, fields)
+		add(fmt.Sprintf("where(%s)groupby(%s) limit(10000)", strings.Join(parts, " OR "), gf),
+			fmt.Sprintf("multi-regex OR %d parts", n))
+	}
+
+	// Deep boolean combinations (3-6 levels)
+	for i := 0; i < 500; i++ {
+		q := randDeepBooleanQuery(rng, 3+rng.Intn(4))
+		add(fmt.Sprintf("where(%s)", q), "deep boolean")
+	}
+
+	// Complex multi-clause pipelines with all features
+	for i := 0; i < 500; i++ {
+		// Build a complex where clause
+		n := 3 + rng.Intn(5)
+		conds := make([]string, n)
+		for j := 0; j < n; j++ {
+			conds[j] = randCondition(rng)
+		}
+		var w strings.Builder
+		w.WriteString(conds[0])
+		for j := 1; j < n; j++ {
+			if rng.Intn(3) == 0 {
+				w.WriteString(" OR ")
+			} else {
+				w.WriteString(" AND ")
+			}
+			w.WriteString(conds[j])
+		}
+		// Build full pipeline with many clauses
+		var parts []string
+		parts = append(parts, fmt.Sprintf("where(%s)", w.String()))
+		gfs := pickN(rng, fields, 1+rng.Intn(3))
+		parts = append(parts, fmt.Sprintf("groupby(%s)", strings.Join(gfs, ", ")))
+		if rng.Intn(2) == 0 {
+			parts = append(parts, fmt.Sprintf("calculate(%s:%s)", pick(rng, calcFieldFuncs), pick(rng, fields)))
+		} else {
+			parts = append(parts, fmt.Sprintf("calculate(%s)", pick(rng, calcFuncs)))
+		}
+		if rng.Intn(3) == 0 {
+			parts = append(parts, fmt.Sprintf("having(count%s%s)", pick(rng, compOps[:6]), pick(rng, numbers)))
+		}
+		if rng.Intn(2) == 0 {
+			if rng.Intn(3) == 0 {
+				parts = append(parts, fmt.Sprintf("sort(%s#key)", pick(rng, sortDirs[:2])))
+			} else {
+				parts = append(parts, fmt.Sprintf("sort(%s)", pick(rng, sortDirs)))
+			}
+		}
+		parts = append(parts, fmt.Sprintf("limit(%d)", 1+rng.Intn(10000)))
+		if rng.Intn(3) == 0 {
+			ts := pick(rng, []string{"30s", "5m", "10m", "30m", "1h", "1d", "7d"})
+			parts = append(parts, fmt.Sprintf("timeslice(%s)", ts))
+		}
+		add(strings.Join(parts, " "), "complex pipeline")
+	}
+
+	// Select + complex pipeline
+	for i := 0; i < 200; i++ {
+		sf := pickN(rng, fields, 2+rng.Intn(4))
+		cond := randCondition(rng)
+		gfs := pickN(rng, fields, 1+rng.Intn(2))
+		parts := []string{
+			fmt.Sprintf("select(%s)", strings.Join(sf, ", ")),
+			fmt.Sprintf("where(%s)", cond),
+			fmt.Sprintf("groupby(%s)", strings.Join(gfs, ", ")),
+			fmt.Sprintf("calculate(%s)", pick(rng, calcFuncs)),
+			fmt.Sprintf("sort(%s)", pick(rng, sortDirs)),
+			fmt.Sprintf("limit(%d)", 1+rng.Intn(100)),
+		}
+		add(strings.Join(parts, " "), "select pipeline")
+	}
+
+	// Nested where with complex conditions
+	for i := 0; i < 300; i++ {
+		n := 2 + rng.Intn(4)
+		conds := make([]string, n)
+		for j := 0; j < n; j++ {
+			conds[j] = randCondition(rng)
+		}
+		var w strings.Builder
+		w.WriteString(conds[0])
+		for j := 1; j < n; j++ {
+			if rng.Intn(3) == 0 {
+				w.WriteString(" OR ")
+			} else {
+				w.WriteString(" AND ")
+			}
+			w.WriteString(conds[j])
+		}
+		gf := pick(rng, fields)
+		add(fmt.Sprintf("where(where(%s)) groupby(%s) calculate(count)", w.String(), gf),
+			"nested where complex")
+	}
+
+	// Parenthesized groups with mixed operators
+	for i := 0; i < 500; i++ {
+		c := make([]string, 4+rng.Intn(4))
+		for j := range c {
+			c[j] = randCondition(rng)
+		}
+		// Build: (a AND b) OR (c AND d) AND (e OR f)
+		groups := []string{}
+		idx := 0
+		for idx < len(c) {
+			sz := 2 + rng.Intn(2)
+			if idx+sz > len(c) {
+				sz = len(c) - idx
+			}
+			gc := c[idx : idx+sz]
+			innerOp := " AND "
+			if rng.Intn(3) == 0 {
+				innerOp = " OR "
+			}
+			if sz > 1 {
+				groups = append(groups, fmt.Sprintf("(%s)", strings.Join(gc, innerOp)))
+			} else {
+				groups = append(groups, gc[0])
+			}
+			idx += sz
+		}
+		outerOp := " OR "
+		if rng.Intn(2) == 0 {
+			outerOp = " AND "
+		}
+		add(fmt.Sprintf("where(%s)", strings.Join(groups, outerOp)),
+			fmt.Sprintf("grouped boolean %d terms", len(c)))
+	}
+
+	// IP set conditions (multiple IP ranges in lists)
+	for i := 0; i < 100; i++ {
+		f := pick(rng, []string{"source_address", "destination_address", "source_ip"})
+		n := 2 + rng.Intn(5)
+		ips := pickN(rng, ipRanges, n)
+		ipVals := make([]string, len(ips))
+		for j, ip := range ips {
+			ipVals[j] = fmt.Sprintf("IP(%s)", ip)
+		}
+		add(fmt.Sprintf("where(%s NOT IN [%s])", f, strings.Join(ipVals, ", ")),
+			fmt.Sprintf("IP NOT IN %d ranges", n))
+		add(fmt.Sprintf("where(%s IN [%s])", f, strings.Join(ipVals, ", ")),
+			fmt.Sprintf("IP IN %d ranges", n))
+		// Complex: IP filter + other conditions
+		v := pick(rng, stringValues)
+		add(fmt.Sprintf(`where(%s NOT IN [%s] AND user!="%s" AND connection_status = DENY)`, f, strings.Join(ipVals, ", "), v),
+			"IP filter complex")
+	}
+
+	// Number keyword searches
+	for _, n := range numbers {
+		add(fmt.Sprintf("where(%s)", n), fmt.Sprintf("number keyword %s", n))
+	}
+
+	// ALL() with NOCASE
+	for i := 0; i < 50; i++ {
+		fs := pickN(rng, fields, 2+rng.Intn(2))
+		v := pick(rng, stringValues)
+		add(fmt.Sprintf(`where(ALL(%s)=NOCASE("%s"))`, strings.Join(fs, ", "), v),
+			"ALL NOCASE")
+	}
+
+	// COUNT/BYTES with field
+	for i := 0; i < 100; i++ {
+		f := pick(rng, fields)
+		gf := pick(rng, fields)
+		calc := pick(rng, []string{"COUNT", "count", "BYTES", "bytes"})
+		add(fmt.Sprintf("groupby(%s) calculate(%s:%s)", gf, calc, f),
+			fmt.Sprintf("calc %s:field", calc))
+	}
+
+	// Percentile with full pipeline
+	for _, pctl := range []string{"percentile", "pctl", "PERCENTILE", "PCTL"} {
+		for _, p := range []string{"50", "90", "95", "99", "99.9"} {
+			f := pick(rng, numericFields)
+			cond := randCondition(rng)
+			gf := pick(rng, fields)
+			add(fmt.Sprintf("where(%s) groupby(%s) calculate(%s(%s):%s) sort(desc) limit(100)", cond, gf, pctl, p, f),
+				fmt.Sprintf("percentile pipeline %s(%s)", pctl, p))
+		}
+	}
+
+	// Docker/monitoring-style deep field paths
+	deepFields := []string{
+		"stats.memory_stats.usage", "stats.cpu_stats.cpu_usage.total_usage",
+		"stats.networks.eth0.rx_bytes", "stats.networks.eth0.tx_bytes",
+		"stats.networks.eth0.rx_packets", "stats.networks.eth0.tx_packets",
+		"stats.networks.eth0.rx_errors", "stats.networks.eth0.tx_errors",
+		"source_json.properties.mfaDetail.authMethod",
+		"source_json.properties.riskLevelDuringSignIn",
+		"process.exe_file.hashes.md5", "process.exe_file.hashes.sha256",
+		"process.exe_file.product_name", "process.exe_file.description",
+		"xml.eventdata.targetusername", "xml.system.eventid",
+	}
+	for i := 0; i < 200; i++ {
+		f := pick(rng, deepFields)
+		op := pick(rng, compOps[:4])
+		v := pick(rng, stringValues)
+		add(fmt.Sprintf(`where(%s%s"%s")`, f, op, v), fmt.Sprintf("deep field %s", f))
+		add(fmt.Sprintf(`where(%s!=null) calculate(average:%s)`, f, f), fmt.Sprintf("null check %s", f))
+		gf := pick(rng, fields)
+		add(fmt.Sprintf(`where(%s!=null) groupby(%s) calculate(average:%s) sort(desc)`, f, gf, f),
+			fmt.Sprintf("deep field pipeline %s", f))
+	}
+
+	// 35. More pipeline combos to reach target
 	for i := 0; i < 40000; i++ {
 		q := randFullQuery(rng)
 		add(q, "random pipeline")
@@ -641,6 +871,30 @@ func randCondition(rng *rand.Rand) string {
 		return fmt.Sprintf(`"%s"%s"%s"`, qf, op, v)
 	default: // regex
 		return fmt.Sprintf(`%s=/error.*/i`, f)
+	}
+}
+
+func randDeepBooleanQuery(rng *rand.Rand, depth int) string {
+	if depth <= 0 {
+		return randCondition(rng)
+	}
+	switch rng.Intn(5) {
+	case 0: // AND group
+		left := randDeepBooleanQuery(rng, depth-1)
+		right := randDeepBooleanQuery(rng, depth-1)
+		return fmt.Sprintf("(%s AND %s)", left, right)
+	case 1: // OR group
+		left := randDeepBooleanQuery(rng, depth-1)
+		right := randDeepBooleanQuery(rng, depth-1)
+		return fmt.Sprintf("(%s OR %s)", left, right)
+	case 2: // NOT
+		inner := randDeepBooleanQuery(rng, depth-1)
+		return fmt.Sprintf("NOT (%s)", inner)
+	case 3: // nested where
+		inner := randDeepBooleanQuery(rng, depth-1)
+		return fmt.Sprintf("where(%s)", inner)
+	default: // base condition
+		return randCondition(rng)
 	}
 }
 

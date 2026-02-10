@@ -228,8 +228,12 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitAllFieldsComparisonCondition(ctx)
 	case *AllFieldsSetConditionContext:
 		e.visitAllFieldsSetCondition(ctx)
+	case *AllFieldsNocaseConditionContext:
+		e.visitAllFieldsNocaseCondition(ctx)
 	case *FieldExistsConditionContext:
 		e.visitFieldExistsCondition(ctx)
+	case *NumberKeywordConditionContext:
+		e.visitNumberKeywordCondition(ctx)
 	default:
 		// For unknown nodes, visit children
 		if node, ok := tree.(antlr.RuleNode); ok {
@@ -813,12 +817,46 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 	e.currentLogicalOp = "AND"
 }
 
+func (e *conditionExtractor) visitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) {
+	if ctx.AllFieldList() == nil || ctx.ComparisonOp() == nil || ctx.NocaseValue() == nil {
+		return
+	}
+	fields := extractAllFieldNames(ctx.AllFieldList())
+	op := extractComparisonOp(ctx.ComparisonOp())
+	val := ""
+	if ctx.NocaseValue() != nil && ctx.NocaseValue().Value() != nil {
+		val = extractValue(ctx.NocaseValue().Value())
+	}
+
+	for i, f := range fields {
+		logOp := e.currentLogicalOp
+		if i > 0 {
+			logOp = "AND"
+		}
+		e.conditions = append(e.conditions, Condition{
+			Field:     f,
+			Operator:  op,
+			Value:     val,
+			Negated:   e.negated,
+			LogicalOp: logOp,
+		})
+	}
+	e.currentLogicalOp = "AND"
+}
+
 func (e *conditionExtractor) visitFieldExistsCondition(ctx *FieldExistsConditionContext) {
 	if ctx.IDENTIFIER() == nil {
 		return
 	}
 	field := ctx.IDENTIFIER().GetText()
 	e.addCondition(field, "exists", "*")
+}
+
+func (e *conditionExtractor) visitNumberKeywordCondition(ctx *NumberKeywordConditionContext) {
+	if ctx.NUMBER() == nil {
+		return
+	}
+	e.addCondition("_keyword", "search", ctx.NUMBER().GetText())
 }
 
 // addCondition appends a new condition using current extractor state.

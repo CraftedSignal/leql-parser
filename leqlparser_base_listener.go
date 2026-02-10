@@ -214,11 +214,24 @@ func (s *BaseLEQLParserListener) EnterAllFieldsSetCondition(ctx *AllFieldsSetCon
 // ExitAllFieldsSetCondition is called when production allFieldsSetCondition is exited.
 func (s *BaseLEQLParserListener) ExitAllFieldsSetCondition(ctx *AllFieldsSetConditionContext) {}
 
+// EnterAllFieldsNocaseCondition is called when production allFieldsNocaseCondition is entered.
+func (s *BaseLEQLParserListener) EnterAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) {
+}
+
+// ExitAllFieldsNocaseCondition is called when production allFieldsNocaseCondition is exited.
+func (s *BaseLEQLParserListener) ExitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) {}
+
 // EnterFieldExistsCondition is called when production fieldExistsCondition is entered.
 func (s *BaseLEQLParserListener) EnterFieldExistsCondition(ctx *FieldExistsConditionContext) {}
 
 // ExitFieldExistsCondition is called when production fieldExistsCondition is exited.
 func (s *BaseLEQLParserListener) ExitFieldExistsCondition(ctx *FieldExistsConditionContext) {}
+
+// EnterNumberKeywordCondition is called when production numberKeywordCondition is entered.
+func (s *BaseLEQLParserListener) EnterNumberKeywordCondition(ctx *NumberKeywordConditionContext) {}
+
+// ExitNumberKeywordCondition is called when production numberKeywordCondition is exited.
+func (s *BaseLEQLParserListener) ExitNumberKeywordCondition(ctx *NumberKeywordConditionContext) {}
 
 // EnterQuotedKeyword is called when production quotedKeyword is entered.
 func (s *BaseLEQLParserListener) EnterQuotedKeyword(ctx *QuotedKeywordContext) {}

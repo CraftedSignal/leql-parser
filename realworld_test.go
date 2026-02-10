@@ -119,26 +119,39 @@ func TestCorpus(t *testing.T) {
 	}
 }
 
-// TestGeneratedCorpus runs the parser against a large generated corpus (~50k queries).
-// All generated queries are syntactically valid, so we require 100% parse success.
+// TestGeneratedCorpus runs the parser against the combined corpus:
+// real-world queries from Rapid7 docs + analytic packs + cheat sheets (~300),
+// plus generated queries (~49k) for comprehensive coverage.
+// Total must exceed 49,000 queries with 100% parse success.
 func TestGeneratedCorpus(t *testing.T) {
-	corpusPath := "testdata/corpus_generated.json"
+	genPath := "testdata/corpus_generated.json"
+	realPath := "testdata/corpus.json"
 
-	if _, err := os.Stat(corpusPath); os.IsNotExist(err) {
+	if _, err := os.Stat(genPath); os.IsNotExist(err) {
 		t.Skip("Generated corpus not available — run: go run testdata/generate_corpus.go > testdata/corpus_generated.json")
 	}
 
-	data, err := os.ReadFile(corpusPath)
+	genData, err := os.ReadFile(genPath)
 	if err != nil {
 		t.Fatalf("Failed to read generated corpus: %v", err)
 	}
 
 	var entries []corpusEntry
-	if err := json.Unmarshal(data, &entries); err != nil {
+	if err := json.Unmarshal(genData, &entries); err != nil {
 		t.Fatalf("Failed to parse generated corpus JSON: %v", err)
 	}
 
-	t.Logf("Loaded %d generated queries", len(entries))
+	// Also load real-world corpus
+	if realData, err := os.ReadFile(realPath); err == nil {
+		var realEntries []corpusEntry
+		if err := json.Unmarshal(realData, &realEntries); err == nil {
+			entries = append(entries, realEntries...)
+			t.Logf("Loaded %d real-world + %d generated = %d total queries",
+				len(realEntries), len(entries)-len(realEntries), len(entries))
+		}
+	} else {
+		t.Logf("Loaded %d generated queries (no real-world corpus)", len(entries))
+	}
 
 	var success, partial, failed, panicked int
 	var sampleErrors []string
@@ -180,7 +193,7 @@ func TestGeneratedCorpus(t *testing.T) {
 	successRate := float64(success) * 100 / float64(total)
 
 	t.Logf("")
-	t.Logf("=== Generated Corpus Results ===")
+	t.Logf("=== Combined Corpus Results ===")
 	t.Logf("Total:    %d", total)
 	t.Logf("Success:  %d (%.1f%%)", success, successRate)
 	t.Logf("Partial:  %d (%.2f%%)", partial, float64(partial)*100/float64(total))
@@ -199,8 +212,11 @@ func TestGeneratedCorpus(t *testing.T) {
 	if panicked > 0 {
 		t.Errorf("Parser panicked on %d queries", panicked)
 	}
-	if successRate < 95 {
-		t.Errorf("Success rate %.1f%% is below 95%% threshold", successRate)
+	if successRate < 99 {
+		t.Errorf("Success rate %.1f%% is below 99%% threshold", successRate)
+	}
+	if total < 49000 {
+		t.Errorf("Corpus too small: got %d, want at least 49000", total)
 	}
 }
 

@@ -97,8 +97,14 @@ type LEQLParserListener interface {
 	// EnterAllFieldsSetCondition is called when entering the allFieldsSetCondition production.
 	EnterAllFieldsSetCondition(c *AllFieldsSetConditionContext)
 
+	// EnterAllFieldsNocaseCondition is called when entering the allFieldsNocaseCondition production.
+	EnterAllFieldsNocaseCondition(c *AllFieldsNocaseConditionContext)
+
 	// EnterFieldExistsCondition is called when entering the fieldExistsCondition production.
 	EnterFieldExistsCondition(c *FieldExistsConditionContext)
+
+	// EnterNumberKeywordCondition is called when entering the numberKeywordCondition production.
+	EnterNumberKeywordCondition(c *NumberKeywordConditionContext)
 
 	// EnterQuotedKeyword is called when entering the quotedKeyword production.
 	EnterQuotedKeyword(c *QuotedKeywordContext)
@@ -274,8 +280,14 @@ type LEQLParserListener interface {
 	// ExitAllFieldsSetCondition is called when exiting the allFieldsSetCondition production.
 	ExitAllFieldsSetCondition(c *AllFieldsSetConditionContext)
 
+	// ExitAllFieldsNocaseCondition is called when exiting the allFieldsNocaseCondition production.
+	ExitAllFieldsNocaseCondition(c *AllFieldsNocaseConditionContext)
+
 	// ExitFieldExistsCondition is called when exiting the fieldExistsCondition production.
 	ExitFieldExistsCondition(c *FieldExistsConditionContext)
+
+	// ExitNumberKeywordCondition is called when exiting the numberKeywordCondition production.
+	ExitNumberKeywordCondition(c *NumberKeywordConditionContext)
 
 	// ExitQuotedKeyword is called when exiting the quotedKeyword production.
 	ExitQuotedKeyword(c *QuotedKeywordContext)

@@ -1,103 +1,1347 @@
 [
-  {"query": "where(result AND result != SUCCESS) groupby(destination_user) calculate(count)", "description": "Failed authentication by user"},
-  {"query": "where(result ISTARTS-WITH \"FAILED\") groupby(destination_user) calculate(count)", "description": "Failed auth alternative"},
-  {"query": "groupby(source_user)", "description": "Admin actions by user"},
-  {"query": "groupby(action)", "description": "All admin actions"},
-  {"query": "where(source_user=\"Arnold Holt\")", "description": "Activity by specific user"},
-  {"query": "where(source_user=NOCASE(\"arnold holt\"))", "description": "Case-insensitive user search"},
-  {"query": "where(source_user ICONTAINS admin) groupby(source_user)", "description": "Users with admin in name"},
-  {"query": "where(source_user ICONTAINS admin) groupby(action)", "description": "Admin actions grouped"},
-  {"query": "where(source_user ICONTAINS admin AND action=MEMBER_ADDED_TO_SECURITY_GROUP) groupby(group)", "description": "Admin group additions"},
-  {"query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\" AND group=\"vpn-users\") groupby(target_user)", "description": "Users added to group"},
-  {"query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\") groupby(source_user)", "description": "Accounts adding users to groups"},
-  {"query": "where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP] AND group CONTAINS -job-admins)", "description": "Group changes tracking"},
-  {"query": "where(severity ICONTAINS \"MALICIOUS\") groupby(asset) having(count>=5)", "description": "Malicious alerts by asset"},
-  {"query": "groupby(logon_type)", "description": "All authentication types"},
-  {"query": "groupby(result)", "description": "All authentication results"},
-  {"query": "where(result AND result != SUCCESS) groupby(destination_user) calculate(count)", "description": "Failed authentication activity"},
-  {"query": "where(service NOT IIN [\"krbtgt\", \"kerberos\"] AND result ISTARTS-WITH \"failed\") groupby(destination_account)", "description": "Non-Kerberos failed logins"},
-  {"query": "where(service NOT IN [krbtgt, kerberos] AND result=\"FAILED_BAD_PASSWORD\") groupby(\"destination_asset\")", "description": "Non-Kerberos logins by asset"},
-  {"query": "where(result ISTARTS-WITH \"FAILED\") groupby(destination_user)", "description": "Failed authentication accounts"},
-  {"query": "groupby(source_json.Workload, action)", "description": "Workloads and actions"},
-  {"query": "groupby(source_user) calculate(count) limit(10)", "description": "Top 10 Office365 users"},
-  {"query": "where(public_suffix AND public_suffix NOT IN [com, net, org]) groupby(public_suffix)", "description": "Websites outside common domains"},
-  {"query": "where(public_suffix=\"ru\") groupby(query)", "description": "Russian websites visited"},
-  {"query": "where(process.exe_file.description ICONTAINS-ANY [\"ssh\", \"telnet\"]) groupby(process.name, hostname, process.username)", "description": "SSH/Telnet processes"},
-  {"query": "where(user=\"Pete Coors\") groupby(file_name)", "description": "Files accessed by user"},
-  {"query": "where(file_name=\"audit.csv\") groupby(user)", "description": "Users accessing file"},
-  {"query": "where(incoming_bytes>0 AND geoip_country_code NOT IN [US, IE, GB, DE, JP, CA, AU]) groupby(geoip_country_code)", "description": "Downloads from non-US countries"},
-  {"query": "where(geoip_country_name!=\"United States\") groupby(geoip_country_name)", "description": "Traffic from non-US"},
-  {"query": "calculate(count)", "description": "Firewall log count"},
-  {"query": "where(direction=OUTBOUND AND geoip_country_code!=US) groupby(destination_address) calculate(sum:outgoing_bytes) limit(10)", "description": "Top external data transfers"},
-  {"query": "where(direction=INBOUND) groupby(destination_address) calculate(sum:incoming_bytes) limit(10)", "description": "Top inbound receivers"},
-  {"query": "where(direction=\"OUTBOUND\" AND destination_address=\"52.205.169.150\") groupby(user)", "description": "Users accessing destination"},
-  {"query": "where(connection_status=\"DENY\") calculate(count)", "description": "Denied connections"},
-  {"query": "where(direction=\"OUTBOUND\" AND connection_status=\"DENY\") calculate(count)", "description": "Denied outbound traffic"},
-  {"query": "where(connection_status=\"ACCEPT\" AND direction=\"OUTBOUND\" AND destination_port NOT IN [\"443\", \"80\", \"53\"]) groupby(destination_port)", "description": "Outbound ports excluding common"},
-  {"query": "where(direction=OUTBOUND) groupby(destination_address) calculate(sum:outgoing_bytes)", "description": "Top outbound destinations"},
-  {"query": "where(direction=INBOUND) groupby(source_address) calculate(sum:incoming_bytes)", "description": "Top inbound sources"},
-  {"query": "where(geoip_country_name IN [Czechia, Russia, \"Hong Kong\"] AND connection_status=ACCEPT AND direction=INBOUND) groupby(geoip_country_name)", "description": "Allowlisted countries"},
-  {"query": "where(connection_status=DENY AND source_address NOT IN [IP(10.0.0.0/8), IP(172.27.0.0/16), IP(169.254.0.0/16), IP(192.168.0.0/16), IP(172.16.0.0/16)])", "description": "External firewall denials"},
-  {"query": "where(user!=\"unknown\" AND connection_status=DENY AND source_address NOT IN [IP(10.0.0.0/8), IP(172.27.0.0/16), IP(169.254.0.0/16), IP(192.168.0.0/16), IP(172.16.0.0/16)])", "description": "Known users with denies"},
-  {"query": "where(connection_status=\"DENY\" AND geoip_country_name!=\"United States\") groupby(geoip_country_name) calculate(count)", "description": "Invalid connections non-US"},
-  {"query": "where(connection_status=DENY AND direction=INBOUND AND geoip_country_name!=\"United States\") groupby(geoip_country_name) calculate(count)", "description": "Inbound denies by country"},
-  {"query": "where(direction=\"OUTBOUND\" AND outgoing_bytes>50000000 AND geoip_organization=\"Box.com\")", "description": "Large Box.com transfers"},
-  {"query": "where(action=\"OBTAIN\") groupby(asset) calculate(unique:ip) having(unique:ip>=5)", "description": "Assets with multiple IPs"},
-  {"query": "where(severity=\"INFORMATIONAL\") groupby(signature) limit(1000)", "description": "Informational alerts"},
-  {"query": "where(severity=\"LOW\") groupby(description)", "description": "Low severity alerts"},
-  {"query": "groupby(severity) calculate(unique:signature)", "description": "Alerts by severity"},
-  {"query": "where(severity=\"HIGH\") groupby(asset) calculate(unique:signature)", "description": "High severity by asset"},
-  {"query": "where(severity=\"CRITICAL\") groupby(asset) calculate(unique:signature)", "description": "Critical severity by asset"},
-  {"query": "where(geoip_country_name=\"United States\") calculate(count)", "description": "Users from specific country"},
-  {"query": "where(geoip_country_name=\"United States\") groupby(user) calculate(count)", "description": "Users by country"},
-  {"query": "where(geoip_city=\"San Jose\") groupby(user)", "description": "Users from specific city"},
-  {"query": "where(geoip_country_name=\"Russia\")", "description": "Ingress from Russia"},
-  {"query": "where(service=\"box\") groupby(user)", "description": "Users by service"},
-  {"query": "where(service=\"o365\") groupby(user)", "description": "Office365 access"},
-  {"query": "where(geoip_country_code!=\"US\") groupby(geoip_country_name)", "description": "Non-US access"},
-  {"query": "where(result=SUCCESS) groupby(service, geoip_country_name, user_agent)", "description": "Successful auth details"},
-  {"query": "where(status>=300) groupby(status) calculate(count) sort(desc) limit(350)", "description": "Status codes over 300"},
-  {"query": "where(result=FAILED_BAD_PASSWORD) groupby(user) having(count>5)", "description": "Brute force detection"},
-  {"query": "where(status=404) calculate(count) timeslice(30m)", "description": "404 errors over time"},
-  {"query": "where(direction=\"OUTBOUND\" AND app_protocol_description ISTARTS-WITH \"TLS\") groupby(app_protocol_description)", "description": "TLS protocol versions"},
-  {"query": "where(result=SUCCESS) groupby(service)", "description": "Successful SSO by service"},
-  {"query": "where(severity=\"High\") groupby(type, title)", "description": "High severity alerts"},
-  {"query": "groupby(header.name)", "description": "CyberArk activity"},
-  {"query": "groupby(header.device_event_class_id)", "description": "CyberArk events by ID"},
-  {"query": "groupby(header.severity)", "description": "Activity by severity"},
-  {"query": "groupby(source_json.eventCode)", "description": "Windows Defender event codes"},
-  {"query": "where(source_json.eventCode=1116) groupby(user, asset, file_path)", "description": "Malware/PUP detection"},
-  {"query": "groupby(risk)", "description": "All risks"},
-  {"query": "calculate(count) timeslice(1d)", "description": "Risk count trend"},
-  {"query": "groupby(source_json.Category, source_json.Severity)", "description": "Categories and severity"},
-  {"query": "where(is_blocked=true) calculate(count)", "description": "Blocked URLs count"},
-  {"query": "where(process.name=NOCASE(taskkill.exe)) groupby(process.cmd_line)", "description": "Taskkill commands"},
-  {"query": "where(connection_status=DENY) groupby(source_address)", "description": "Denies grouped by host"},
-  {"query": "where(result=FAILED_BAD_LOGIN) calculate(UNIQUE:source_ip)", "description": "Unique failed IPs"},
-  {"query": "where(service=o365 AND result=FAILED_BAD_LOGIN) groupby(source_ip)", "description": "Office365 failures"},
-  {"query": "where(geoip_country_code!=US) groupby(geoip_country_name) sort(desc)", "description": "Country filtering"},
-  {"query": "where(result=SUCCESS AND geoip_country_name=\"United States\") calculate(count) timeslice(1h)", "description": "Weekly US auth"},
-  {"query": "where(result=SUCCESS AND geoip_country_name!=\"United States\") calculate(count) timeslice(1d)", "description": "Weekly auth failures"},
-  {"query": "select(hostname, process.name) where(process.name=NOCASE(powershell.exe))", "description": "Select with where"},
-  {"query": "where(EventCode=4688)", "description": "Windows process creation"},
-  {"query": "where(EventID=4624)", "description": "Windows successful logon"},
-  {"query": "where(destination_user ICONTAINS admin) groupby(destination_user, result)", "description": "Admin user auth results"},
-  {"query": "where(source_address=IP(10.0.0.0/8)) groupby(source_address)", "description": "Internal network traffic"},
-  {"query": "where(process.exe_file.hashes.md5=\"d41d8cd98f00b204e9800998ecf8427e\")", "description": "Process by MD5 hash"},
-  {"query": "where(destination_port=22) groupby(source_address, destination_address)", "description": "SSH connections"},
-  {"query": "where(destination_port=3389) groupby(source_address, destination_address)", "description": "RDP connections"},
-  {"query": "where(protocol=UDP AND destination_port=53) groupby(source_address)", "description": "DNS traffic by source"},
-  {"query": "where(source_json.AccountType=\"User\") groupby(source_user)", "description": "User account type activity"},
-  {"query": "where(action CONTAINS delete) groupby(source_user, action)", "description": "Delete actions by user"},
-  {"query": "where(result=ACCOUNT_LOCKED_OUT) groupby(destination_user)", "description": "Locked out accounts"},
-  {"query": "where(logon_type=10) groupby(destination_user, source_address)", "description": "Remote interactive logons"},
-  {"query": "groupby(source_address) calculate(count) sort(desc) limit(20)", "description": "Top 20 source addresses"},
-  {"query": "where(destination_port NOT IN [80, 443, 53, 8080]) groupby(destination_port) calculate(count) sort(desc)", "description": "Uncommon destination ports"},
-  {"query": "where(severity IN [HIGH, CRITICAL]) groupby(asset, signature)", "description": "High and critical alerts by asset"},
-  {"query": "where(geoip_country_code IN [CN, RU, KP, IR]) groupby(source_address, geoip_country_name)", "description": "Traffic from threat countries"},
-  {"query": "where(process.cmd_line ICONTAINS \"whoami\") groupby(hostname, process.username)", "description": "Whoami command usage"},
-  {"query": "where(process.cmd_line ICONTAINS \"net user\") groupby(hostname, process.username)", "description": "Net user command usage"},
-  {"query": "where(file_name ICONTAINS \".exe\" AND user!=\"SYSTEM\") groupby(user, file_name)", "description": "Non-system exe file access"},
-  {"query": "where(outgoing_bytes>100000000) groupby(source_address, destination_address)", "description": "Large outbound transfers"},
-  {"query": "where(incoming_bytes>100000000) groupby(source_address, destination_address)", "description": "Large inbound transfers"}
+  {
+    "query": "where(result AND result != SUCCESS) groupby(destination_user) calculate(count)",
+    "description": "Failed authentication by user",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"FAILED\") groupby(destination_user) calculate(count)",
+    "description": "Failed auth alternative",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_user)",
+    "description": "Admin actions by user",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(action)",
+    "description": "All admin actions",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=\"Arnold Holt\")",
+    "description": "Activity by specific user",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=NOCASE(\"arnold holt\"))",
+    "description": "Case-insensitive user search",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=\"Tina Gonzales (Admin)\")",
+    "description": "User with parens in name",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=NOCASE(\"tina gonzales (admin)\"))",
+    "description": "NOCASE with parens",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=\"rrn:uba:us:14f8eba8-46c8-474b-a982-29476e7a8bd8:user:JA5G9PI3PC9M\")",
+    "description": "UBA RRN user search",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user ICONTAINS admin)groupby(source_user)",
+    "description": "Users with admin in name",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user ICONTAINS admin)groupby(action)",
+    "description": "Admin actions grouped",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user ICONTAINS admin AND action=MEMBER_ADDED_TO_SECURITY_GROUP) groupby(group)",
+    "description": "Admin group additions",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\" AND group=\"vpn-users\")groupby(target_user)",
+    "description": "Users added to VPN group",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\")groupby(source_user)",
+    "description": "Accounts adding users to groups",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(target_account NOT ICONTAINS \"$\" AND action=PRIVILEGE_ESCALATION)groupby(target_account, group, source_user, timestamp)",
+    "description": "Privilege escalation tracking",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP] AND group CONTAINS \"-job-admins\")",
+    "description": "Group changes tracking",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/:\\d{2} (?P<host>\\w+)./ AND /4732 EVENT/ OR /\\s636 EVENT/) groupby(host)",
+    "description": "Windows security group changes",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/:\\d{2} (?P<host>\\w+)./ AND /4740 EVENT/ OR /\\s644 EVENT/) groupby(host)",
+    "description": "Account lockout events",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/:\\d{2} (?P<host>\\w+)./ AND /1102 EVENT/ OR /\\s517 EVENT/) groupby(host)",
+    "description": "Audit log cleared events",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/4719 EVENT/ OR /\\s612 EVENT/)",
+    "description": "System audit policy changed",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/eventCode\\\":\\d{4}/) groupby(EVID)",
+    "description": "Group by event code",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/eventCode\\\":\\\"(?P<EVID>\\d{4})/)groupby(EVID)",
+    "description": "Named capture event code",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/computerName\\\":\\\"(?P<HostName>[\\w\\d\\-]*)/)groupby(HostName)",
+    "description": "Group by computer name",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity ICONTAINS \"MALICIOUS\")groupby(asset)having(count>=5)",
+    "description": "Malicious alerts by asset",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(result starts-with \"failed\") groupby(destination_user) calculate(count)",
+    "description": "Failed auth starts-with",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/(?P<ip>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/) groupby(ip) calculate(count)",
+    "description": "IP address extraction",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(service NOT IIN [\"krbtgt\", \"kerberos\"] AND result ISTARTS-WITH \"failed\") groupby(destination_account)",
+    "description": "Non-Kerberos failed logins",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(service NOT IN [krbtgt, kerberos]AND result=\"FAILED_BAD_PASSWORD\")groupby(\"destination_asset\")",
+    "description": "Non-Kerberos password failures",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"FAILED\")groupby(destination_user)",
+    "description": "Failed auth accounts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/4625 EVENT/ OR /\\s529 EVENT/)",
+    "description": "Failed login events",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(/:\\d{2} (?P<host>\\w+)./ AND /4625 EVENT/ OR /\\s529 EVENT/) groupby(host)",
+    "description": "Failed logins by host",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(file_event=\"delete\" OR \"write\" OR \"modify\") calculate(count)",
+    "description": "File events count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(incoming_bytes>0 AND geoip_country_code NOT IN [US, IE, GB, DE, JP, CA, AU])groupby(geoip_country_code)",
+    "description": "Downloads from non-US countries",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name!=\"United States\")groupby(geoip_country_name)",
+    "description": "Traffic from non-US",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "calculate(count)",
+    "description": "Simple count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=OUTBOUND AND geoip_country_code!=US)groupby(destination_address)calculate(sum:outgoing_bytes)limit(10)",
+    "description": "Top outbound by country",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=INBOUND)groupby(destination_address)calculate(sum:incoming_bytes)limit(10)",
+    "description": "Top inbound destinations",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=\"OUTBOUND\" AND destination_address=\"52.205.169.150\")groupby(user)",
+    "description": "Outbound to specific IP",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(connection_status=\"DENY\") calculate(count)",
+    "description": "Denied connections count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=\"OUTBOUND\" AND connection_status=\"DENY\")calculate(count)",
+    "description": "Outbound denied count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(connection_status=\"ACCEPT\" AND direction=\"OUTBOUND\" AND destination_port NOT IN [\"443\", \"80\", \"53\"]) groupby(destination_port)",
+    "description": "Non-standard outbound ports",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=OUTBOUND)groupby(destination_address)calculate(sum:outgoing_bytes)",
+    "description": "Outbound bytes by destination",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=INBOUND)groupby(source_address)calculate(sum:incoming_bytes)",
+    "description": "Inbound bytes by source",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name IN [Czechia, Russia, \"Hong Kong\"] AND connection_status = ACCEPT AND direction=INBOUND)groupby(geoip_country_name)",
+    "description": "Inbound from risky countries",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(connection_status = DENY AND source_address NOT IN [IP(10.0.0.0/8),IP(172.27.0.0/16),IP(169.254.0.0/16),IP(192.168.0.0/16),IP(172.16.0.0/16)])",
+    "description": "Denied non-RFC1918 sources",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(user!=\"unknown\" AND connection_status = DENY AND source_address NOT IN [IP(10.0.0.0/8), IP(172.27.0.0/16), IP(169.254.0.0/16), IP(192.168.0.0/16), IP(172.16.0.0/16)])",
+    "description": "Denied known users non-private",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(connection_status=\"DENY\" AND geoip_country_name!=\"United States\") groupby(geoip_country_name) calculate(count)",
+    "description": "Denied by country",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(connection_status=DENY AND direction=INBOUND AND geoip_country_name!=\"United States\") groupby(geoip_country_name) calculate(count)",
+    "description": "Inbound denied by country",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=\"OUTBOUND\" AND outgoing_bytes>50000000 AND geoip_organization=\"Box.com\")",
+    "description": "Large outbound to Box",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(stats.networks.eth0.rx_bytes!=null) calculate(average:stats.networks.eth0.rx_bytes)",
+    "description": "Network receive bytes avg",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(action=\"OBTAIN\")groupby(asset)calculate(unique:ip)having(unique:ip>=5)",
+    "description": "Assets with multiple IPs",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"INFORMATIONAL\")groupby(signature)limit(1000)",
+    "description": "Informational alerts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"INFORMATIONAL\" AND signature=/.*ssh.*/i)groupby(signature)",
+    "description": "SSH informational alerts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"LOW\")groupby(description)",
+    "description": "Low severity alerts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(severity)calculate(unique:signature)",
+    "description": "Unique signatures by severity",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"HIGH\")groupby(asset)calculate(unique:signature)",
+    "description": "High severity unique per asset",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"CRITICAL\")groupby(asset)calculate(unique:signature)",
+    "description": "Critical alerts per asset",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name=\"United States\")calculate(count)",
+    "description": "US traffic count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name=\"United States\")groupby(user)calculate(count)",
+    "description": "US traffic by user",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_city=\"San Jose\")groupby(user)",
+    "description": "San Jose users",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_city=/Providence|Framingham|Dallas|Minneapolis|Appleton|Phoenix|Omaha|Melbourne|Tuzla|Leeds|Zurich|Singapore|Toronto/i)groupby(geoip_city)",
+    "description": "Multi-city regex",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name=\"Russia\")",
+    "description": "Russian traffic",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(service=\"box\")groupby(user)",
+    "description": "Box service users",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(service=\"o365\")groupby(user)",
+    "description": "O365 users",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_code!=\"US\") groupby(geoip_country_name)",
+    "description": "Non-US by country",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(geoip_country_name AND geoip_country_name!=/United States|Canada|Mexico/i AND result=SUCCESS)groupby(geoip_country_name)limit(100)",
+    "description": "Successful non-NA logins",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.ApplicationId=\"[insert application ID]\")groupby(account)",
+    "description": "Azure AD app logins",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(result=SUCCESS)groupby(service, geoip_country_name, user_agent)",
+    "description": "Successful logins detail",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.operationName=\"Sign-in activity\" AND result=SUCCESS)groupby(source_json.properties.appDisplayName)",
+    "description": "Azure successful sign-ins by app",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.operationName=\"Sign-in activity\" AND result=FAILED_ACCOUNT_DISABLED)groupby(user)",
+    "description": "Disabled account sign-in attempts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.properties.riskLevelDuringSignIn!=none)groupby(\"source_json.properties.riskLevelDuringSignIn\")",
+    "description": "Azure risk level sign-ins",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_json.properties.mfaDetail.authMethod)",
+    "description": "MFA methods used",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.properties.mfaDetail.authMethod=/Text message/i)groupby(result)",
+    "description": "SMS MFA results",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.properties.mfaDetail.authMethod=/Mobile app verification code/i)groupby(result)",
+    "description": "Mobile MFA results",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.properties.mfaDetail.authMethod=/Phone call \\(Authentication phone\\)/i)groupby(result)",
+    "description": "Phone MFA results",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.properties.mfaDetail.authMethod=\"OATH verification code\")groupby(result)",
+    "description": "OATH MFA results",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(direction=\"OUTBOUND\" AND app_protocol_description ISTARTS-WITH \"TLS\")groupby(app_protocol_description)",
+    "description": "Outbound TLS protocols",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.outcome.result=SUCCESS)groupby(service)",
+    "description": "Successful outcomes by service",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(severity=\"High\")groupby(type, title)",
+    "description": "High severity by type",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(header.name)",
+    "description": "CEF header names",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(header.device_event_class_id)",
+    "description": "CEF device event classes",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(header.severity)",
+    "description": "CEF severity levels",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_json.eventCode)",
+    "description": "Event codes",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_json.eventCode=1116)groupby(user, asset, file_path)",
+    "description": "Defender detection events",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(risk)",
+    "description": "Risk levels",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "calculate(count)timeslice(1d)",
+    "description": "Daily log count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_json.Category, source_json.Severity)",
+    "description": "Categories by severity",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(is_blocked=true)calculate(count)",
+    "description": "Blocked email count",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(is_blocked=true)groupby(source_json.sender)calculate(unique:source_json.sender)",
+    "description": "Blocked senders",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(data.logName ICONTAINS \"SECURITY\")groupby(data.eventCode)",
+    "description": "Security event codes",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(process.name=/powershell.exe/i AND process.cmd_line NOT IN [\"null\", /.*ps1.*/i])groupby(process.cmd_line)",
+    "description": "PowerShell without scripts",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(process.exe_file.description)",
+    "description": "Process descriptions",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(process.hash_reputation.reputation)",
+    "description": "Hash reputations",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(process.name=NOCASE(taskkill.exe)) groupby(process.cmd_line)",
+    "description": "Taskkill usage",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(process.exe_file.description icontains-any [\"ssh\", \"telnet\"]) groupby(process.name, hostname, process.username)",
+    "description": "SSH/Telnet processes",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(user=\"Pete Coors\")groupby(file_name)",
+    "description": "Files accessed by user",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(file_name=\"audit.csv\")groupby(user)",
+    "description": "Users accessing file",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(query=\"safebrowsing.google.com\" AND user!=\"unknown\")groupby(user)limit(20)",
+    "description": "Safe browsing queries",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_json.Workload, action)",
+    "description": "Workloads and actions",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "groupby(source_user) calculate(count) limit(10)",
+    "description": "Top 10 users",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(public_suffix AND public_suffix NOT IN [com, net, org]) groupby(public_suffix)",
+    "description": "Websites outside common domains",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(public_suffix=\"ru\") groupby(query)",
+    "description": "Russian websites visited",
+    "source": "rapid7-docs"
+  },
+  {
+    "query": "where(source_user=\"grp adm\" AND action=\"ACCOUNT_DISABLED\")",
+    "description": "Account disabled by user",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(source_user=\"grp adm\" AND action=\"ACCOUNT_DISABLED\") calculate(count)",
+    "description": "Account disabled count",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(asset=\"iphone_of_siem\")",
+    "description": "Asset search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(4725)",
+    "description": "Event code search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(client_mac=\"11:22:33:aa:bb:cc\")",
+    "description": "MAC address search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(\"192.168.1.1\")",
+    "description": "IP keyword search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(source_ip=\"192.168.1.1\")",
+    "description": "Source IP filter",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(source_address=\"192.168.1.1\")",
+    "description": "Source address filter",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(destination_ip=\"192.168.1.1\")",
+    "description": "Destination IP filter",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(destination_address=\"192.168.1.1\")",
+    "description": "Destination address filter",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(source_port=\"22\")",
+    "description": "Source port SSH",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(destination_port=\"443\")",
+    "description": "Destination port HTTPS",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(http_method=\"get\")",
+    "description": "HTTP GET requests",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(http_method=\"post\")",
+    "description": "HTTP POST requests",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(url=\"https://google.com/\")",
+    "description": "URL search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(url_host=\"google.com\")",
+    "description": "URL host search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(direction=\"OUTBOUND\")",
+    "description": "Outbound direction",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(direction=\"INTERNAL\")",
+    "description": "Internal direction",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(/Alice (?P<VARIABLE>\\s*)/)",
+    "description": "Named capture regex",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(/@domain.com/)",
+    "description": "Domain regex search",
+    "source": "github-outs1d3r-cheatsheet"
+  },
+  {
+    "query": "where(connection_status=DENY)groupby(source_address)",
+    "description": "Denied connections by source",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(source_ip=/192.168.1./)",
+    "description": "Source IP regex",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(result=FAILED_BAD_LOGIN)calculate(UNIQUE:source_ip)",
+    "description": "Unique IPs with bad login",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(service=0365 AND result=FAILED_BAD_LOGIN)groupby(source_ip)",
+    "description": "O365 failed logins by IP",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(/facebook/ AND user!=\"unknown\")groupby(user)",
+    "description": "Facebook access by user",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(geoip_country_code!=US)groupby(geoip_country_name)sort(desc)",
+    "description": "Non-US traffic sorted",
+    "source": "github-pawan-cheatsheet"
+  },
+  {
+    "query": "where(data.eventCode=/4692|4693|4694|4695|4688|4696|4689|5712|4928|4929|4930|4931|4934|4935|4936|4937|4662|5169|5137|5138|5141|5136|5139|4932|4933|4668|4665|4666|4667|4818|4875|4876|4868|4869|4870|4871|4872|4873|4874|4877|4878|4879|4880|4881|4882|4883|4884|4885|4886|4887|4888|4889|4890|4891|4892|4893|4894|4895|4896|4897|4898|4899|4900|5120|5121|5122|5123|5124|5125|5126|5127|5145|5142|5144/ OR data.eventCode=/5140|5143|5168|4664|4985|5051|5031|5150|5151|5154|5155|5156|5157|5158|5159|5146|5147|5152|5153|4656|4658|4690|4660|4659|4661|4663|4698|4699|5889|5890|4671|4691|4700|4701|4702|5148|5149|5888|4657|5039|4660|4659|4661|4663|5478|4960|4961|4962|4963|4965|5479|5480|5483|5484|5485|5024|5025|5030|5027|5028|5029|5032|5033|5034|5035|5037|5050|5058|5059|5071|6400|6401|6402|6403|6404|6405|6406|6407|6408|6409|6420|6421|6422|6423|6424|6416|6419|4608|4609|4616|4621|4697|4610|4611|4614|4622|4618|5038|5057|4612|4615|4816|5056|5060|5061|5062|6281|6410|6417|6418/)groupby(data.computerName) limit(10000)",
+    "description": "Windows PCI object access events",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=/4783|4784|4785|4786|4787|4788|4789|4790|4791|4792|4742|4743|4746|4751|4744|4745|4747|4748|4749|4750|4752|4753|4759|4760|4761|4762|4782|4793|4729|4733|4757|4727|4728|4730|4731|4732|4734|4735|4737|4754|4755|4756|4758|4764|4799|4720|4722|4723|4724|4725|4726|4767|4781|4797|4738|4740|4765|4766|4780|4794|4798|5376|5377/)groupby(source_json.computerName)limit(10000)",
+    "description": "Windows account management events",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=/4783|4784|4785|4786|4787|4788|4789|4790|4791|4792|4742|4743|4746|4751|4744|4745|4747|4748|4749|4750|4752|4753|4759|4760|4761|4762|4782|4793|4729|4733|4757|4727|4728|4730|4731|4732|4734|4735|4737|4754|4755|4756|4758|4764|4799|4720|4722|4723|4724|4725|4726|4767|4781|4797|4738|4740|4765|4766|4780|4794|4798|5376|5377/)groupby(data.computerName) limit(10000)",
+    "description": "Windows account management data format",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=4624) groupby(xml.eventdata.targetusername) calculate(count) limit(10000)",
+    "description": "Successful logins by user",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=4624) groupby(xml.eventdata.targetusername)",
+    "description": "Successful logins list",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=7036 AND \"Windows Event Log\") groupby(data.computerName) limit(10000)",
+    "description": "Service changes",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=4624) groupby(destination_account) calculate(count) limit(10000)",
+    "description": "Successful logins IDR format",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=4624) groupby(source_json.eventCode)",
+    "description": "Login event codes",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "groupby(destination_user)",
+    "description": "Destination users",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(xml.system.eventid=/4715|4719|4902|4904|4905|4906|4907|4908|4912|4817|4739|4865|4866|4867|4713|4716|4717|4718|4864|4707|4913|4703|4704|4705|4706|4714|4911|4709|4710|4712|4711/)groupby(xml.system.eventid)",
+    "description": "Windows policy change events",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(destination_port = 80) groupby(source_address)",
+    "description": "HTTP traffic by source",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=4625) groupby(xml.eventdata.targetusername) calculate(count) limit(10000)",
+    "description": "Failed logins by user",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=4625) groupby(xml.eventdata.targetusername)",
+    "description": "Failed logins list",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=4625) groupby(destination_account) calculate(count) limit(10000)",
+    "description": "Failed logins IDR format",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=4625) groupby(source_json.eventCode)",
+    "description": "Failed login event codes",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(result=FAILED_BAD_PASSWORD OR result=FAILED_BAD_LOGIN OR result = FAILED_OTHER) calculate(count) timeslice(60)",
+    "description": "Failed auth trend",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(data.eventCode=4672) groupby(data.computerName) limit(10000)",
+    "description": "Special privilege logons",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(source_json.eventCode=4672)groupby(source_json.computerName) limit(10000)",
+    "description": "Special privilege IDR format",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(xml.eventdata.param2=stopped AND xml.system.eventid=7036)groupby(xml.eventdata.param1)",
+    "description": "Stopped services",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) groupby(asset)",
+    "description": "Windows assets",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) groupby(file_event)",
+    "description": "Windows file events",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) groupby(user)",
+    "description": "Windows users",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) groupby(process)",
+    "description": "Windows processes",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) groupby(file_name) limit(100)",
+    "description": "Windows file names",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(asset_os_family=windows) calculate(COUNT)timeslice(1440m)",
+    "description": "Windows daily activity",
+    "source": "r7insight-windows-pci"
+  },
+  {
+    "query": "where(type=ANOM_ROOT_TRANS)calculate(count)",
+    "description": "Root transition anomalies",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(type=ANOM_LOGIN_ACCT OR type=ANOM_LOGIN_FAILURES OR type=ANOM_LOGIN_LOCATION OR type=ANOM_LOGIN_SESSIONS OR type=ANOM_LOGIN_TIME OR type=CRYPTO_KEY_USER OR type=USER_ACCT OR type=USER_AUTH OR type=USER_CMD OR type=USER_LOGIN OR type=USER_ERR OR type=USER_LOGOUT)groupby(type)",
+    "description": "Linux audit event types",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(/DAEMON/ AND /success/)groupby(pid)",
+    "description": "Successful daemon operations",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(/EXECVE/)calculate(count)",
+    "description": "Command execution count",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(type=SYSCALL)groupby(comm)",
+    "description": "System calls by command",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(AuditD)groupby(key)",
+    "description": "AuditD by key",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) groupby(asset)",
+    "description": "Linux assets",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) groupby(file_event)",
+    "description": "Linux file events",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) groupby(user)",
+    "description": "Linux users",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) groupby(process)",
+    "description": "Linux processes",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) groupby(file_name) limit(100)",
+    "description": "Linux file names",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "where(asset_os_family=linux) calculate(COUNT)timeslice(1440m)",
+    "description": "Linux daily activity",
+    "source": "r7insight-linux-pci"
+  },
+  {
+    "query": "groupby(http.status) calculate(COUNT:http.status)",
+    "description": "HTTP status codes",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "groupby(http.path) calculate(COUNT:http.path)",
+    "description": "HTTP paths",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "calculate(AVERAGE:http.bytes)",
+    "description": "Average HTTP bytes",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "where(http.status=401) groupby(http.path) calculate(COUNT:http.status)",
+    "description": "Unauthorized requests",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "where(http.status=200) groupby(http.path) calculate(COUNT:http.status)",
+    "description": "Successful requests",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "where(http.status=404) groupby(http.path) calculate(COUNT:http.status)",
+    "description": "Not found requests",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "calculate(unique:http.addr)",
+    "description": "Unique HTTP addresses",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "where(http.status=500) groupby(http.path) calculate(COUNT:http.status)",
+    "description": "Server errors",
+    "source": "r7insight-apache"
+  },
+  {
+    "query": "where(/\\\"GET .{1,}\\.php/) calculate(COUNT)",
+    "description": "PHP requests",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "where(/\\\"GET .{1,}\\.jpg/) calculate(COUNT)",
+    "description": "JPEG requests",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "where(http.status) groupby(http.referer) calculate(COUNT:http.referer)",
+    "description": "Referrers by status",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "groupby(http.agent) calculate(COUNT:http.agent)",
+    "description": "User agents",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "where(/\\\"GET .{1,}\\.php/i) calculate(COUNT)",
+    "description": "PHP requests case-insensitive",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "where(/\\\"GET .{1,}\\.jpg/i) calculate(COUNT)",
+    "description": "JPEG requests case-insensitive",
+    "source": "r7insight-nginx"
+  },
+  {
+    "query": "where(LOGIN_EVENT) calculate(COUNT)",
+    "description": "Salesforce logins",
+    "source": "r7insight-salesforce"
+  },
+  {
+    "query": "where(LOGOUT_EVENT) calculate(COUNT)",
+    "description": "Salesforce logouts",
+    "source": "r7insight-salesforce"
+  },
+  {
+    "query": "where(LOGIN_AS_EVENT) calculate(COUNT)",
+    "description": "Salesforce login-as events",
+    "source": "r7insight-salesforce"
+  },
+  {
+    "query": "groupby(image) calculate(average:stats.memory_stats.usage) sort(desc)",
+    "description": "Docker memory by image",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "groupby(image) calculate(average:stats.cpu_stats.cpu_usage.total_usage) sort(desc)",
+    "description": "Docker CPU by image",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "groupby(name) calculate(average:stats.memory_stats.usage) sort(desc)",
+    "description": "Docker memory by container",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "groupby(name) calculate(average:stats.cpu_stats.cpu_usage.total_usage) sort(desc)",
+    "description": "Docker CPU by container",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "calculate(average:stats.memory_stats.usage) timeslice(10m)",
+    "description": "Docker memory trend",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "calculate(average:stats.cpu_stats.cpu_usage.total_usage) timeslice(10m)",
+    "description": "Docker CPU trend",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='create') calculate(count)",
+    "description": "Docker create events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='start') calculate(count)",
+    "description": "Docker start events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='stop') calculate(count)",
+    "description": "Docker stop events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='die') calculate(count)",
+    "description": "Docker die events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='attach') calculate(count)",
+    "description": "Docker attach events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type='Kill') calculate(count)",
+    "description": "Docker kill events",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(type) groupby(type) calculate(count)",
+    "description": "Docker events by type",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.rx_packets!=null) calculate(average:stats.networks.eth0.rx_packets)",
+    "description": "Docker rx packets",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.rx_errors!=null) calculate(average:stats.networks.eth0.rx_errors)",
+    "description": "Docker rx errors",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.rx_dropped!=null) calculate(average:stats.networks.eth0.rx_dropped)",
+    "description": "Docker rx dropped",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.tx_bytes!=null) calculate(average:stats.networks.eth0.tx_bytes)",
+    "description": "Docker tx bytes",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.tx_packets!=null) calculate(average:stats.networks.eth0.tx_packets)",
+    "description": "Docker tx packets",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.tx_errors!=null) calculate(average:stats.networks.eth0.tx_errors)",
+    "description": "Docker tx errors",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "where(stats.networks.eth0.tx_dropped!=null) calculate(average:stats.networks.eth0.tx_dropped)",
+    "description": "Docker tx dropped",
+    "source": "r7insight-docker"
+  },
+  {
+    "query": "select(source_address, destination_address) where(direction=\"OUTBOUND\")",
+    "description": "Select addresses outbound",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "select(user, action, timestamp) where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\")",
+    "description": "Select group add details",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(result!=\"SUCCESS\") groupby(destination_user) calculate(count) having(count>=10)",
+    "description": "Users with 10+ failures",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(source_address) calculate(count) having(count>=100)",
+    "description": "Source addresses with 100+ events",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(destination_port) calculate(unique:source_address) having(unique:source_address>=5)",
+    "description": "Ports from 5+ sources",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(source_address) calculate(count) sort(desc)",
+    "description": "Top source addresses",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(user) calculate(sum:incoming_bytes) sort(desc) limit(20)",
+    "description": "Top 20 users by bytes",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(destination_port) calculate(count) sort(asc)",
+    "description": "Least used ports",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "calculate(count) timeslice(1h)",
+    "description": "Hourly event count",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(result!=\"SUCCESS\") calculate(count) timeslice(30m)",
+    "description": "30min failed auth trend",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(severity=\"HIGH\") calculate(count) timeslice(1d)",
+    "description": "Daily high severity trend",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"FAILED\" AND service NOT IN [kerberos, krbtgt]) groupby(destination_user) calculate(count) having(count>=5) sort(desc) limit(10)",
+    "description": "Top 10 non-Kerberos failed accounts",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(direction=OUTBOUND AND geoip_country_code NOT IN [US, GB, CA, AU, DE]) groupby(geoip_country_name) calculate(sum:outgoing_bytes) sort(desc) limit(25)",
+    "description": "Top outbound data by country",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "select(user, geoip_country_name, service) where(result=SUCCESS AND geoip_country_name!=\"United States\") groupby(user, geoip_country_name) calculate(count) sort(desc)",
+    "description": "Foreign successful logins",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(status==200)",
+    "description": "Strict equality status",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(status!==404)",
+    "description": "Strict not-equal status",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(description='''This is a \"complex\" value''')",
+    "description": "Triple single quote value",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(description=\"\"\"Another 'complex' value\"\"\")",
+    "description": "Triple double quote value",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(\"login failed\")",
+    "description": "Keyword search phrase",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(/error.*timeout/i)",
+    "description": "Regex error timeout",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(/\\bsudo\\b/)",
+    "description": "Sudo regex boundary",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(ALL(source_address, destination_address)=\"10.0.0.1\")",
+    "description": "ALL both addresses",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(ALL(user, source_user)=NOCASE(\"admin\"))",
+    "description": "ALL user fields nocase",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(source_address=IP(10.0.0.0/8))",
+    "description": "Source IP private range",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(destination_address=IP(192.168.0.0/16))",
+    "description": "Dest IP private range",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(source_address IN [IP(10.0.0.0/8), IP(172.16.0.0/12), IP(192.168.0.0/16)])",
+    "description": "Source IP all RFC1918",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(status>=400 AND status<500)",
+    "description": "Client error status range",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(incoming_bytes>1000000)",
+    "description": "Large incoming transfers",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(duration>=300)",
+    "description": "Long duration events",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(where(geoip_country_code NOT IN [\"US\", \"GB\"] AND result=\"SUCCESS\"))",
+    "description": "Nested where foreign success",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(where(\"source_address\"!=\"10.0.0.1\" AND \"destination_port\"=\"443\"))",
+    "description": "Nested where quoted fields",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(source_address NOT IN [IP(10.0.0.0/8), IP(172.16.0.0/12)])",
+    "description": "Postfix NOT IN IP ranges",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(user NOT CONTAINS \"service\")",
+    "description": "Postfix NOT CONTAINS",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(hostname NOT STARTS-WITH \"test-\")",
+    "description": "Postfix NOT STARTS-WITH",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "calculate(percentile(95):response_time)",
+    "description": "P95 response time",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "calculate(pctl(99):duration)",
+    "description": "P99 duration",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "calculate(percentile(50):incoming_bytes)",
+    "description": "Median incoming bytes",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(source_address) calculate(standarddeviation:response_time)",
+    "description": "Stddev response time",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(user) calculate(sd:incoming_bytes)",
+    "description": "SD incoming bytes per user",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where((data.eventCode=4688 AND eventvwr.msc) OR (data.eventCode=4656 AND eventvwr.msc) OR (data.eventCode=4688 AND wevtutil.exe) OR (data.eventCode=4656 AND wevtutil.exe)) groupby(data.computerName) calculate(count) limit(1000)",
+    "description": "Event viewer usage",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(geoip_country_code IIN [\"us\", \"gb\", \"de\"])",
+    "description": "Case-insensitive country code",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(source_address,destination_address=\"10.0.0.1\")",
+    "description": "Multi-field OR match",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(process.name CONTAINS powershell)",
+    "description": "Unquoted contains value",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(user ICONTAINS admin)",
+    "description": "Unquoted icontains value",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(process.name CONTAINS-ANY [\"cmd.exe\", \"powershell.exe\", \"wscript.exe\"])",
+    "description": "Contains any process",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(hostname ICONTAINS-ALL [\"dc\", \"prod\"])",
+    "description": "Contains all hostname parts",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(url STARTS-WITH-ANY [\"http://malware\", \"https://evil\"])",
+    "description": "Starts with any URL",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "groupby(source_json.Workload, source_json.AccountType)",
+    "description": "O365 workload by account type",
+    "source": "rapid7-additional"
+  },
+  {
+    "query": "where(result=\"FAILED_BAD_PASSWORD\") groupby(destination_user) calculate(count) having(count>=20) sort(desc)",
+    "description": "Brute force detection",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"failed\") groupby(source_address) calculate(count) having(count>=50)",
+    "description": "Brute force by source IP",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(logon_type=3 AND result=SUCCESS) groupby(source_address, destination_address) calculate(count)",
+    "description": "Network logon mapping",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(logon_type=10 AND result=SUCCESS) groupby(source_address, destination_user)",
+    "description": "RDP sessions",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(direction=OUTBOUND AND outgoing_bytes>100000000) groupby(source_address, destination_address) calculate(sum:outgoing_bytes) sort(desc)",
+    "description": "Large data transfers",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(direction=OUTBOUND AND destination_port NOT IN [80, 443, 53]) groupby(destination_port) calculate(count) sort(desc) limit(50)",
+    "description": "Non-standard outbound ports",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(action=\"ACCOUNT_CREATED\") groupby(source_user, target_user)",
+    "description": "Account creation tracking",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(action=\"PASSWORD_CHANGED\") groupby(source_user, target_user)",
+    "description": "Password changes",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(action=\"ACCOUNT_DISABLED\") groupby(source_user, target_user)",
+    "description": "Account disablement",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(action=\"ACCOUNT_LOCKED_OUT\") groupby(destination_user) calculate(count) sort(desc)",
+    "description": "Account lockouts",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(process.exe_file.hashes.md5=\"d41d8cd98f00b204e9800998ecf8427e\")",
+    "description": "Known malware MD5",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(process.hash_reputation.reputation=\"MALICIOUS\") groupby(process.name, asset)",
+    "description": "Malicious processes",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(query!=\"unknown\" AND public_suffix NOT IN [com, net, org, edu, gov]) groupby(public_suffix) calculate(count) sort(desc)",
+    "description": "Unusual DNS TLDs",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(query CONTAINS \".onion\") groupby(user, query)",
+    "description": "Tor domain lookups",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(service=\"sslvpn-session\" AND result=SUCCESS) groupby(source_address, geoip_country_name, user)",
+    "description": "VPN sessions by location",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(service=\"sslvpn-session\" AND result ISTARTS-WITH \"FAILED\") groupby(user) calculate(count) having(count>=5)",
+    "description": "Failed VPN attempts",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(source_json.Workload=\"Exchange\" AND action=\"MailItemsAccessed\") groupby(source_user)",
+    "description": "Exchange mailbox access",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(source_json.Workload=\"SharePoint\" AND action CONTAINS \"File\") groupby(action) calculate(count)",
+    "description": "SharePoint file operations",
+    "source": "detection-patterns"
+  },
+  {
+    "query": "where(source_json.Workload=\"AzureActiveDirectory\" AND action=\"UserLoggedIn\") groupby(source_user, geoip_country_name)",
+    "description": "Azure AD logins by country",
+    "source": "detection-patterns"
+  }
 ]

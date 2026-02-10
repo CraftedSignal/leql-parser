@@ -57,7 +57,9 @@ condition
     | fieldList setOp valueList                          # ipSetCondition
     | allFieldList comparisonOp value                   # allFieldsComparisonCondition
     | allFieldList setOp valueList                      # allFieldsSetCondition
+    | allFieldList comparisonOp nocaseValue              # allFieldsNocaseCondition
     | IDENTIFIER                                        # fieldExistsCondition
+    | NUMBER                                            # numberKeywordCondition
     ;
 
 // Keyword search: bare string or quoted phrase
@@ -82,10 +84,18 @@ allFieldList
     ;
 
 // Field name: simple or dotted path, optionally quoted
+// Keywords that might also appear as field names are listed explicitly
 fieldName
     : IDENTIFIER
     | DOUBLE_STRING
     | SINGLE_STRING
+    | IP_FUNC
+    | ALL_FUNC
+    | COUNT
+    | MIN
+    | MAX
+    | SUM
+    | SD
     ;
 
 // Comparison operators
@@ -173,7 +183,7 @@ calcFunction
     ;
 
 calcFunctionWithField
-    : ( SUM | AVERAGE | UNIQUE | MIN | MAX | STANDARDDEVIATION | SD ) COLON fieldName
+    : ( SUM | AVERAGE | UNIQUE | MIN | MAX | STANDARDDEVIATION | SD | COUNT | BYTES ) COLON fieldName
     ;
 
 percentileFunction

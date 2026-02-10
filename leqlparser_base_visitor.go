@@ -127,7 +127,15 @@ func (v *BaseLEQLParserVisitor) VisitAllFieldsSetCondition(ctx *AllFieldsSetCond
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitFieldExistsCondition(ctx *FieldExistsConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitNumberKeywordCondition(ctx *NumberKeywordConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

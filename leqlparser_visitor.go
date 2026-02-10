@@ -97,8 +97,14 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#allFieldsSetCondition.
 	VisitAllFieldsSetCondition(ctx *AllFieldsSetConditionContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#allFieldsNocaseCondition.
+	VisitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#fieldExistsCondition.
 	VisitFieldExistsCondition(ctx *FieldExistsConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#numberKeywordCondition.
+	VisitNumberKeywordCondition(ctx *NumberKeywordConditionContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#quotedKeyword.
 	VisitQuotedKeyword(ctx *QuotedKeywordContext) interface{}
