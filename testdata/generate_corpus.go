@@ -82,6 +82,13 @@ var ipRanges = []string{
 	"169.254.0.0/16", "64.62.128.0/17", "100.64.0.0/10",
 }
 
+var variables = []string{
+	"${private_ip}", "${na_region}", "${trusted_ips}", "${monitored_users}",
+	"${threshold}", "${alert_level}", "${allowed_countries}", "${blocked_ports}",
+	"${service_accounts}", "${admin_group}", "${vip_users}", "${baseline_count}",
+	"${risk_threshold}", "${exclude_ips}", "${watchlist}", "${scan_target}",
+}
+
 var compOps = []string{"=", "!=", ">", ">=", "<", "<=", "==", "!=="}
 var stringOps = []string{"CONTAINS", "ICONTAINS", "STARTS-WITH", "ISTARTS-WITH"}
 var setOps = []string{"IN", "IIN"}
@@ -804,7 +811,44 @@ func main() {
 		add(fmt.Sprintf(`where("%s", loose) groupby(%s)`, v, gf), "loose keyword groupby")
 	}
 
-	// 37. More pipeline combos to reach target
+	// 37. Variable references ${var_name}
+	for i := 0; i < 200; i++ {
+		f := pick(rng, fields)
+		v := pick(rng, variables)
+		op := pick(rng, compOps[:2])
+		add(fmt.Sprintf("where(%s%s%s)", f, op, v), fmt.Sprintf("variable %s", v))
+	}
+	for i := 0; i < 100; i++ {
+		f := pick(rng, fields)
+		v := pick(rng, variables)
+		add(fmt.Sprintf("where(%s NOT IN [%s])", f, v), fmt.Sprintf("NOT IN variable %s", v))
+		add(fmt.Sprintf("where(%s IN [%s])", f, v), fmt.Sprintf("IN variable %s", v))
+	}
+	for i := 0; i < 100; i++ {
+		f := pick(rng, fields)
+		v1 := pick(rng, variables)
+		v2 := pick(rng, stringValues)
+		add(fmt.Sprintf(`where(%s IN [%s, "%s"])`, f, v1, v2), "variable in mixed list")
+		add(fmt.Sprintf(`where(%s NOT IN [%s, "%s"])`, f, v1, v2), "NOT IN variable mixed list")
+	}
+	// Variable with full pipeline
+	for i := 0; i < 100; i++ {
+		f := pick(rng, fields)
+		v := pick(rng, variables)
+		gf := pick(rng, fields)
+		add(fmt.Sprintf("where(%s NOT IN [%s]) groupby(%s) calculate(count)", f, v, gf),
+			"variable pipeline")
+	}
+	// Variable with from() and loose
+	for i := 0; i < 50; i++ {
+		lt := pick(rng, logTypes)
+		f := pick(rng, fields)
+		v := pick(rng, variables)
+		add(fmt.Sprintf(`from(event_type = "%s") where(%s NOT IN [%s])`, lt, f, v),
+			"from with variable")
+	}
+
+	// 38. More pipeline combos to reach target
 	for i := 0; i < 40000; i++ {
 		q := randFullQuery(rng)
 		add(q, "random pipeline")
@@ -857,7 +901,7 @@ func contains(s []string, v string) bool {
 
 func randCondition(rng *rand.Rand) string {
 	f := pick(rng, fields)
-	switch rng.Intn(8) {
+	switch rng.Intn(10) {
 	case 0: // comparison with string
 		op := pick(rng, compOps[:2])
 		v := pick(rng, stringValues)
@@ -891,8 +935,15 @@ func randCondition(rng *rand.Rand) string {
 		op := pick(rng, compOps[:2])
 		v := pick(rng, stringValues)
 		return fmt.Sprintf(`"%s"%s"%s"`, qf, op, v)
-	default: // regex
+	case 7: // regex
 		return fmt.Sprintf(`%s=/error.*/i`, f)
+	case 8: // variable comparison
+		v := pick(rng, variables)
+		op := pick(rng, compOps[:2])
+		return fmt.Sprintf(`%s%s%s`, f, op, v)
+	default: // variable in set
+		v := pick(rng, variables)
+		return fmt.Sprintf(`%s NOT IN [%s]`, f, v)
 	}
 }
 

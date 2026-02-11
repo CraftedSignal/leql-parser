@@ -37,6 +37,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#regexExpr.
 	VisitRegexExpr(ctx *RegexExprContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#implicitAndExpr.
+	VisitImplicitAndExpr(ctx *ImplicitAndExprContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#nestedWhereExpr.
 	VisitNestedWhereExpr(ctx *NestedWhereExprContext) interface{}
 
@@ -108,6 +111,9 @@ type LEQLParserVisitor interface {
 
 	// Visit a parse tree produced by LEQLParser#numberKeywordCondition.
 	VisitNumberKeywordCondition(ctx *NumberKeywordConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#variableCondition.
+	VisitVariableCondition(ctx *VariableConditionContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#quotedKeyword.
 	VisitQuotedKeyword(ctx *QuotedKeywordContext) interface{}

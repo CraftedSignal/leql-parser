@@ -411,5 +411,122 @@ detections = [
 for q, d in detections:
     add(q, d, "detection-patterns")
 
+# ============================================================
+# Source 12: Rapid7 docs - Variable queries
+# ============================================================
+variable_queries = [
+    # Use variables in queries (from Rapid7 docs)
+    ('where(source_ip NOT IN [${private_ip}])', 'Variable private IP exclusion'),
+    ('where(geoip_country_code NOT IN [${na_region}])', 'Variable NA region exclusion'),
+    ('where(source_address NOT IN [${trusted_ips}]) groupby(source_address) calculate(count)', 'Variable trusted IP pipeline'),
+    ('where(destination_port NOT IN [${allowed_ports}]) groupby(destination_port) calculate(count) sort(desc)', 'Variable allowed ports'),
+    ('where(user NOT IN [${service_accounts}]) groupby(user)', 'Variable service account exclusion'),
+    ('where(geoip_country_code NOT IN [${approved_countries}]) groupby(geoip_country_name) calculate(count)', 'Variable approved countries'),
+    ('where(source_address IN [${watchlist}]) groupby(source_address, destination_address)', 'Variable watchlist match'),
+    ('where(process.name IN [${suspicious_processes}]) groupby(hostname, process.cmd_line)', 'Variable suspicious processes'),
+    ('where(destination_address NOT IN [${internal_ranges}] AND direction=OUTBOUND) groupby(source_address) calculate(sum:outgoing_bytes) sort(desc)', 'Variable internal ranges pipeline'),
+    ('where(domain NOT IN [${allowed_domains}]) groupby(domain, user) calculate(count)', 'Variable allowed domains'),
+]
+for q, d in variable_queries:
+    add(q, d, "rapid7-variables")
+
+# ============================================================
+# Source 13: Rapid7 docs - Advanced query patterns
+# ============================================================
+advanced_patterns = [
+    # Build-a-query guide patterns
+    ('where(source_address="10.0.0.1") groupby(destination_address) calculate(count) sort(desc) limit(10)', 'Build-a-query example'),
+    ('where(result!="SUCCESS") groupby(destination_user) calculate(count) having(count>=10) sort(desc)', 'Failed auth threshold'),
+    ('where(severity IN ["HIGH", "CRITICAL"]) groupby(asset) calculate(unique:signature) sort(desc) limit(100)', 'High/critical alerts per asset'),
+    # Tips and tricks patterns
+    ('where(source_json.eventCode=4688 AND process.name=/powershell/i) groupby(hostname, process.cmd_line) calculate(count)', 'PowerShell process creation'),
+    ('where(result ISTARTS-WITH "FAILED" AND service!="kerberos") groupby(destination_user, source_address) calculate(count) having(count>=10)', 'Failed non-Kerberos auth'),
+    # Search your logs patterns
+    ('where(action="MEMBER_ADDED_TO_SECURITY_GROUP" AND group CONTAINS "admin") groupby(source_user, target_user, group)', 'Admin group additions'),
+    ('where(logon_type=10 AND result="SUCCESS") groupby(source_address, destination_user, asset) calculate(count)', 'RDP success tracking'),
+    ('where(action="PASSWORD_CHANGED" AND source_user!=destination_user) groupby(source_user, destination_user)', 'Password changed by other user'),
+    # Advanced quick start guide
+    ('groupby(source_user) calculate(count) sort(desc) limit(25)', 'Top 25 source users'),
+    ('where(geoip_country_code NOT IN [US, CA, GB, DE, AU]) groupby(user, geoip_country_name) calculate(count) sort(desc)', 'Foreign access summary'),
+    # Analytic functions
+    ('groupby(source_address) calculate(unique:destination_port) having(unique:destination_port>=50) sort(desc)', 'Port scan detection'),
+    ('groupby(user) calculate(unique:geoip_country_code) having(unique:geoip_country_code>=3) sort(desc)', 'Users in multiple countries'),
+    ('where(direction=OUTBOUND) groupby(destination_address) calculate(sum:outgoing_bytes) having(sum:outgoing_bytes>=1000000000) sort(desc)', 'Large data exfiltration'),
+    # Select with aliases
+    ('select(hostname as host) where(result="SUCCESS")', 'Select with alias'),
+    ('select(source_address as src, destination_address as dst) where(direction="OUTBOUND")', 'Select multiple aliases'),
+    ('select(user as account, geoip_country_name as country) where(result=SUCCESS) groupby(account, country)', 'Select alias pipeline'),
+    # Multi-sort
+    ('groupby(user) calculate(count) sort(asc, desc#key)', 'Multi-sort asc/desc key'),
+    ('groupby(source_address) calculate(count) sort(desc, asc#key)', 'Multi-sort desc/asc key'),
+    # groupby #log (log source grouping)
+    ('groupby(#log) calculate(count) sort(desc)', 'Group by log source'),
+    ('where(result!="SUCCESS") groupby(#log) calculate(count)', 'Failed auth by log source'),
+    # Complex real-world detection patterns
+    ('where((data.eventCode=4720 OR data.eventCode=4726) AND xml.eventdata.targetusername NOT CONTAINS "$") groupby(xml.eventdata.targetusername, data.computerName) calculate(count)', 'Account creation/deletion'),
+    ('where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP]) groupby(group, source_user, target_user, action) calculate(count) sort(desc) limit(1000)', 'Security group change audit'),
+    ('where(source_json.Workload="AzureActiveDirectory" AND source_json.Operation="UserLoggedIn" AND result!=SUCCESS) groupby(source_user, source_address) calculate(count) having(count>=20)', 'Azure AD brute force'),
+    ('where(process.name=/mimikatz|procdump|lsass/i) groupby(hostname, process.cmd_line, process.username)', 'Credential dumping tools'),
+    ('where(destination_port IN [4444, 5555, 6666, 7777, 8888, 1234, 31337]) groupby(source_address, destination_address, destination_port)', 'Suspicious port connections'),
+    ('where(source_json.eventCode=1 AND process.cmd_line ICONTAINS-ANY ["certutil", "bitsadmin", "wget", "curl"]) groupby(hostname, process.cmd_line)', 'Download tool execution'),
+    ('where(data.eventCode=4698 OR data.eventCode=4702) groupby(data.computerName, xml.eventdata.taskname) calculate(count)', 'Scheduled task creation'),
+    ('where(connection_status="ACCEPT" AND destination_port=3389 AND source_address NOT IN [IP(10.0.0.0/8), IP(172.16.0.0/12), IP(192.168.0.0/16)]) groupby(source_address, destination_address)', 'External RDP connections'),
+    ('where(public_suffix NOT IN [com, net, org, edu, gov, mil, io, co] AND query NOT IN ["unknown"]) groupby(public_suffix, query) calculate(count) sort(desc) limit(500)', 'Unusual DNS TLD analysis'),
+    ('where(source_json.properties.isInteractive=true AND result=SUCCESS) groupby(source_user, geoip_country_name, source_json.properties.appDisplayName) calculate(count)', 'Azure interactive logins'),
+]
+for q, d in advanced_patterns:
+    add(q, d, "rapid7-advanced")
+
+# ============================================================
+# Source 14: Threat hunting LEQL queries
+# ============================================================
+threat_hunting = [
+    # Lateral movement detection
+    ('where(logon_type IN [3, 10] AND result=SUCCESS AND source_address!=destination_address) groupby(source_address, destination_address, destination_user) calculate(count) sort(desc)', 'Lateral movement mapping'),
+    ('where(source_json.eventCode=4648) groupby(xml.eventdata.targetusername, xml.eventdata.targetservername, data.computerName) calculate(count)', 'Explicit credential usage'),
+    # Persistence
+    ('where(data.eventCode IN [7045, 4697]) groupby(data.computerName) calculate(count)', 'New service installation'),
+    ('where(source_json.eventCode=13 AND process.cmd_line CONTAINS "CurrentVersion") groupby(hostname, process.cmd_line)', 'Registry run key modification'),
+    # Defense evasion
+    ('where(data.eventCode=1102 OR data.eventCode=104) groupby(data.computerName, source_user) calculate(count)', 'Log clearing events'),
+    ('where(process.name=/attrib\.exe/i AND process.cmd_line CONTAINS "+h") groupby(hostname, process.cmd_line)', 'Hidden file attribute'),
+    # Privilege escalation
+    ('where(data.eventCode=4672 AND xml.eventdata.subjectusername NOT CONTAINS "$") groupby(xml.eventdata.subjectusername, data.computerName) calculate(count) sort(desc)', 'Special privilege assignment'),
+    # Collection
+    ('where(process.name=/rar\.exe|7z\.exe|zip\.exe/i) groupby(hostname, process.cmd_line, process.username)', 'Archive tool usage'),
+    ('where(source_json.Workload="OneDrive" AND action CONTAINS "Sync") groupby(source_user) calculate(count) having(count>=100)', 'OneDrive bulk sync'),
+    # Command and control
+    ('where(direction=OUTBOUND AND destination_port NOT IN [80, 443, 53, 8080, 8443]) groupby(destination_address, destination_port) calculate(unique:source_address) having(unique:source_address>=3) sort(desc)', 'Non-standard outbound beaconing'),
+    ('where(direction=OUTBOUND) groupby(destination_address) calculate(count) having(count>=1000) sort(desc) timeslice(1h)', 'High-frequency outbound'),
+    # Identity monitoring
+    ('where(action="ACCOUNT_CREATED" AND source_user!="SYSTEM") groupby(source_user, target_user) calculate(count) sort(desc)', 'Manual account creation'),
+    ('where(action="MEMBER_ADDED_TO_SECURITY_GROUP" AND group ICONTAINS-ANY ["admin", "domain", "enterprise"]) groupby(source_user, target_user, group)', 'Privileged group additions'),
+    # Cloud/SaaS
+    ('where(source_json.Workload="Exchange" AND source_json.Operation="New-InboxRule") groupby(source_user) calculate(count)', 'New inbox rules'),
+    ('where(source_json.Workload="SharePoint" AND action="FileDownloaded") groupby(source_user) calculate(count) having(count>=500) sort(desc)', 'Bulk file download'),
+    ('where(source_json.Workload="AzureActiveDirectory" AND source_json.Operation="Add member to role") groupby(source_user, source_json.ModifiedProperties)', 'Azure role assignment'),
+]
+for q, d in threat_hunting:
+    add(q, d, "threat-hunting")
+
+# ============================================================
+# Source 15: Rapid7 le_community_packs (AWS CloudTrail)
+# ============================================================
+community_packs = [
+    ('where(StartInstances) calculate(COUNT)', 'AWS start instances'),
+    ('where(StopInstances) calculate(COUNT)', 'AWS stop instances'),
+    ('where(eventName) groupby(eventName) calculate(COUNT)', 'AWS event type breakdown'),
+    ('where(eventName AND IAMUser) groupby(eventName) calculate(COUNT)', 'AWS events by IAM user type'),
+    ('where(eventName AND IAMUser) groupby(userName) calculate(COUNT)', 'AWS event count by IAM user'),
+    # Discuss forum queries
+    ('where(action=ACCOUNT_LOCKED)', 'Account locked events'),
+    ('where(action=ACCOUNT_LOCKED AND source_account==target_account)', 'Automatic account lockouts'),
+    ('from(event_type = "asset_auth") where(result = "FAILED_ACCOUNT_LOCKED")', 'Failed account locked auth'),
+    # Discuss forum - Office365 file sharing
+    ('where(source_user CONTAINS-ANY ["@domain1.net", "@domain2.com"] AND source_json.TargetUserOrGroupType="Guest") groupby(source_user)', 'O365 external sharing'),
+]
+for q, d in community_packs:
+    add(q, d, "community-packs")
+
 print(json.dumps(queries, indent=2))
 print(f"Total unique queries: {len(queries)}", file=sys.stderr)

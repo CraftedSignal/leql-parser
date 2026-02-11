@@ -80,6 +80,12 @@ func (s *BaseLEQLParserListener) EnterRegexExpr(ctx *RegexExprContext) {}
 // ExitRegexExpr is called when production regexExpr is exited.
 func (s *BaseLEQLParserListener) ExitRegexExpr(ctx *RegexExprContext) {}
 
+// EnterImplicitAndExpr is called when production implicitAndExpr is entered.
+func (s *BaseLEQLParserListener) EnterImplicitAndExpr(ctx *ImplicitAndExprContext) {}
+
+// ExitImplicitAndExpr is called when production implicitAndExpr is exited.
+func (s *BaseLEQLParserListener) ExitImplicitAndExpr(ctx *ImplicitAndExprContext) {}
+
 // EnterNestedWhereExpr is called when production nestedWhereExpr is entered.
 func (s *BaseLEQLParserListener) EnterNestedWhereExpr(ctx *NestedWhereExprContext) {}
 
@@ -238,6 +244,12 @@ func (s *BaseLEQLParserListener) EnterNumberKeywordCondition(ctx *NumberKeywordC
 
 // ExitNumberKeywordCondition is called when production numberKeywordCondition is exited.
 func (s *BaseLEQLParserListener) ExitNumberKeywordCondition(ctx *NumberKeywordConditionContext) {}
+
+// EnterVariableCondition is called when production variableCondition is entered.
+func (s *BaseLEQLParserListener) EnterVariableCondition(ctx *VariableConditionContext) {}
+
+// ExitVariableCondition is called when production variableCondition is exited.
+func (s *BaseLEQLParserListener) ExitVariableCondition(ctx *VariableConditionContext) {}
 
 // EnterQuotedKeyword is called when production quotedKeyword is entered.
 func (s *BaseLEQLParserListener) EnterQuotedKeyword(ctx *QuotedKeywordContext) {}

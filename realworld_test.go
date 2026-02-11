@@ -141,17 +141,31 @@ func TestGeneratedCorpus(t *testing.T) {
 		t.Fatalf("Failed to parse generated corpus JSON: %v", err)
 	}
 
+	genCount := len(entries)
+
 	// Also load real-world corpus
+	realCount := 0
 	if realData, err := os.ReadFile(realPath); err == nil {
 		var realEntries []corpusEntry
 		if err := json.Unmarshal(realData, &realEntries); err == nil {
 			entries = append(entries, realEntries...)
-			t.Logf("Loaded %d real-world + %d generated = %d total queries",
-				len(realEntries), len(entries)-len(realEntries), len(entries))
+			realCount = len(realEntries)
 		}
-	} else {
-		t.Logf("Loaded %d generated queries (no real-world corpus)", len(entries))
 	}
+
+	// Also load Sigma-converted corpus
+	sigmaPath := "testdata/corpus_sigma.json"
+	sigmaCount := 0
+	if sigmaData, err := os.ReadFile(sigmaPath); err == nil {
+		var sigmaEntries []corpusEntry
+		if err := json.Unmarshal(sigmaData, &sigmaEntries); err == nil {
+			entries = append(entries, sigmaEntries...)
+			sigmaCount = len(sigmaEntries)
+		}
+	}
+
+	t.Logf("Loaded %d real-world + %d generated + %d sigma = %d total queries",
+		realCount, genCount, sigmaCount, len(entries))
 
 	var success, partial, failed, panicked int
 	var sampleErrors []string

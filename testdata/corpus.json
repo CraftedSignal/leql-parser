@@ -1378,5 +1378,2300 @@
     "query": "where(source_json.Workload=\"AzureActiveDirectory\" AND action=\"UserLoggedIn\") groupby(source_user, geoip_country_name)",
     "description": "Azure AD logins by country",
     "source": "detection-patterns"
+  },
+  {
+    "query": "where(source_ip NOT IN [${private_ip}])",
+    "description": "Variable private IP exclusion",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(geoip_country_code NOT IN [${na_region}])",
+    "description": "Variable NA region exclusion",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(source_address NOT IN [${trusted_ips}]) groupby(source_address) calculate(count)",
+    "description": "Variable trusted IP pipeline",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(destination_port NOT IN [${allowed_ports}]) groupby(destination_port) calculate(count) sort(desc)",
+    "description": "Variable allowed ports",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(user NOT IN [${service_accounts}]) groupby(user)",
+    "description": "Variable service account exclusion",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(geoip_country_code NOT IN [${approved_countries}]) groupby(geoip_country_name) calculate(count)",
+    "description": "Variable approved countries",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(source_address IN [${watchlist}]) groupby(source_address, destination_address)",
+    "description": "Variable watchlist match",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(process.name IN [${suspicious_processes}]) groupby(hostname, process.cmd_line)",
+    "description": "Variable suspicious processes",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(destination_address NOT IN [${internal_ranges}] AND direction=OUTBOUND) groupby(source_address) calculate(sum:outgoing_bytes) sort(desc)",
+    "description": "Variable internal ranges pipeline",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(domain NOT IN [${allowed_domains}]) groupby(domain, user) calculate(count)",
+    "description": "Variable allowed domains",
+    "source": "rapid7-variables"
+  },
+  {
+    "query": "where(source_address=\"10.0.0.1\") groupby(destination_address) calculate(count) sort(desc) limit(10)",
+    "description": "Build-a-query example",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(result!=\"SUCCESS\") groupby(destination_user) calculate(count) having(count>=10) sort(desc)",
+    "description": "Failed auth threshold",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(severity IN [\"HIGH\", \"CRITICAL\"]) groupby(asset) calculate(unique:signature) sort(desc) limit(100)",
+    "description": "High/critical alerts per asset",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(source_json.eventCode=4688 AND process.name=/powershell/i) groupby(hostname, process.cmd_line) calculate(count)",
+    "description": "PowerShell process creation",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"FAILED\" AND service!=\"kerberos\") groupby(destination_user, source_address) calculate(count) having(count>=10)",
+    "description": "Failed non-Kerberos auth",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\" AND group CONTAINS \"admin\") groupby(source_user, target_user, group)",
+    "description": "Admin group additions",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(logon_type=10 AND result=\"SUCCESS\") groupby(source_address, destination_user, asset) calculate(count)",
+    "description": "RDP success tracking",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(action=\"PASSWORD_CHANGED\" AND source_user!=destination_user) groupby(source_user, destination_user)",
+    "description": "Password changed by other user",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(source_user) calculate(count) sort(desc) limit(25)",
+    "description": "Top 25 source users",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(geoip_country_code NOT IN [US, CA, GB, DE, AU]) groupby(user, geoip_country_name) calculate(count) sort(desc)",
+    "description": "Foreign access summary",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(source_address) calculate(unique:destination_port) having(unique:destination_port>=50) sort(desc)",
+    "description": "Port scan detection",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(user) calculate(unique:geoip_country_code) having(unique:geoip_country_code>=3) sort(desc)",
+    "description": "Users in multiple countries",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(direction=OUTBOUND) groupby(destination_address) calculate(sum:outgoing_bytes) having(sum:outgoing_bytes>=1000000000) sort(desc)",
+    "description": "Large data exfiltration",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "select(hostname as host) where(result=\"SUCCESS\")",
+    "description": "Select with alias",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "select(source_address as src, destination_address as dst) where(direction=\"OUTBOUND\")",
+    "description": "Select multiple aliases",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "select(user as account, geoip_country_name as country) where(result=SUCCESS) groupby(account, country)",
+    "description": "Select alias pipeline",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(user) calculate(count) sort(asc, desc#key)",
+    "description": "Multi-sort asc/desc key",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(source_address) calculate(count) sort(desc, asc#key)",
+    "description": "Multi-sort desc/asc key",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "groupby(#log) calculate(count) sort(desc)",
+    "description": "Group by log source",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(result!=\"SUCCESS\") groupby(#log) calculate(count)",
+    "description": "Failed auth by log source",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where((data.eventCode=4720 OR data.eventCode=4726) AND xml.eventdata.targetusername NOT CONTAINS \"$\") groupby(xml.eventdata.targetusername, data.computerName) calculate(count)",
+    "description": "Account creation/deletion",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP]) groupby(group, source_user, target_user, action) calculate(count) sort(desc) limit(1000)",
+    "description": "Security group change audit",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(source_json.Workload=\"AzureActiveDirectory\" AND source_json.Operation=\"UserLoggedIn\" AND result!=SUCCESS) groupby(source_user, source_address) calculate(count) having(count>=20)",
+    "description": "Azure AD brute force",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(process.name=/mimikatz|procdump|lsass/i) groupby(hostname, process.cmd_line, process.username)",
+    "description": "Credential dumping tools",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(destination_port IN [4444, 5555, 6666, 7777, 8888, 1234, 31337]) groupby(source_address, destination_address, destination_port)",
+    "description": "Suspicious port connections",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(source_json.eventCode=1 AND process.cmd_line ICONTAINS-ANY [\"certutil\", \"bitsadmin\", \"wget\", \"curl\"]) groupby(hostname, process.cmd_line)",
+    "description": "Download tool execution",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(data.eventCode=4698 OR data.eventCode=4702) groupby(data.computerName, xml.eventdata.taskname) calculate(count)",
+    "description": "Scheduled task creation",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(connection_status=\"ACCEPT\" AND destination_port=3389 AND source_address NOT IN [IP(10.0.0.0/8), IP(172.16.0.0/12), IP(192.168.0.0/16)]) groupby(source_address, destination_address)",
+    "description": "External RDP connections",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(public_suffix NOT IN [com, net, org, edu, gov, mil, io, co] AND query NOT IN [\"unknown\"]) groupby(public_suffix, query) calculate(count) sort(desc) limit(500)",
+    "description": "Unusual DNS TLD analysis",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(source_json.properties.isInteractive=true AND result=SUCCESS) groupby(source_user, geoip_country_name, source_json.properties.appDisplayName) calculate(count)",
+    "description": "Azure interactive logins",
+    "source": "rapid7-advanced"
+  },
+  {
+    "query": "where(logon_type IN [3, 10] AND result=SUCCESS AND source_address!=destination_address) groupby(source_address, destination_address, destination_user) calculate(count) sort(desc)",
+    "description": "Lateral movement mapping",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.eventCode=4648) groupby(xml.eventdata.targetusername, xml.eventdata.targetservername, data.computerName) calculate(count)",
+    "description": "Explicit credential usage",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(data.eventCode IN [7045, 4697]) groupby(data.computerName) calculate(count)",
+    "description": "New service installation",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.eventCode=13 AND process.cmd_line CONTAINS \"CurrentVersion\") groupby(hostname, process.cmd_line)",
+    "description": "Registry run key modification",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(data.eventCode=1102 OR data.eventCode=104) groupby(data.computerName, source_user) calculate(count)",
+    "description": "Log clearing events",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(process.name=/attrib\\.exe/i AND process.cmd_line CONTAINS \"+h\") groupby(hostname, process.cmd_line)",
+    "description": "Hidden file attribute",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(data.eventCode=4672 AND xml.eventdata.subjectusername NOT CONTAINS \"$\") groupby(xml.eventdata.subjectusername, data.computerName) calculate(count) sort(desc)",
+    "description": "Special privilege assignment",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(process.name=/rar\\.exe|7z\\.exe|zip\\.exe/i) groupby(hostname, process.cmd_line, process.username)",
+    "description": "Archive tool usage",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.Workload=\"OneDrive\" AND action CONTAINS \"Sync\") groupby(source_user) calculate(count) having(count>=100)",
+    "description": "OneDrive bulk sync",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(direction=OUTBOUND AND destination_port NOT IN [80, 443, 53, 8080, 8443]) groupby(destination_address, destination_port) calculate(unique:source_address) having(unique:source_address>=3) sort(desc)",
+    "description": "Non-standard outbound beaconing",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(direction=OUTBOUND) groupby(destination_address) calculate(count) having(count>=1000) sort(desc) timeslice(1h)",
+    "description": "High-frequency outbound",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(action=\"ACCOUNT_CREATED\" AND source_user!=\"SYSTEM\") groupby(source_user, target_user) calculate(count) sort(desc)",
+    "description": "Manual account creation",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(action=\"MEMBER_ADDED_TO_SECURITY_GROUP\" AND group ICONTAINS-ANY [\"admin\", \"domain\", \"enterprise\"]) groupby(source_user, target_user, group)",
+    "description": "Privileged group additions",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.Workload=\"Exchange\" AND source_json.Operation=\"New-InboxRule\") groupby(source_user) calculate(count)",
+    "description": "New inbox rules",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.Workload=\"SharePoint\" AND action=\"FileDownloaded\") groupby(source_user) calculate(count) having(count>=500) sort(desc)",
+    "description": "Bulk file download",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(source_json.Workload=\"AzureActiveDirectory\" AND source_json.Operation=\"Add member to role\") groupby(source_user, source_json.ModifiedProperties)",
+    "description": "Azure role assignment",
+    "source": "threat-hunting"
+  },
+  {
+    "query": "where(StartInstances) calculate(COUNT)",
+    "description": "AWS start instances",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(StopInstances) calculate(COUNT)",
+    "description": "AWS stop instances",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(eventName) groupby(eventName) calculate(COUNT)",
+    "description": "AWS event type breakdown",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(eventName AND IAMUser) groupby(eventName) calculate(COUNT)",
+    "description": "AWS events by IAM user type",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(eventName AND IAMUser) groupby(userName) calculate(COUNT)",
+    "description": "AWS event count by IAM user",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(action=ACCOUNT_LOCKED)",
+    "description": "Account locked events",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(action=ACCOUNT_LOCKED AND source_account==target_account)",
+    "description": "Automatic account lockouts",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(source_user CONTAINS-ANY [\"@domain1.net\", \"@domain2.com\"] AND source_json.TargetUserOrGroupType=\"Guest\") groupby(source_user)",
+    "description": "O365 external sharing",
+    "source": "community-packs"
+  },
+  {
+    "query": "where(source_user=\"grp adm\" action=\"ACCOUNT_DISABLED\")",
+    "description": "Find specific action",
+    "source": "Outs1d3r-Net/InsightIDR-rapid7-SIEM-Cheat-Sheet"
+  },
+  {
+    "query": "where(source_user=\"grp adm\" action=\"ACCOUNT_DISABLED\") calculate(count)",
+    "description": "Find specific action and count",
+    "source": "Outs1d3r-Net/InsightIDR-rapid7-SIEM-Cheat-Sheet"
+  },
+  {
+    "query": "where(destination_account=\"alice.winchester\")",
+    "description": "Search specific user",
+    "source": "Outs1d3r-Net/InsightIDR-rapid7-SIEM-Cheat-Sheet"
+  },
+  {
+    "query": "where(/Alice (?P<VARIABLE>\\s*)/ )",
+    "description": "Find user with regex pattern",
+    "source": "Outs1d3r-Net/InsightIDR-rapid7-SIEM-Cheat-Sheet"
+  },
+  {
+    "query": "where(/facebook/ AND user!=\"unknown\")group_by(user)",
+    "description": "Facebook users on network",
+    "source": "pawan-regoti/Insight-IDR-LEQL-Cheat-Sheet"
+  },
+  {
+    "query": "where(connection_status=DENY) groupby(source_address)",
+    "description": "PCI 1.3.5 Denied connection attempts",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(source_json.eventCode=/4692|4693|4694|4695|4688|4696|4689|5712|4928|4929|4930|4931|4934|4935|4936|4937|4662|5169|5137|5138|5141|5136|5139|4932|4933|4668|4665|4666|4667|4818|4875|4876|4868|4869|4870|4871|4872|4873|4874|4877|4878|4879|4880|4881|4882|4883|4884|4885|4886|4887|4888|4889|4890|4891|4892|4893|4894|4895|4896|4897|4898|4899|4900|5120|5121|5122|5123|5124|5125|5126|5127|5145|5142|5144|5140|5143|5168|4664|4985|5051|5031|5150/ OR source_json.eventCode=/5151|5154|5155|5156|5157|5158|5159|5146|5147|5152|5153|4656|4658|4690|4660|4659|4661|4663|4698|4699|5889|5890|4671|4691|4700|4701|4702|5148|5149|5888|4657|5039|4660|4659|4661|4663|5478|4960|4961|4962|4963|4965|5479|5480|5483|5484|5485|5024|5025|5030|5027|5028|5029|5032|5033|5034|5035|5037|5050|5058|5059|5071|6400|6401|6402|6403|6404|6405|6406|6407|6408|6409|6420|6421|6422|6423|6424|6416|6419|4608|4609|4616|4621|4697|4610|4611|4614|4622|4618|5038|5057|4612|4615|4816|5056|5060|5061|5062|6281|6410|6417|6418/)groupby(source_json.computerName) limit(10000)",
+    "description": "PCI 10.2.7 Create/delete system level objects (source_json variant)",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(data.eventCode=7036 AND Windows Event Log) groupby(data.computerName) limit(10000)",
+    "description": "PCI 10.2.6 Init/stop/pause audit logs",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(xml.system.eventid=/4715|4719|4902|4904|4905|4906|4907|4908|4912|4817|4739|4865|4866|4867|4713|4716|4717|4718|4864|4707|4913|4703|4704|4705|4706|4714|4911|4709|4710|4712|4711|5040|5041|5042|5043|5044|5045|5046|5047|5048|5440|5441|5442|5443|5444|5446|5448|5449|5450|5456|5457|5458|5459|5460|5461|5462|5463|5464|5465|5466|5467|5468|5471|5472|5473|5474|5477|4944|4945|4950|4954|4946|4947|4948|4949|4951|4952|4953|4956|4957|4958|4826|4819|4909|4910|5063|5064|5065|5066|5067|5068|5069|5070|5447|6144|6145|4670|4672|4673|4674/)groupby(xml.system.eventid)",
+    "description": "Actions taken with root/admin privileges",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(xml.system.eventid=/4777|4822|4823|4774|4775|4776|4772|4768|4771|4773|4820|4824|4769|4770|4821|4625|4627|4978|4979|4980|4981|4982|4983|4984|4646|4650|4651|4652|4653|4655|4976|5049|5453|4654|4977|5451|5452|4634|4647|4625|4624|4626|4648|4675|6273|6274|6275|6276|6279|6280|6272|6277|6278|4649|4825|4778|4779|4800|4801|4802|4803|5378|5632|5633|4964/)groupby(xml.system.eventid)",
+    "description": "Failed logical access / ID and auth / elevation of privileges",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(xml.system.eventid=/4783|4784|4785|4786|4787|4788|4789|4790|4791|4792|4742|4743|4746|4751|4744|4745|4747|4748|4749|4750|4752|4753|4759|4760|4761|4762|4782|4793|4729|4733|4757|4727|4728|4730|4731|4732|4734|4735|4737|4754|4755|4756|4758|4764|4799|4720|4722|4723|4724|4725|4726|4767|4781|4797|4738|4740|4765|4766|4780|4794|4798|5376|5377/)groupby(xml.system.eventid)",
+    "description": "Changes to root or admin accounts",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(data.eventCode=/4715|4719|4902|4904|4905|4906|4907|4908|4912|4817|4739|4865|4866|4867|4713|4716|4717|4718|4864|4707|4913|4703|4704|4705|4706|4714|4911|4709|4710|4712|4711|5040|5041|5042|5043|5044|5045|5046|5047|5048|5440|5441|5442|5443|5444|5446|5448|5449|5450|5456|5457|5458|5459|5460|5461|5462|5463|5464|5465|5466|5467|5468|5471|5472|5473|5474|5477|4944|4945|4950|4954|4946|4947|4948|4949|4951|4952|4953|4956|4957|4958|4826|4819|4909|4910|5063|5064|5065|5066|5067|5068|5069|5070|5447|6144|6145|4670|4672|4673|4674/)groupby(data.computerName) limit(10000)",
+    "description": "PCI 10.2.2 Actions taken with root/admin privileges (data variant)",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(source_json.eventCode=/4715|4719|4902|4904|4905|4906|4907|4908|4912|4817|4739|4865|4866|4867|4713|4716|4717|4718|4864|4707|4913|4703|4704|4705|4706|4714|4911|4709|4710|4712|4711|5040|5041|5042|5043|5044|5045|5046|5047|5048|5440|5441|5442|5443|5444|5446|5448|5449|5450|5456|5457|5458|5459|5460|5461|5462|5463|5464|5465|5466|5467|5468|5471|5472|5473|5474|5477|4944|4945|4950|4954|4946|4947|4948|4949|4951|4952|4953|4956|4957|4958|4826|4819|4909|4910|5063|5064|5065|5066|5067|5068|5069|5070|5447|6144|6145|4670|4672|4673|4674/)groupby(source_json.computerName) limit(10000)",
+    "description": "PCI 10.2.2 Actions taken with root/admin privileges (source_json variant)",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(xml.system.eventid=/4715|4719|4902|4904|4905|4906|4907|4908|4912|4817|4739|4865|4866|4867|4713|4716|4717|4718|4864|4707|4913|4703|4704|4705|4706|4714|4911|4709|4710|4712|4711|5040|5041|5042|5043|5044|5045|5046|5047|5048|5440|5441|5442|5443|5444|5446|5448|5449|5450|5456|5457|5458|5459|5460|5461|5462|5463|5464|5465|5466|5467|5468|5471|5472|5473|5474|5477|4944|4945|4950|4954|4946|4947|4948|4949|4951|4952|4953|4956|4957|4958|4826|4819|4909|4910|5063|5064|5065|5066|5067|5068|5069|5070|5447|6144|6145|4670/)groupby(xml.system.eventid)",
+    "description": "PCI 10.2.3 Access to all audit trails",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where((data.eventCode=4688 AND eventvwr.msc) OR (data.eventCode=4656 AND eventvwr.msc) OR (data.eventCode=4688 AND wevtutil.exe) OR (data.eventCode=4656 AND wevtutil.exe) OR (data.eventCode=4663 AND eventvwr.msc) OR (data.eventCode=4663 AND wevtutil.exe)  ) groupby(data.computerName) calculate(count) limit(1000)",
+    "description": "PCI 10.2.3 Access to all audit trails (event viewer/wevtutil)",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(xml.system.eventid=/4692|4693|4694|4695|4688|4696|4689|5712|4928|4929|4930|4931|4934|4935|4936|4937|4662|5169|5137|5138|5141|5136|5139|4932|4933|4668|4665|4666|4667|4818|4875|4876|4868|4869|4870|4871|4872|4873|4874|4877|4878|4879|4880|4881|4882|4883|4884|4885|4886|4887|4888|4889|4890|4891|4892|4893|4894|4895|4896|4897|4898|4899|4900|5120|5121|5122|5123|5124|5125|5126|5127|5145|5142|5144|5140|5143|5168|4664|4985/ OR xml.system.eventid=/5051|5031|5150|5151|5154|5155|5156|5157|5158|5159|5146|5147|5152|5153|4656|4658|4690|4660|4659|4661|4663|4698|4699|5889|5890|4671|4691|4700|4701|4702|5148|5149|5888|4657|5039|4660|4659|4661|4663|5478|4960|4961|4962|4963|4965|5479|5480|5483|5484|5485|5024|5025|5030|5027|5028|5029|5032|5033|5034|5035|5037|5050|5058|5059|5071|6400|6401|6402|6403|6404|6405|6406|6407|6408|6409|6420|6421|6422|6423|6424|6416|6419|4608|4609|4616|4621|4697|4610|4611|4614|4622|4618|5038|5057|4612|4615|4816|5056|5060|5061|5062|6281|6410|6417|6418/)groupby(xml.system.eventid)",
+    "description": "PCI 10.2.7 Create/delete system level objects (xml.system variant)",
+    "source": "rapid7/r7insight_analytic_packs/windows_pci.json"
+  },
+  {
+    "query": "where(/duration: (?P<time>\\d+\\.\\d+) ms/) calculate(AVERAGE:time)",
+    "description": "Slow query average time",
+    "source": "rapid7/r7insight_analytic_packs/heroku_postgres.json"
+  },
+  {
+    "query": "where(/(?P<severity>LOG|DEBUG|INFO|NOTICE|WARNING|FATAL|ERROR|PANIC)/) groupby(severity) calculate(COUNT)",
+    "description": "Log severity levels distribution",
+    "source": "rapid7/r7insight_analytic_packs/heroku_postgres.json"
+  },
+  {
+    "query": "where(memory_total>0) calculate(average:memory_total)",
+    "description": "Memory total average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_rss>0) calculate(average:memory_rss)",
+    "description": "Memory RSS average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_cache>0) calculate(average:memory_cache)",
+    "description": "Memory cache average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_swap>0) calculate(average:memory_swap)",
+    "description": "Memory swap average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_pgpgin>0) calculate(average:memory_pgpgin)",
+    "description": "Memory page-in average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_pgpgout>0) calculate(average:memory_pgpgout)",
+    "description": "Memory page-out average",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(load_avg_1m>0) calculate(average:load_avg_1m)",
+    "description": "Load average 1 minute",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(load_avg_5m>0) calculate(average:load_avg_5m)",
+    "description": "Load average 5 minutes",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(load_avg_15m>0) calculate(average:load_avg_15m)",
+    "description": "Load average 15 minutes",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(load_avg_1m>0) groupby(dyno) calculate(average:memory_total)",
+    "description": "Load average 1m per dyno",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(memory_total>0) groupby(dyno) calculate(average:memory_total)",
+    "description": "Memory total per dyno",
+    "source": "rapid7/r7insight_analytic_packs/heroku_log_runtime_metrics.json"
+  },
+  {
+    "query": "where(status>0) Calculate(unique:remote_addr)",
+    "description": "Unique visitors count",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status!=404) GroupBy(request) Calculate(count)",
+    "description": "Page view distribution",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(status) calculate(count)",
+    "description": "Status type distribution",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) calculate(average:request_time)",
+    "description": "Average response time",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(request) calculate(average:request_time)",
+    "description": "Average response time per page",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(remote_addr) calculate(average:request_time)",
+    "description": "Average response time over 40 users",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(request) calculate(average:body_bytes_sent)",
+    "description": "Average bytes sent per page",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status=404) Calculate(count)",
+    "description": "Total 404 errors",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status=404) Groupby(request) Calculate(count)",
+    "description": "404 URL distribution",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "where(status>0) Groupby(http_user_agent) Calculate(count)",
+    "description": "User agent distribution",
+    "source": "rapid7/r7insight_analytic_packs/apache_json.json"
+  },
+  {
+    "query": "calculate(average:stats.memory_stats.usage) timeSlice(10m)",
+    "description": "Docker: Total memory",
+    "source": "rapid7/r7insight_analytic_packs/docker.json"
+  },
+  {
+    "query": "calculate(average:stats.cpu_stats.cpu_usage.total_usage) timeSlice(10m)",
+    "description": "Docker: Total CPU",
+    "source": "rapid7/r7insight_analytic_packs/docker.json"
+  },
+  {
+    "query": "where(service>0) calculate(AVERAGE:service)",
+    "description": "Heroku service time",
+    "source": "rapid7/r7insight_analytic_packs/heroku_apps.json"
+  },
+  {
+    "query": "where(connect>0) calculate(AVERAGE:connect)",
+    "description": "Heroku connect time",
+    "source": "rapid7/r7insight_analytic_packs/heroku_apps.json"
+  },
+  {
+    "query": "where(service>0) groupby(dyno) calculate(AVERAGE:service)",
+    "description": "Heroku service time by dyno",
+    "source": "rapid7/r7insight_analytic_packs/heroku_apps.json"
+  },
+  {
+    "query": "where(connect>0) groupby(dyno) calculate(AVERAGE:connect)",
+    "description": "Heroku connect time by dyno",
+    "source": "rapid7/r7insight_analytic_packs/heroku_apps.json"
+  },
+  {
+    "query": "where(bytes>0) calculate(AVERAGE:bytes)",
+    "description": "Heroku request size",
+    "source": "rapid7/r7insight_analytic_packs/heroku_apps.json"
+  },
+  {
+    "query": "where(sc_status>0) Calculate(unique:c_ip)",
+    "description": "Unique visitors count (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status!=404) GroupBy(c_ip) Calculate(count)",
+    "description": "Page view distribution (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status>0) groupby(sc_status) calculate(count)",
+    "description": "Status type distribution (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status>0) calculate(average:time_taken)",
+    "description": "Average response time (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status>0) groupby(c_ip) calculate(average:time_taken)",
+    "description": "Average response time per page (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status=404) Calculate(count)",
+    "description": "404 error count (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status=404) Groupby(cs_uri_stem) Calculate(count)",
+    "description": "404 URL distribution (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status=404) Groupby(c_ip) Calculate(count)",
+    "description": "404 errors by IP (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(sc_status > 0) groupby(cs_User_Agent) calculate(COUNT)",
+    "description": "User agent distribution (IIS)",
+    "source": "rapid7/r7insight_analytic_packs/iis_json.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, (?P<time>\\d{1,})/) calculate(AVERAGE:time)",
+    "description": "Time taken in milliseconds (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, \\d{1,}, (?P<bytes>\\d{1,}),/) calculate(AVERAGE:bytes)",
+    "description": "Average bytes sent (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, \\d{1,}, \\d{1,}, \\d{1,}, (?P<status>\\d{3})/) groupby(status) calculate(COUNT)",
+    "description": "Status codes distribution (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, \\d{1,}, \\d{1,}, \\d{1,}, \\d{3}, (?P<windows_status>\\d{1,})/) groupby(windows_status) calculate(COUNT)",
+    "description": "Windows status codes (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, \\d{1,}, \\d{1,}, \\d{1,}, \\d{3}, \\d{1,}, (?P<request_type>\\w{1,4})/) groupby(request_type) calculate(COUNT)",
+    "description": "Request types distribution (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, \\d{1,}, \\d{1,}, \\d{1,}, \\d{3}, \\d{1,}, \\w{1,4}, (?P<url>\\D{1,}),/) groupby(url) calculate(COUNT)",
+    "description": "URLs accessed distribution (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, (?P<time>\\d{1,})/ AND /.jpg/) calculate(AVERAGE:time)",
+    "description": "Time taken for JPG files (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, (?P<time>\\d{1,})/ AND /.gif/) calculate(AVERAGE:time)",
+    "description": "Time taken for GIF files (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{3}\\.\\d{1,}\\.\\d{1,}\\.\\d{1,}\\, (?P<time>\\d{1,})/ AND /.pdf/) calculate(AVERAGE:time)",
+    "description": "Time taken for PDF files (IIS regex)",
+    "source": "rapid7/r7insight_analytic_packs/iis_regex.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|(?P<status>\\d{3})/) groupby(status) calculate(COUNT)",
+    "description": "HTTP codes distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|\\d*\\|\\d*\\|(?P<ZoneUrl>\\S*)\\|MISS|HIT/ AND /\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|(?P<status>\\d{3})/ status=200) groupby(ZoneUrl) calculate(COUNT)",
+    "description": "Zone URL with status 200 (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|(?P<bytesDelivered>\\d*)/) calculate(COUNT)",
+    "description": "Bytes delivered (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|(?P<userID>\\d*)/) calculate(UNIQUE:userID)",
+    "description": "Unique user IDs (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|(?P<userID>\\d*)/) groupby(userID) calculate(COUNT)",
+    "description": "User IDs distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|\\d*\\|(?P<zoneID>\\d*)/) calculate(UNIQUE:zoneID)",
+    "description": "Unique zone IDs (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|\\d*\\|(?P<zoneID>\\d*)/) groupby(zoneID) calculate(COUNT)",
+    "description": "Zone IDs distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|\\d*\\|\\d*\\|(?P<ZoneUrl>\\S*)\\|MISS|HIT/) groupby(ZoneUrl) calculate(COUNT)",
+    "description": "Zone URL distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}\\|\\d*\\|\\d*\\|\\d*\\|\\S*\\|(?P<CacheStatus>MISS|HIT)/) groupby(CacheStatus) calculate(COUNT)",
+    "description": "Cache status distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\[.*\\]\\|\"(?P<referrer>\\S*)\"\\|/) groupby(referrer) calculate(COUNT)",
+    "description": "Referrer distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\[.*\\]\\|\"\\S*\"\\|\"(?P<userAgent>.*)\"\\|/) groupby(userAgent) calculate(COUNT)",
+    "description": "User agent distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where( /\\[.*\\]\\|\"\\S*\"\\|\".*\"\\|(?P<scheme>.*)\\|.*\\|.*\\|.*\\|.*\\|.*\\|.*\\|/) groupby(scheme) calculate(COUNT)",
+    "description": "Scheme distribution HTTP/HTTPS (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where( /\\[.*\\]\\|\"\\S*\"\\|\".*\"\\|.*\\|(?P<CountryCode>.*)\\|.*\\|.*\\|.*\\|.*\\|.*\\|/) groupby(CountryCode) calculate(COUNT)",
+    "description": "Country code distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where( /\\[.*\\]\\|\"\\S*\"\\|\".*\"\\|.*\\|.*\\|(?P<CountryName>.*)\\|.*\\|.*\\|.*\\|.*\\|/) groupby(CountryName) calculate(COUNT)",
+    "description": "Country name distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where( /\\[.*\\]\\|\"\\S*\"\\|\".*\"\\|.*\\|.*\\|.*\\|(?P<CityName>.*)\\|.*\\|.*\\|.*\\|/) groupby(CityName) calculate(COUNT)",
+    "description": "City name distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/(?P<organization>[^|]+)/) groupby(organization) calculate(COUNT)",
+    "description": "Organization distribution (fixed regex)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where(/\\|(?P<POP>.*)\\|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\|\\d{3}/) groupby(POP)",
+    "description": "POP distribution (KeyCDN)",
+    "source": "rapid7/r7insight_analytic_packs/key_cdn.json"
+  },
+  {
+    "query": "where((type=ANOM_LOGIN_ACCT OR type=ANOM_LOGIN_FAILURES OR type=ANOM_LOGIN_LOCATION OR type=ANOM_LOGIN_SESSIONS OR type=ANOM_LOGIN_TIME) OR (USER_LOGIN AND failed) OR(LOGIN AND failed) OR (USER_AUTH AND failed), loose)groupby(type)calculate(count)",
+    "description": "Invalid logical access attempts (Linux PCI, loose)",
+    "source": "rapid7/r7insight_analytic_packs/linux_pci.json"
+  },
+  {
+    "query": "where(DAEMON AND success, loose)groupby(pid)",
+    "description": "Assessment logs initialization (Linux PCI)",
+    "source": "rapid7/r7insight_analytic_packs/linux_pci.json"
+  },
+  {
+    "query": "where(EXECVE, loose)calculate(count)",
+    "description": "System level objects updates (Linux PCI)",
+    "source": "rapid7/r7insight_analytic_packs/linux_pci.json"
+  },
+  {
+    "query": "where((type=ANOM_LOGIN_ACCT OR type=ANOM_LOGIN_FAILURES OR type=ANOM_LOGIN_LOCATION OR type=ANOM_LOGIN_SESSIONS OR type=ANOM_LOGIN_TIME) OR (/USER_LOGIN/ AND /failed/) OR(/LOGIN/ AND /failed/) OR (/USER_AUTH/ AND /failed/))groupby(type)calculate(count)",
+    "description": "Invalid logical access attempts (Linux PCI, regex variant)",
+    "source": "rapid7/r7insight_analytic_packs/linux_pci.json"
+  },
+  {
+    "query": "where(system>0) calculate(AVERAGE:system)",
+    "description": "Total system CPU average",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(user>0) calculate(AVERAGE:user)",
+    "description": "Total user CPU average",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(total>0) calculate(AVERAGE:total)",
+    "description": "Total available memory",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(free>0) calculate(AVERAGE:free)",
+    "description": "Memory free",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(active>0) calculate(AVERAGE:active)",
+    "description": "Memory active",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(cached>0) calculate(AVERAGE:cached)",
+    "description": "Memory cached",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(reads>0) calculate(AVERAGE:reads)",
+    "description": "Disk reads per second",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(writes>0) calculate(AVERAGE:writes)",
+    "description": "Disk writes per second",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(size>0) calculate(AVERAGE:size)",
+    "description": "Disk size",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(used>0) calculate(AVERAGE:used)",
+    "description": "Used disk",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(sshd session opened for user) calculate(COUNT)",
+    "description": "SSH logins",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(sshd Invalid user) calculate(COUNT)",
+    "description": "Failed SSH logins",
+    "source": "rapid7/r7insight_analytic_packs/linux_server_monitoring.json"
+  },
+  {
+    "query": "where(Executing command) calculate(COUNT)",
+    "description": "Commands executed over time",
+    "source": "rapid7/r7insight_analytic_packs/linux_syslog_ubuntu.json"
+  },
+  {
+    "query": "where(/session opened for user (?P<user>.*) by/) groupby(user) calculate(COUNT)",
+    "description": "User distribution (syslog)",
+    "source": "rapid7/r7insight_analytic_packs/linux_syslog_ubuntu.json"
+  },
+  {
+    "query": "where(authentication failure) calculate(COUNT)",
+    "description": "Authentication failure count",
+    "source": "rapid7/r7insight_analytic_packs/linux_syslog_ubuntu.json"
+  },
+  {
+    "query": "where(pid) calculate(UNIQUE:pid)",
+    "description": "Total unique processes",
+    "source": "rapid7/r7insight_analytic_packs/linux_syslog_ubuntu.json"
+  },
+  {
+    "query": "where(pid) groupby(pid) calculate(COUNT)",
+    "description": "Process distribution by PID",
+    "source": "rapid7/r7insight_analytic_packs/linux_syslog_ubuntu.json"
+  },
+  {
+    "query": "where(/71 EVENT/) calculate(count)",
+    "description": "DHCP scope modified",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where(/70 EVENT/) calculate(count)",
+    "description": "DHCP scope configured",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where(/107 EVENT/) calculate(count)",
+    "description": "DHCP reservation deleted",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where(/106 EVENT/) calculate(count)",
+    "description": "DHCP reservation configured",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/70 EVENT/)",
+    "description": "DHCP scope configured (search)",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/71 EVENT/)",
+    "description": "DHCP scope modified (search)",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/72 EVENT/)",
+    "description": "DHCP scope deleted",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/74 EVENT/)",
+    "description": "DHCP scope deactivated",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/75 EVENT/)",
+    "description": "DHCP scope updated",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/76 EVENT/)",
+    "description": "DHCP scope updated with options",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/106 EVENT/)",
+    "description": "DHCP reservation configured (search)",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/107 EVENT/)",
+    "description": "DHCP reservation deleted (search)",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where (/119 EVENT/)",
+    "description": "DHCP added exclusion range",
+    "source": "rapid7/r7insight_analytic_packs/microsoft_dhcp.json"
+  },
+  {
+    "query": "where(/[\\w+] (?P<databaseCommand>\\w+)/i databaseCommand=query OR databaseCommand=command) groupby(databaseCommand) calculate(COUNT)",
+    "description": "MongoDB command vs query",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/command: (?P<command>\\w+)/i AND command!=isMaster AND command!=whatsmyuri) groupby(command) calculate(COUNT)",
+    "description": "MongoDB database commands executed",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(reslen) calculate(AVERAGE:reslen)",
+    "description": "MongoDB query result length in bytes",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/) groupby(component) calculate(COUNT)",
+    "description": "MongoDB component distribution",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<sl> F | E | W | I | D )/) groupby(sl) calculate(COUNT)",
+    "description": "MongoDB severity distribution",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=ACCESS) calculate(COUNT)",
+    "description": "MongoDB ACCESS operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=COMMAND) calculate(COUNT)",
+    "description": "MongoDB COMMAND operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=CONTROL) calculate(COUNT)",
+    "description": "MongoDB CONTROL operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=GEO) calculate(COUNT)",
+    "description": "MongoDB GEO operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=INDEX) calculate(COUNT)",
+    "description": "MongoDB INDEX operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=NETWORK) calculate(COUNT)",
+    "description": "MongoDB NETWORK operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=QUERY) calculate(COUNT)",
+    "description": "MongoDB QUERY operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=REPL) calculate(COUNT)",
+    "description": "MongoDB REPL operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=SHARDING) calculate(COUNT)",
+    "description": "MongoDB SHARDING operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=STORAGE) calculate(COUNT)",
+    "description": "MongoDB STORAGE operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=JOURNAL) calculate(COUNT)",
+    "description": "MongoDB JOURNAL operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/(?P<component>[A-Z]{3,8})/ component=WRITE) calculate(COUNT)",
+    "description": "MongoDB WRITE operations",
+    "source": "rapid7/r7insight_analytic_packs/mongodb3.0.json"
+  },
+  {
+    "query": "where(/\"GET .{1,}\\.php/) calculate(COUNT)",
+    "description": "PHP requests count (Nginx combined)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_combined.json"
+  },
+  {
+    "query": "where(/\"GET .{1,}\\.jpg/) calculate(COUNT)",
+    "description": "JPG requests count (Nginx combined)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_combined.json"
+  },
+  {
+    "query": "where(/\"GET .{1,}\\.php/i) calculate(COUNT)",
+    "description": "PHP requests case-insensitive (Nginx combined)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_combined.json"
+  },
+  {
+    "query": "where(/\"GET .{1,}\\.jpg/i) calculate(COUNT)",
+    "description": "JPG requests case-insensitive (Nginx combined)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_combined.json"
+  },
+  {
+    "query": "where(status>0) Calculate(unique:remote_addr)",
+    "description": "Unique visitors count (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status!=404) GroupBy(request) Calculate(count)",
+    "description": "Page view distribution (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(status) calculate(count)",
+    "description": "Status type distribution (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) calculate(average:request_time)",
+    "description": "Average response time (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(request) calculate(average:request_time)",
+    "description": "Average response time per page (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(remote_addr) calculate(average:request_time)",
+    "description": "Average response time by remote addr (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) groupby(request) calculate(average:body_bytes_sent)",
+    "description": "Average bytes sent per page (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status=404) Calculate(count)",
+    "description": "404 error count (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status=404) Groupby(request) Calculate(count)",
+    "description": "404 URL distribution (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(status>0) Groupby(http_user_agent) Calculate(count)",
+    "description": "User agent distribution (Nginx JSON)",
+    "source": "rapid7/r7insight_analytic_packs/nginx_json.json"
+  },
+  {
+    "query": "where(\"Invalid credentials\" OR \"Certificate Verification: Error\") calculate(count)",
+    "description": "Puppet Console errors",
+    "source": "rapid7/r7insight_analytic_packs/puppet_console.json"
+  },
+  {
+    "query": "where(Could not retrieve catalog OR OutOfMemoryError) calculate(count)",
+    "description": "Puppet Database errors",
+    "source": "rapid7/r7insight_analytic_packs/puppet_database.json"
+  },
+  {
+    "query": "where(No MCollective servers responded OR password is invalid OR Remote host closed connection) calculate(count)",
+    "description": "Puppet Live Management errors",
+    "source": "rapid7/r7insight_analytic_packs/puppet_live_management.json"
+  },
+  {
+    "query": "where(Failed to generate additional resources OR Could not retrieve plugin OR Could not request certificate OR Name or service not known OR already initialized constant argv) calculate(count)",
+    "description": "Puppet Master errors",
+    "source": "rapid7/r7insight_analytic_packs/puppet_master.json"
+  },
+  {
+    "query": "where(function_name) groupby(function_name) calculate(AVERAGE:execution_time)",
+    "description": "Average execution time per method (Python APM)",
+    "source": "rapid7/r7insight_analytic_packs/python_apm.json"
+  },
+  {
+    "query": "where(function_name) groupby(function_name) calculate(AVERAGE:cpu)",
+    "description": "Average CPU usage per method (Python APM)",
+    "source": "rapid7/r7insight_analytic_packs/python_apm.json"
+  },
+  {
+    "query": "where(function_name=function_two) calculate(AVERAGE:cpu)",
+    "description": "Average CPU usage for specific method (Python APM)",
+    "source": "rapid7/r7insight_analytic_packs/python_apm.json"
+  },
+  {
+    "query": "where(/\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\s(?P<hostname>.{1,15})\\s\\d{1}\\s(?P<eventcode>\\d{5})\\s/) groupby(eventcode)",
+    "description": "SQL Server most frequent event codes",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\s(?P<hostname>.{1,15})\\s\\d{1}\\s(?P<eventcode>\\d{5})\\s/) groupby(hostname)",
+    "description": "SQL Server most active hosts",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/1 EVENT/)",
+    "description": "SQL Server SQLVDI process aborted",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/101 EVENT/)",
+    "description": "SQL Server Agent service started",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/102 EVENT/)",
+    "description": "SQL Server Agent service stopped",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/103 EVENT/)",
+    "description": "SQL Server Agent not started",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/53 EVENT/)",
+    "description": "SQL Server Agent start failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/208 EVENT/)",
+    "description": "SQL Server scheduled job message",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/324 EVENT/)",
+    "description": "SQL Agent not allowed to run",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/1105 EVENT/)",
+    "description": "SQL Server could not allocate space",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/3041 EVENT/)",
+    "description": "SQL Server backup failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/9002 EVENT/)",
+    "description": "SQL Server transaction log full",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/9003 EVENT/)",
+    "description": "SQL Server log scan number invalid",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/12291 EVENT/)",
+    "description": "SQL Server package failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/14151 EVENT/)",
+    "description": "SQL Server replication agent failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17053 EVENT/)",
+    "description": "SQL Server operating system error",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17113 EVENT/)",
+    "description": "SQL Server file open error",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17187 EVENT/)",
+    "description": "SQL Server not ready",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17207 EVENT/)",
+    "description": "SQL Server operating system error (17207)",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17806 EVENT/)",
+    "description": "SQL Server SSPI handshake failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17832 EVENT/)",
+    "description": "SQL Server login packet invalid",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/17836 EVENT/)",
+    "description": "SQL Server unexpected payload packet size",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18056 EVENT/)",
+    "description": "SQL Server client unable to reuse session",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18204 EVENT/)",
+    "description": "SQL Server cannot find specified path",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18210 EVENT/)",
+    "description": "SQL Server write failure on backup device",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18452 EVENT/)",
+    "description": "SQL Server login failed",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18456 EVENT/)",
+    "description": "SQL Server login failed for user",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/18483 EVENT/)",
+    "description": "SQL Server could not connect to server",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/19019 EVENT/)",
+    "description": "SQL Server MSSQLSERVER service terminated",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(/3041 EVENT/) calculate(count)",
+    "description": "SQL Server failed backups count",
+    "source": "rapid7/r7insight_analytic_packs/sql_server.json"
+  },
+  {
+    "query": "where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP] AND group CONTAINS \"-job-admins\")",
+    "description": "Group changes made to a certain group",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(/eventCode\\\\\":(?P<EVID>\\d{4})/) groupby(EVID)",
+    "description": "All Microsoft Event IDs for collected events (unquoted eventCode)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(/eventCode\\\\\":\\\\\"(?P<EVID>\\d{4})/)groupby(EVID)",
+    "description": "All Microsoft Event IDs for collected events (quoted eventCode)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(/computerName\\\\\":\\\\\"(?P<HostName>[\\w\\d\\-]*)/)groupby(HostName)",
+    "description": "All hosts that logs have been collected from (regex)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "groupby(logon_type)",
+    "description": "All authentication types",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "groupby(result)",
+    "description": "All authentication results",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(service NOT IN [krbtgt, kerberos] AND result=\"FAILED_BAD_PASSWORD\")groupby(\"destination_asset\")",
+    "description": "All Non-Kerberos logins by destination asset",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(access_method=\"web\")groupby(action)",
+    "description": "All investigation activity from SIEM Platform, grouped by action",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(action=\"INVESTIGATION_CLOSED\")groupby(request.user.name)",
+    "description": "All analysts who closed an investigation, grouped by user name",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(service_info.investigation_type=\"MANUAL\")groupby(service_info.investigation_name)limit(1000)",
+    "description": "Manually created investigations, grouped by alert name",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(action=\"INVESTIGATION_DATA_ADDED\")groupby(service_info.investigation_type, service_info.data_type)",
+    "description": "All instances where data has been added to an investigation",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "groupby(source_user)calculate(count)limit(10)",
+    "description": "Top 10 users with the most Office365 activity",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(action=CREATE_USER AND target_user=/.*\\#EXT\\#.*/i) groupby(source_user, target_user)",
+    "description": "Office365 guest account creations and who created them",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(source_user=/.*\\#EXT\\#.*/i)groupby(source_json.Workload)",
+    "description": "Office365 guest account areas of activity",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(source_user=/.*\\#EXT\\#.*/i AND source_json.Workload=SharePoint)groupby(action)",
+    "description": "Office365 guest account SharePoint actions",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(source_user=/.*\\#EXT\\#.*/i AND source_json.Workload=OneDrive AND action=/FileDownloaded|FileAccessed/)groupby(action, source_json.SourceFileName)",
+    "description": "Office365 guest account OneDrive files downloaded or accessed",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(source_user=/.*\\#EXT\\#.*/i AND source_json.Workload=MicrosoftTeams AND action=/TeamsSessionStarted/i)groupby(source_user)",
+    "description": "Office365 guest account Team Sessions started",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(public_suffix AND public_suffix NOT IN [com, net, org])groupby(public_suffix)",
+    "description": "All websites visited outside .com, .net, and .org domains",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(public_suffix=\"ru\")groupby(query)",
+    "description": "All websites in Russia visited by users",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(/facebook/ AND user!=\"unknown\")calculate(count)",
+    "description": "Count of users who accessed Facebook",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(/dropbox/ AND user!=\"unknown\")groupby(user)",
+    "description": "All users who accessed Dropbox",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(result=SUCCESS AND geoip_country_name=\"United States\")calculate(count)timeslice(1h)",
+    "description": "Weekly US ingress authentications - success (hourly)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(result=/failed.*/i AND geoip_country_name=\"United States\")calculate(count)timeslice(1h)",
+    "description": "Weekly US ingress authentications - failure (hourly)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(result=SUCCESS AND geoip_country_name!=\"United States\")calculate(count)timeslice(1d)",
+    "description": "Weekly non-US ingress authentications - success (daily)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(result=/failed.*/i AND geoip_country_name!=\"United States\")calculate(count)timeslice(1d)",
+    "description": "Weekly non-US ingress authentications - failure (daily)",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "where(dessert=\"banana pudding\")",
+    "description": "Basic key-value pair search with quoted value containing spaces",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key = \"banana ' pudding\")",
+    "description": "Quoted values with apostrophes using double quotes",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key = 'banana \" pudding')",
+    "description": "Quoted values with double quotes using single quotes",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key = '''banana \" pudding''')",
+    "description": "Triple quotes for values with mixed punctuation",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key = '''banana ' apple \" pudding''')",
+    "description": "Triple quotes for values with both single and double quotes",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key NOT IN [\"aaa\", \"bbb\"])",
+    "description": "NOT with IN operator to exclude results",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key1, key2 NOT STARTS-WITH \"aaa\")",
+    "description": "NOT with STARTS-WITH on compound keys",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(all(key1, key2) IN [value1, value2])",
+    "description": "ALL function for compound key AND logic",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where((city = London OR city = Dublin) AND action = login)",
+    "description": "Operator precedence with parentheses to override AND/OR",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(run)",
+    "description": "Keyword search for delimited word",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(Amazon AND Boardman)",
+    "description": "Multiple keywords with AND operator",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(\"Amazon Boardman\")",
+    "description": "Exact phrase search with quotation marks",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(/complete/)",
+    "description": "Regex search - partial match (matches complete, completely, completed)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(/error/i)",
+    "description": "Case-insensitive regex search",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key = NOCASE(value))",
+    "description": "NOCASE function for case-insensitive matching",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key ICONTAINS value)",
+    "description": "Case-insensitive substring search on field",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key1==key2, loose)",
+    "description": "Loose key-to-key comparison (case-insensitive)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(date=/05\\/\\d{2}\\/2023/)",
+    "description": "Regex with escaped forward slashes for date matching",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(/Client=(?P<source_address>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/) groupby(source_address) calculate(count)",
+    "description": "Named capturing group for IP address extraction with groupby",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(/total sale (?P<saleValue>\\d*)/)",
+    "description": "Named capturing group to extract numeric values",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(/total sale (?P<saleValue>\\d*)/) calculate(average:saleValue)",
+    "description": "Calculate average on regex-extracted named group",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(response_time>25)",
+    "description": "KVP numeric comparison (greater than)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(response_time>25 OR containerID=14)",
+    "description": "Combining conditions with OR logic",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(path=\"C:\\Windows\")",
+    "description": "Windows path search with escaped backslash",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(path=\"C:\\Windows\")",
+    "description": "Windows path search with quoted string",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(destination_address = IP(192.168.0.0/24))",
+    "description": "CIDR notation search for IP range (/24 subnet)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(destination_address = IP(192.168.0.0/16))",
+    "description": "CIDR notation search for broader IP range (/16 subnet)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "groupby(destination_user) calculate(count)",
+    "description": "Groupby with count calculation",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "groupby(destination_user, result, service, source_asset_address) calculate(count)",
+    "description": "Multi-field groupby with count",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(result=FAILED_BAD_PASSWORD) groupby(user)",
+    "description": "Basic groupby for failed password attempts",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(result=FAILED_BAD_PASSWORD) groupby(user) having (count>15)",
+    "description": "Having clause to filter groups by count threshold",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(result = FAILED_BAD_PASSWORD) groupby(user) calculate(unique:geoip_country_name) having(unique:geoip_country_name>1)",
+    "description": "Having clause with unique calculation",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "groupby(#log) calculate(bytes)",
+    "description": "Groupby log source with bytes calculation",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(status=500) calculate(COUNT)",
+    "description": "Count of 500 status errors",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(total_bytes>2000) calculate(SUM:total_bytes)",
+    "description": "Sum of total bytes above threshold",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(total_bytes>0) calculate(AVERAGE:total_bytes)",
+    "description": "Average of total bytes",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(userID) calculate(UNIQUE:userID)",
+    "description": "Unique count of user IDs",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(status=200) calculate(MIN:responseTime)",
+    "description": "Minimum response time for successful requests",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(status=200) calculate(Max:responseTime)",
+    "description": "Maximum response time for successful requests",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(status=404) calculate(count) timeslice(60)",
+    "description": "Timeslice with 60 equal intervals",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(status=404) calculate(count) timeslice(30m)",
+    "description": "Timeslice with 30-minute intervals",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "calculate(pctl(95):total)",
+    "description": "95th percentile calculation to exclude outliers",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "calculate(standarddeviation:outgoing_bytes)",
+    "description": "Standard deviation of outgoing bytes",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "calculate(sd:outgoing_bytes)",
+    "description": "Standard deviation shorthand (sd keyword)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(\"action\" = \"ACCOUNT_CREATED\") limit(5)",
+    "description": "Limit results to 5 most recent matches",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "groupby(source_asset_address) calculate(count) sort(desc) limit(350)",
+    "description": "Groupby with sort and limit of 350 groups",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "groupby(source_asset_address, service) calculate(count) sort(desc) limit(100, 20)",
+    "description": "Multi-field groupby with different limits per field",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "select(hostname as host, process.name as process, \"process.exe_file.hashes.sha256\" as sha256hash) where(\"suspicious event\")",
+    "description": "Select clause with field renaming (as keyword)",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "select(username as user, hostname as host) where(login!=success)",
+    "description": "Select with filtering condition",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(key1,key2 = \"abc\")",
+    "description": "Compound keys with comma acting as OR",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(source_address IN [IP(10.0.0.0/24), IP(192.168.0.0/24)])",
+    "description": "IN operator with IP CIDR notation",
+    "source": "https://docs.rapid7.com/insightidr/build-a-query/"
+  },
+  {
+    "query": "where(powershell)",
+    "description": "Basic keyword search (case sensitive)",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(\"powershell.exe\")",
+    "description": "Quoted string search ignoring period as special character",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(/pass{2,5}word/)",
+    "description": "Regex with quantifier matching character repetition",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(/w{3}/)",
+    "description": "Regex matching three consecutive w characters",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(event_code IN [\"1\", \"2\", \"3\"])",
+    "description": "IN operator with string array",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(event_code=/467./)",
+    "description": "Regex wildcard matching on field value",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(/.*password.*/)",
+    "description": "Regex matching password anywhere in log",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"failed\") groupby(user)",
+    "description": "Groupby with case-insensitive starts-with",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"failed\") groupby(user) having(count>=5)",
+    "description": "Having clause filtering groups with 5+ failures",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"failed\") groupby(user) sort(desc)",
+    "description": "Sort descending on grouped results",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(result ISTARTS-WITH \"failed\") groupby(user) limit(10)",
+    "description": "Limit output to 10 grouped results",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(powershell) groupby(user) calculate(count)",
+    "description": "Count powershell events grouped by user",
+    "source": "https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/"
+  },
+  {
+    "query": "where(result=FAILED_BAD_PASSWORD) groupby(user) having (count>5)",
+    "description": "Filter to users with more than 5 failed login attempts",
+    "source": "https://docs.rapid7.com/insightidr/search-your-logs/"
+  },
+  {
+    "query": "groupby(destination_user, result) calculate(count) sort(asc, desc#key)",
+    "description": "Multi-field groupby with multiple sort directions",
+    "source": "https://docs.rapid7.com/insightidr/search-your-logs/"
+  },
+  {
+    "query": "where(source_ip NOT IN [IP(10.0.0.0/8), IP(172.27.0.0/16), IP(169.254.0.0/16), IP(192.168.0.0/16), IP(172.16.0.0/16)])",
+    "description": "Complex IP address filtering excluding private ranges",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(geoip_country_code NOT IN [\"CA\", \"US\", \"MX\"])",
+    "description": "Regional filtering excluding North America",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(connection_status = DENY and source_address not in [${private_ip_sample}])",
+    "description": "Deny status with variable-based IP exclusion",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(geoip_country_code in [${eu_region_sample}])",
+    "description": "EU region variable for geographic filtering",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(geoip_organization IIN [${low_cost_vpns_sample}])",
+    "description": "Low-cost VPN detection using variable",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(process.exe_file.product_name IIN [${remote_access_solutions_sample}])",
+    "description": "Remote access solutions detection using variable",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(process.exe_file.description IIN [${cloud_storage_solutions_sample}])",
+    "description": "Cloud storage detection using variable",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(${single_low_cost_vpn})",
+    "description": "Single-value variable as keyphrase search",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(geoip_organization=${single_low_cost_vpn})",
+    "description": "Single-value variable in key-value comparison",
+    "source": "https://docs.rapid7.com/insightidr/use-variables-in-queries/"
+  },
+  {
+    "query": "where(asset_os_family=windows AND file_name=\"config.xml\") groupby(user)",
+    "description": "FIM Events from a single file grouped by user",
+    "source": "https://docs.rapid7.com/insightidr/search-logs-for-fim-events/"
+  },
+  {
+    "query": "where(asset_os_family=windows AND file_name=\"config.xml\") calculate(COUNT) timeslice(1440m)",
+    "description": "FIM Events of a single file in one day (1440-minute timeslice)",
+    "source": "https://docs.rapid7.com/insightidr/search-logs-for-fim-events/"
+  },
+  {
+    "query": "where(asset_os_family=windows AND asset=\"server01\") groupby(process)",
+    "description": "Processes on an asset by hostname",
+    "source": "https://docs.rapid7.com/insightidr/search-logs-for-fim-events/"
+  },
+  {
+    "query": "where(process.name=\"psexec.exe\" OR parent_process.name=\"psexec.exe\")groupby(hostname)calculate(unique:hostname)limit(1000)",
+    "description": "PsExec detection (parent or child process)",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"psexecsvc.exe\" OR parent_process.name=\"psexecsvc.exe\")groupby(hostname)calculate(unique:hostname)",
+    "description": "PsExecSvc detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"ping.exe\")groupby(hostname, process.cmd_line)",
+    "description": "Ping process analysis by hostname and command line",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"netstat.exe\")groupby(hostname, process.cmd_line)",
+    "description": "Netstat process analysis by hostname and command line",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.exe_file.signing_status.status=\"UNSIGNED\")groupby(process.name, hostname) calculate(count)",
+    "description": "Unsigned Windows processes",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line icontains \"keyword\")groupby(hostname, process.name)",
+    "description": "Processes containing specific keywords in command line",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"mstsc.exe\")groupby(hostname, process.cmd_line)",
+    "description": "Remote Desktop (RDP) usage detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"mmc.exe\")groupby(process.cmd_line)",
+    "description": "Microsoft Management Console and associated commands",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"mmc.exe\" AND process.cmd_line icontains \"dsa.msc\")groupby(hostname, parent_process.username)",
+    "description": "MMC launching Active Directory Users and Computers",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(\"mimikatz\", loose)groupby(hostname, parent_process.cmd_line)",
+    "description": "Mimikatz detection with loose matching",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "groupby(process.name)calculate(unique:hostname)limit(1000)",
+    "description": "Unique processes running on hosts",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"msiexec.exe\" AND process.cmd_line icontains \"/i\")groupby(process.cmd_line)",
+    "description": "MSIExec installations",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"msiexec.exe\" AND process.cmd_line icontains \"/quiet\")groupby(process.cmd_line)",
+    "description": "MSIExec quiet installations",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(os_type=\"LINUX\")groupby(process.exe_file.permission, process.name)",
+    "description": "Linux process permissions grouped by file permission and name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.reputation='Known')groupby(process.name)",
+    "description": "Known reputation processes by name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.reputation='Unknown')groupby(process.name)",
+    "description": "Unknown reputation processes by name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.reputation='Malicious')groupby(process.name)",
+    "description": "Malicious reputation processes by name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "groupby(process.hash_reputation.reliability)",
+    "description": "Overall process reliability grouping",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.classification.type='PUA')groupby(process.name, process.hash_reputation.threat_level)",
+    "description": "Potentially Unwanted Programs (PUPs) by name and threat level",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.classification.type='PUA')groupby(process.name, hostname, process.username)",
+    "description": "PUPs by name, hostname, and username",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.classification.type='Adware')groupby(process.name)",
+    "description": "Adware detection by process name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "groupby(process.hash_reputation.classification.type)",
+    "description": "Classification types grouping",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.threat_level='Low')groupby(process.name)",
+    "description": "Low threat level processes by name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.hash_reputation.reliability IN ['Very high', 'High'])groupby(process.name)",
+    "description": "Well-known high-reliability reputation processes",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"taskkill.exe\")groupby(process.cmd_line)",
+    "description": "Taskkill usage and command lines",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"PsLoggedon.exe\")groupby(hostname, process.username)",
+    "description": "PsLoggedon utility usage",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name='ScreenCapture.exe')groupby(hostname, process.username)",
+    "description": "ScreenCapture usage by host and user",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.exe_file.description icontains-any [\"ssh\", \"telnet\"])groupby(process.name, hostname, process.username)",
+    "description": "SSH and Telnet detection by process, host, and user",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"whoami.exe\")groupby(hostname, process.username)",
+    "description": "Whoami command execution tracking",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"powershell.exe\")groupby(parent_process.name)",
+    "description": "PowerShell parent process identification",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(parent_process.name=\"powershell.exe\")groupby(process.name)",
+    "description": "PowerShell child processes",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(parent_process.name=\"powershell.exe\" AND parent_process.cmd_line NOT IIN [\"null\", \".ps1\"])groupby(parent_process.cmd_line)",
+    "description": "PowerShell non-empty parent command lines",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"powershell.exe\" AND process.cmd_line NOT IIN [\"null\", \".ps1\"])groupby(process.cmd_line)",
+    "description": "PowerShell non-empty child command lines",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"powershell_ise.exe\" OR parent_process.name=\"powershell_ise.exe\")groupby(hostname)calculate(unique:hostname)",
+    "description": "PowerShell ISE detection across hosts",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"psexec.exe\")groupby(process.cmd_line)",
+    "description": "All PsExec command line arguments",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"psexec.exe\" AND process.cmd_line icontains \".s.\")groupby(process.cmd_line)",
+    "description": "PsExec system account execution",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"psexec.exe\" AND process.cmd_line icontains \".s.\" AND /psexec.exe \\(?P<remote_asset>[^ ]*)/)groupby(remote_asset)",
+    "description": "Remote system account PsExec with regex field extraction",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name=\"cmd.exe\" AND process.cmd_line ISTARTS-WITH \"cmd.exe /C\")groupby(process.cmd_line)",
+    "description": "Command execution with /C flag detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line icontains \"attrib -h -s -r\")",
+    "description": "File attribute removal attempts detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.name IIN [\"Netplwiz.exe\", \"lusmgr.msc\"])groupby(hostname, process.username)",
+    "description": "User account management tool launches",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line icontains-all [\"\\downloads\\\\\", \"setup.exe\"]) groupby(process.cmd_line)",
+    "description": "Downloads folder setup.exe execution detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line ISTARTS-WITH-ANY [\"tasklist\", \"ver\", \"ipconfig\", \"systeminfo\", \"net time\", \"netstat\", \"whoami\", \"net start\", \"qprocess\", \"query\"])groupby(hostname, process.cmd_line)",
+    "description": "Initial reconnaissance command detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line ISTARTS-WITH-ANY [\"dir\", \"net view\", \"ping\", \"net use\", \"type\", \"net user\", \"net localgroup\", \"net group\", \"net config\", \"net share\"])groupby(hostname, process.cmd_line)",
+    "description": "Network reconnaissance command detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.cmd_line ISTARTS-WITH-ANY [\"at\", \"reg\", \"wmic\", \"netsh advfirewall\", \"sc\", \"rundll32\"])groupby(hostname, process.cmd_line)",
+    "description": "Infection spread command detection",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(process.exe_file.hashes.sha1=\"hash_value\") groupby(hostname) calculate(count)",
+    "description": "Malicious hash detection across endpoints",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(sale_total>0) calculate(SUM:sale_total)",
+    "description": "Sum of sale totals above zero",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(sale_total>0) calculate(AVERAGE:sale_total)",
+    "description": "Average of sale totals above zero",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status) groupby(status) calculate(count)",
+    "description": "Groupby status with count",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status) groupby(status) calculate(count) sort(desc) limit(350)",
+    "description": "Groupby status sorted descending with limit",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status>=300) groupby(status) calculate(count) sort(desc)",
+    "description": "Status codes 300+ sorted by count descending",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "groupby(username) calculate(count) sort(asc#key)",
+    "description": "Usernames sorted alphabetically by key name",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status=500) calculate(count) timeslice(60)",
+    "description": "Count of 500 errors per minute (60 intervals)",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status=500) calculate(count) timeslice(30s)",
+    "description": "Count of 500 errors in 30-second intervals",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status=500) calculate(count) timeslice(5m)",
+    "description": "Count of 500 errors in 5-minute intervals",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(status=500) calculate(count) timeslice(1h)",
+    "description": "Count of 500 errors in hourly intervals",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "calculate(pctl(99):RecordNumber)",
+    "description": "99th percentile of RecordNumber to exclude outliers",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(/.*/) calculate(bytes)",
+    "description": "Calculate total log size in bytes (match-all regex)",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "calculate(standarddeviation:service)",
+    "description": "Standard deviation of service values",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "calculate(sd:service)",
+    "description": "Standard deviation shorthand for service",
+    "source": "https://docs.rapid7.com/insightops/analytic-functions-and-visualizations/"
+  },
+  {
+    "query": "where(remoteIP = /\"197\\.149\\.[12][0-59][0-9]\\.[0-2].*\\/NX\"/)",
+    "description": "IP range search with regex on JSON field (Apache Access Logs)",
+    "source": "https://docs.rapid7.com/insightops/regular-expression-search/"
+  },
+  {
+    "query": "where(/total sale (?P<saleValue>\\d*)/) calculate(average:saleValue)",
+    "description": "Named capture group extraction with average calculation",
+    "source": "https://docs.rapid7.com/insightops/regular-expression-search/"
+  },
+  {
+    "query": "groupby(dns_domain)",
+    "description": "Group by DNS domain",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "groupby(os_type)",
+    "description": "Group by operating system type",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "groupby(process.exe_file.product_name)",
+    "description": "Group by executable product name",
+    "source": "https://docs.rapid7.com/insightidr/leverage-enhanced-endpoint-telemetry-data/"
+  },
+  {
+    "query": "where(source_json.ApplicationId=\"app-id-here\")groupby(account)",
+    "description": "All accounts ingressed into application by specific Application ID",
+    "source": "https://docs.rapid7.com/insightidr/example-queries/"
+  },
+  {
+    "query": "calculate(unique:source_address)",
+    "description": "Count of unique source addresses",
+    "source": "https://docs.rapid7.com/insightidr/components-for-building-a-query/"
+  },
+  {
+    "query": "groupby(#log)",
+    "description": "Group by log set or log source",
+    "source": "https://docs.rapid7.com/insightidr/components-for-building-a-query/"
+  },
+  {
+    "query": "where(field = NOCASE(\"foo\"))",
+    "description": "Simple case-insensitive equality match on a field",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE('fo\"o'))",
+    "description": "Case-insensitive equality with single-quote wrapping for value containing double quotes",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE(\"\"\"fo'\"o\"\"\"))",
+    "description": "Case-insensitive equality with triple-quote wrapping for value containing both quote types",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE(\"foo\"))",
+    "description": "Advanced search output format wrapping query in where() clause",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "from(\n  entry_type = \"process_start_event\"\n)\nwhere(\n  field = NOCASE(\"foo\")\n)",
+    "description": "Detection definition output format with from() and where() clauses for process creation rules",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE(\"foo\") AND NOT field = NOCASE(\"blah\"))",
+    "description": "Selection with NOT filter condition - detect field=foo but not field=blah",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ICONTAINS \"foo\")",
+    "description": "Case-insensitive substring contains match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ISTARTS-WITH \"foo\")",
+    "description": "Case-insensitive starts-with match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field=/.*foo$/i)",
+    "description": "Case-insensitive regex ends-with match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field IIN [\"val1\", \"val2\", \"val3\"])",
+    "description": "Case-insensitive value-in-list match (IIN operator)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field1 = NOCASE(\"val1\") OR field2 = NOCASE(\"val2\"))",
+    "description": "OR condition across two different fields with case-insensitive matching",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(\"val1\" OR \"val2\")",
+    "description": "Keyword OR search (unbound values without field names)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(\"val1\" AND \"val2\")",
+    "description": "Keyword AND search (unbound values without field names)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE(\"val1\") AND field2 = NOCASE(\"val2\"))",
+    "description": "AND condition across two different fields with case-insensitive matching",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ICONTAINS-ANY [\"val1\", \"val2\", \"val3\"])",
+    "description": "Case-insensitive contains-any-of-list match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ICONTAINS-ALL [\"val1\", \"val2\", \"val3\"])",
+    "description": "Case-insensitive contains-all-of-list match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ISTARTS-WITH-ANY [\"val1\", \"val2\", \"val3\"])",
+    "description": "Case-insensitive starts-with-any-of-list match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field=/(.*val1$|.*val2$|.*val3$)/i)",
+    "description": "Regex ends-with-any-of-list match using alternation",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field=/boo.*far/i)",
+    "description": "Case-insensitive regex match on field value",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = IP(192.168.0.0/16))",
+    "description": "CIDR IP range match",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field = NOCASE(\"c2lnbWEgcnVsZXMh\"))",
+    "description": "Base64-encoded value match (sigma rules! encoded)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ICONTAINS-ANY [\"val1\", \"val2\"] OR field=/.*val3$/i AND field ICONTAINS \"val4\")",
+    "description": "Nested logic: (contains-any OR (endswith AND contains)) across conditions",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field ICONTAINS-ALL [\"val1\", \"val2\"] AND NOT (field1 ICONTAINS \"val3\" OR field2 ICONTAINS \"val4\"))",
+    "description": "Selection with NOT 1-of filter condition using grouped negation",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(field1 = NOCASE(\"test\") AND field2 ICONTAINS-ALL [\"val1\", \"val2\"] AND (field2 ICONTAINS-ALL [\"val3\", \"val4\"] OR field2 ICONTAINS-ALL [\"val5\", \"val6\"]))",
+    "description": "Multi-selection with same field contains-all and grouped OR condition",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_backend_insight_idr.py"
+  },
+  {
+    "query": "where(process.cmd_line = NOCASE(\"val1\") AND process.exe_path = NOCASE(\"val2\"))",
+    "description": "Process creation rule with mapped field names (CommandLine->process.cmd_line, Image->process.exe_path)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_insight_idr_pipeline.py"
+  },
+  {
+    "query": "where(process.pid=1962 AND process.exe_path = NOCASE(\"Paint it Black\") AND process.exe_file.version = NOCASE(\"Gimme Shelter\") AND process.exe_file.description = NOCASE(\"Sympathy for the Devil\") AND process.exe_file.product_name = NOCASE(\"Under my Thumb\") AND process.exe_file.author = NOCASE(\"\"\"She's a Rainbow\"\"\") AND process.name = NOCASE(\"Wild Horses\") AND process.cmd_line = NOCASE(\"\"\"Jumpin' Jack Flash\"\"\") AND process.username = NOCASE(\"Mick Jagger\") AND parent_process.pid=1972 AND parent_process.exe_path = NOCASE(\"Muddy Waters\") AND parent_process.cmd_line = NOCASE(\"Start Me Up\") AND parent_process.username = NOCASE(\"Charlie Watts\") AND process.exe_file.hashes.md5 = NOCASE(\"Steel Wheels\") AND process.exe_file.hashes.sha1 = NOCASE(\"Beggars Banquet\") AND process.exe_file.hashes.sha256 = NOCASE(\"Let it Bleed\"))",
+    "description": "Full process creation field mapping test with all Sigma fields mapped to InsightIDR fields",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_insight_idr_pipeline.py"
+  },
+  {
+    "query": "where(query = NOCASE(\"My Generation\") AND asset = NOCASE(\"Teenage Wasteland\") AND query_type = NOCASE(\"Pinball Wizard\"))",
+    "description": "DNS event field mapping (QueryName->query, Computer->asset, record_type->query_type)",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_insight_idr_pipeline.py"
+  },
+  {
+    "query": "where(url = NOCASE(\"https://www.thebeatles.com/\") AND url_path = NOCASE(\"songs\") AND incoming_bytes=100 AND url_host = NOCASE(\"www.thebeatles.com\") AND http_method = NOCASE(\"GET\") AND url_host = NOCASE(\"www.thebeatles.com\") AND outgoing_bytes=500 AND source_ip = IP(192.168.1.0/24) AND destination_ip = NOCASE(\"54.229.169.162\"))",
+    "description": "Web proxy event field mapping with CIDR, numeric bytes, and URL fields",
+    "source": "SigmaHQ/pySigma-backend-insightidr/tests/test_insight_idr_pipeline.py"
+  },
+  {
+    "query": "where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP] AND group CONTAINS \"-job-admins\")",
+    "description": "Group changes made to admin groups using IN operator",
+    "source": "Jithendra-Kantharaju/Fusion-Assistant/query_examples/active-directory-admin-activity.md"
+  },
+  {
+    "query": "where(/eventCode\\\\\":\\\"(?P<EVID>\\d{4})/) groupby(EVID)",
+    "description": "Extract and group all Microsoft Event IDs from collected events",
+    "source": "Jithendra-Kantharaju/Fusion-Assistant/query_examples/active-directory-domain-activity.md"
+  },
+  {
+    "query": "where(/computerName\\\\\":\\\"(?P<HostName>[\\w\\d\\-]*)/)groupby(HostName)",
+    "description": "Extract and group all hostnames from Microsoft logs",
+    "source": "Jithendra-Kantharaju/Fusion-Assistant/query_examples/active-directory-domain-activity.md"
+  },
+  {
+    "query": "where(\"source_asset\" = \"10.0.0.1\" and \"destination_asset\" = \"10.0.0.2\" and \"destination_user\" = \"admin\" and \"destination_account\" = \"svc-account\") groupby(\"result\")",
+    "description": "Excessive failed login investigation query template",
+    "source": "Jithendra-Kantharaju/Fusion-Assistant/query_examples/Excessive_Failed_Login_Report.txt"
+  },
+  {
+    "query": "where(source_ip=/192.168.1./)groupby(result)",
+    "description": "Check entire /24 subnet for logs",
+    "source": "pawan-regoti/Insight-IDR-LEQL-Cheat-Sheet/README.md"
+  },
+  {
+    "query": "where(\"parent_process.exe_file.hashes.*\",\"process.exe_file.hashes.*\" IN ['5394bb17630ed1c849ebc50d6d11a0c5d99037c2073b261f32bd66a618dd4df4'])",
+    "description": "IOC hash search across parent and child process hash fields",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(\"parent_process.exe_file.hashes.*\",\"process.exe_file.hashes.*\" IN ['5d41402abc4b2a76b9719d911017c592', 'aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'])",
+    "description": "IOC search with multiple hash types (MD5, SHA1, SHA256) in single query",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(\"query\",\"url\" ICONTAINS-ANY ['icloud.com'])",
+    "description": "IOC domain search across DNS query and URL fields",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(\"query\",\"url\" ICONTAINS-ANY ['evil.com', 'malware.net', 'bad.org'])",
+    "description": "IOC search for multiple malicious domains",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(\"source_address\",\"destination_address\" IN ['1.1.1.1'])",
+    "description": "IOC IP address search across source and destination",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(\"source_address\",\"destination_address\" IN ['10.0.0.1', '192.168.1.100', '8.8.8.8'])",
+    "description": "IOC search for multiple IP addresses",
+    "source": "jakewarren/ioc2query/openspec/specs/r7-backend/spec.md"
+  },
+  {
+    "query": "where(source_address IN [IP(10.0.0.0/24), IP(192.168.0.0/24)])",
+    "description": "Multiple CIDR subnet match using IN operator",
+    "source": "docs.rapid7.com/insightidr/components-for-building-a-query"
+  },
+  {
+    "query": "select(hostname as host, process.name as process, \"process.exe_file.hashes.sha256\" as sha256hash) where(\"suspicious event\")",
+    "description": "Select specific fields with aliases for suspicious event search",
+    "source": "docs.rapid7.com/insightidr/components-for-building-a-query"
+  },
+  {
+    "query": "select(username as user, hostname as host) where(login!=success)",
+    "description": "Select username and hostname for failed logins",
+    "source": "docs.rapid7.com/insightidr/components-for-building-a-query"
+  },
+  {
+    "query": "where(field = null)",
+    "description": "Null check expression",
+    "source": "SigmaHQ/pySigma-backend-insightidr/sigma/backends/insight_idr/insight_idr.py"
   }
 ]

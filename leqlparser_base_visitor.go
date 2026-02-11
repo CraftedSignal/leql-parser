@@ -47,6 +47,10 @@ func (v *BaseLEQLParserVisitor) VisitRegexExpr(ctx *RegexExprContext) interface{
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitImplicitAndExpr(ctx *ImplicitAndExprContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitNestedWhereExpr(ctx *NestedWhereExprContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -140,6 +144,10 @@ func (v *BaseLEQLParserVisitor) VisitFieldExistsCondition(ctx *FieldExistsCondit
 }
 
 func (v *BaseLEQLParserVisitor) VisitNumberKeywordCondition(ctx *NumberKeywordConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitVariableCondition(ctx *VariableConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

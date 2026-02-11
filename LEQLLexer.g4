@@ -102,6 +102,9 @@ fragment DIGIT : [0-9] ;
 // Time units for timeslice (e.g., 30m, 1h, 7d)
 TIME_UNIT   : DIGIT+ [smhd] ;
 
+// Variable references: ${variable_name}
+VARIABLE    : '${' (LETTER | DIGIT | '_')+ '}' ;
+
 // Identifiers: field names, including dotted paths (a.b.c) and wildcard (a.*)
 // Also allows hyphens in field names and # prefix for log set references
 IDENTIFIER  : (LETTER | '_' | '#') (LETTER | DIGIT | '_' | '-')* ('.' (LETTER | DIGIT | '_' | '-' | '*')+)* ;

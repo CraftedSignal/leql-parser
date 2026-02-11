@@ -49,8 +49,8 @@ func leqlparserParserInit() {
 		"NEQ", "GTE", "LTE", "STRICT_EQ", "EQ", "GT", "LT", "BANG", "LPAREN",
 		"RPAREN", "LBRACKET", "RBRACKET", "COMMA", "COLON", "DOT", "STAR", "HASH",
 		"IP_CIDR", "REGEX", "TRIPLE_SINGLE_STRING", "TRIPLE_DOUBLE_STRING",
-		"DOUBLE_STRING", "SINGLE_STRING", "NUMBER", "TIME_UNIT", "IDENTIFIER",
-		"WS",
+		"DOUBLE_STRING", "SINGLE_STRING", "NUMBER", "TIME_UNIT", "VARIABLE",
+		"IDENTIFIER", "WS",
 	}
 	staticData.RuleNames = []string{
 		"query", "fromClause", "selectClause", "selectFieldList", "selectField",
@@ -64,7 +64,7 @@ func leqlparserParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 71, 398, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 72, 401, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
@@ -78,165 +78,167 @@ func leqlparserParserInit() {
 		3, 116, 9, 3, 1, 4, 1, 4, 1, 4, 3, 4, 121, 8, 4, 1, 5, 1, 5, 1, 5, 1, 5,
 		1, 5, 3, 5, 128, 8, 5, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
 		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 3, 6, 147, 8, 6,
-		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 5, 6, 155, 8, 6, 10, 6, 12, 6, 158,
-		9, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
+		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 5, 6, 157, 8, 6, 10, 6,
+		12, 6, 160, 9, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
-		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7,
-		242, 8, 7, 1, 8, 1, 8, 3, 8, 246, 8, 8, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10,
-		5, 10, 253, 8, 10, 10, 10, 12, 10, 256, 9, 10, 1, 11, 1, 11, 1, 11, 1,
-		11, 1, 11, 5, 11, 263, 8, 11, 10, 11, 12, 11, 266, 9, 11, 1, 11, 1, 11,
-		1, 12, 1, 12, 1, 13, 1, 13, 1, 14, 1, 14, 1, 15, 1, 15, 1, 16, 1, 16, 1,
-		17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 19, 1, 19, 1, 19, 1, 19,
-		3, 19, 291, 8, 19, 1, 19, 1, 19, 1, 20, 1, 20, 1, 20, 1, 20, 5, 20, 299,
-		8, 20, 10, 20, 12, 20, 302, 9, 20, 1, 20, 1, 20, 1, 21, 1, 21, 3, 21, 308,
-		8, 21, 1, 22, 1, 22, 1, 22, 1, 22, 1, 22, 5, 22, 315, 8, 22, 10, 22, 12,
-		22, 318, 9, 22, 1, 22, 1, 22, 1, 23, 1, 23, 1, 23, 1, 23, 1, 23, 1, 24,
-		1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 3, 24, 335, 8, 24, 1,
-		25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 26, 1, 26, 1, 26, 3, 26, 345, 8, 26,
-		1, 27, 1, 27, 1, 28, 1, 28, 1, 28, 1, 28, 1, 29, 1, 29, 1, 29, 1, 29, 1,
-		29, 1, 29, 3, 29, 359, 8, 29, 1, 30, 1, 30, 1, 30, 1, 30, 1, 30, 5, 30,
-		366, 8, 30, 10, 30, 12, 30, 369, 9, 30, 1, 30, 1, 30, 1, 31, 1, 31, 1,
-		31, 1, 31, 3, 31, 377, 8, 31, 1, 32, 1, 32, 1, 33, 1, 33, 1, 33, 1, 33,
-		1, 33, 5, 33, 386, 8, 33, 10, 33, 12, 33, 389, 9, 33, 1, 33, 1, 33, 1,
-		34, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 0, 1, 12, 35, 0, 2, 4, 6, 8, 10,
-		12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46,
-		48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 0, 11, 6, 0, 9, 10, 27, 28,
-		33, 33, 36, 39, 66, 67, 70, 70, 1, 0, 44, 51, 1, 0, 20, 23, 1, 0, 24, 25,
-		1, 0, 14, 19, 1, 0, 62, 70, 1, 0, 33, 34, 3, 0, 29, 29, 31, 34, 36, 39,
-		2, 0, 30, 30, 35, 35, 1, 0, 40, 43, 1, 0, 68, 69, 415, 0, 71, 1, 0, 0,
-		0, 2, 99, 1, 0, 0, 0, 4, 104, 1, 0, 0, 0, 6, 109, 1, 0, 0, 0, 8, 117, 1,
-		0, 0, 0, 10, 122, 1, 0, 0, 0, 12, 146, 1, 0, 0, 0, 14, 241, 1, 0, 0, 0,
-		16, 245, 1, 0, 0, 0, 18, 247, 1, 0, 0, 0, 20, 249, 1, 0, 0, 0, 22, 257,
-		1, 0, 0, 0, 24, 269, 1, 0, 0, 0, 26, 271, 1, 0, 0, 0, 28, 273, 1, 0, 0,
-		0, 30, 275, 1, 0, 0, 0, 32, 277, 1, 0, 0, 0, 34, 279, 1, 0, 0, 0, 36, 281,
-		1, 0, 0, 0, 38, 286, 1, 0, 0, 0, 40, 294, 1, 0, 0, 0, 42, 307, 1, 0, 0,
-		0, 44, 309, 1, 0, 0, 0, 46, 321, 1, 0, 0, 0, 48, 334, 1, 0, 0, 0, 50, 336,
-		1, 0, 0, 0, 52, 344, 1, 0, 0, 0, 54, 346, 1, 0, 0, 0, 56, 348, 1, 0, 0,
-		0, 58, 352, 1, 0, 0, 0, 60, 360, 1, 0, 0, 0, 62, 372, 1, 0, 0, 0, 64, 378,
-		1, 0, 0, 0, 66, 380, 1, 0, 0, 0, 68, 392, 1, 0, 0, 0, 70, 72, 3, 2, 1,
-		0, 71, 70, 1, 0, 0, 0, 71, 72, 1, 0, 0, 0, 72, 74, 1, 0, 0, 0, 73, 75,
-		3, 4, 2, 0, 74, 73, 1, 0, 0, 0, 74, 75, 1, 0, 0, 0, 75, 77, 1, 0, 0, 0,
-		76, 78, 3, 10, 5, 0, 77, 76, 1, 0, 0, 0, 77, 78, 1, 0, 0, 0, 78, 80, 1,
-		0, 0, 0, 79, 81, 3, 44, 22, 0, 80, 79, 1, 0, 0, 0, 80, 81, 1, 0, 0, 0,
-		81, 83, 1, 0, 0, 0, 82, 84, 3, 50, 25, 0, 83, 82, 1, 0, 0, 0, 83, 84, 1,
-		0, 0, 0, 84, 86, 1, 0, 0, 0, 85, 87, 3, 46, 23, 0, 86, 85, 1, 0, 0, 0,
-		86, 87, 1, 0, 0, 0, 87, 89, 1, 0, 0, 0, 88, 90, 3, 60, 30, 0, 89, 88, 1,
-		0, 0, 0, 89, 90, 1, 0, 0, 0, 90, 92, 1, 0, 0, 0, 91, 93, 3, 66, 33, 0,
-		92, 91, 1, 0, 0, 0, 92, 93, 1, 0, 0, 0, 93, 95, 1, 0, 0, 0, 94, 96, 3,
-		68, 34, 0, 95, 94, 1, 0, 0, 0, 95, 96, 1, 0, 0, 0, 96, 97, 1, 0, 0, 0,
-		97, 98, 5, 0, 0, 1, 98, 1, 1, 0, 0, 0, 99, 100, 5, 9, 0, 0, 100, 101, 5,
-		53, 0, 0, 101, 102, 3, 12, 6, 0, 102, 103, 5, 54, 0, 0, 103, 3, 1, 0, 0,
-		0, 104, 105, 5, 1, 0, 0, 105, 106, 5, 53, 0, 0, 106, 107, 3, 6, 3, 0, 107,
-		108, 5, 54, 0, 0, 108, 5, 1, 0, 0, 0, 109, 114, 3, 8, 4, 0, 110, 111, 5,
-		57, 0, 0, 111, 113, 3, 8, 4, 0, 112, 110, 1, 0, 0, 0, 113, 116, 1, 0, 0,
-		0, 114, 112, 1, 0, 0, 0, 114, 115, 1, 0, 0, 0, 115, 7, 1, 0, 0, 0, 116,
-		114, 1, 0, 0, 0, 117, 120, 3, 24, 12, 0, 118, 119, 5, 70, 0, 0, 119, 121,
-		5, 70, 0, 0, 120, 118, 1, 0, 0, 0, 120, 121, 1, 0, 0, 0, 121, 9, 1, 0,
-		0, 0, 122, 123, 5, 2, 0, 0, 123, 124, 5, 53, 0, 0, 124, 127, 3, 12, 6,
-		0, 125, 126, 5, 57, 0, 0, 126, 128, 5, 10, 0, 0, 127, 125, 1, 0, 0, 0,
-		127, 128, 1, 0, 0, 0, 128, 129, 1, 0, 0, 0, 129, 130, 5, 54, 0, 0, 130,
-		11, 1, 0, 0, 0, 131, 132, 6, 6, -1, 0, 132, 133, 5, 53, 0, 0, 133, 134,
-		3, 12, 6, 0, 134, 135, 5, 54, 0, 0, 135, 147, 1, 0, 0, 0, 136, 137, 5,
-		2, 0, 0, 137, 138, 5, 53, 0, 0, 138, 139, 3, 12, 6, 0, 139, 140, 5, 54,
-		0, 0, 140, 147, 1, 0, 0, 0, 141, 142, 5, 13, 0, 0, 142, 147, 3, 12, 6,
-		6, 143, 147, 3, 14, 7, 0, 144, 147, 3, 16, 8, 0, 145, 147, 3, 18, 9, 0,
-		146, 131, 1, 0, 0, 0, 146, 136, 1, 0, 0, 0, 146, 141, 1, 0, 0, 0, 146,
-		143, 1, 0, 0, 0, 146, 144, 1, 0, 0, 0, 146, 145, 1, 0, 0, 0, 147, 156,
-		1, 0, 0, 0, 148, 149, 10, 5, 0, 0, 149, 150, 5, 11, 0, 0, 150, 155, 3,
-		12, 6, 6, 151, 152, 10, 4, 0, 0, 152, 153, 5, 12, 0, 0, 153, 155, 3, 12,
-		6, 5, 154, 148, 1, 0, 0, 0, 154, 151, 1, 0, 0, 0, 155, 158, 1, 0, 0, 0,
-		156, 154, 1, 0, 0, 0, 156, 157, 1, 0, 0, 0, 157, 13, 1, 0, 0, 0, 158, 156,
-		1, 0, 0, 0, 159, 160, 3, 20, 10, 0, 160, 161, 3, 26, 13, 0, 161, 162, 3,
-		34, 17, 0, 162, 242, 1, 0, 0, 0, 163, 164, 3, 20, 10, 0, 164, 165, 3, 28,
-		14, 0, 165, 166, 3, 34, 17, 0, 166, 242, 1, 0, 0, 0, 167, 168, 3, 20, 10,
-		0, 168, 169, 3, 30, 15, 0, 169, 170, 3, 40, 20, 0, 170, 242, 1, 0, 0, 0,
-		171, 172, 3, 20, 10, 0, 172, 173, 3, 32, 16, 0, 173, 174, 3, 40, 20, 0,
-		174, 242, 1, 0, 0, 0, 175, 176, 5, 13, 0, 0, 176, 177, 3, 20, 10, 0, 177,
-		178, 3, 26, 13, 0, 178, 179, 3, 34, 17, 0, 179, 242, 1, 0, 0, 0, 180, 181,
-		5, 13, 0, 0, 181, 182, 3, 20, 10, 0, 182, 183, 3, 28, 14, 0, 183, 184,
-		3, 34, 17, 0, 184, 242, 1, 0, 0, 0, 185, 186, 5, 13, 0, 0, 186, 187, 3,
-		20, 10, 0, 187, 188, 3, 30, 15, 0, 188, 189, 3, 40, 20, 0, 189, 242, 1,
-		0, 0, 0, 190, 191, 5, 13, 0, 0, 191, 192, 3, 20, 10, 0, 192, 193, 3, 32,
-		16, 0, 193, 194, 3, 40, 20, 0, 194, 242, 1, 0, 0, 0, 195, 196, 3, 20, 10,
-		0, 196, 197, 5, 13, 0, 0, 197, 198, 3, 26, 13, 0, 198, 199, 3, 34, 17,
-		0, 199, 242, 1, 0, 0, 0, 200, 201, 3, 20, 10, 0, 201, 202, 5, 13, 0, 0,
-		202, 203, 3, 28, 14, 0, 203, 204, 3, 34, 17, 0, 204, 242, 1, 0, 0, 0, 205,
-		206, 3, 20, 10, 0, 206, 207, 5, 13, 0, 0, 207, 208, 3, 30, 15, 0, 208,
-		209, 3, 40, 20, 0, 209, 242, 1, 0, 0, 0, 210, 211, 3, 20, 10, 0, 211, 212,
-		5, 13, 0, 0, 212, 213, 3, 32, 16, 0, 213, 214, 3, 40, 20, 0, 214, 242,
-		1, 0, 0, 0, 215, 216, 3, 20, 10, 0, 216, 217, 3, 26, 13, 0, 217, 218, 3,
-		36, 18, 0, 218, 242, 1, 0, 0, 0, 219, 220, 3, 20, 10, 0, 220, 221, 3, 26,
-		13, 0, 221, 222, 3, 38, 19, 0, 222, 242, 1, 0, 0, 0, 223, 224, 3, 20, 10,
-		0, 224, 225, 3, 30, 15, 0, 225, 226, 3, 40, 20, 0, 226, 242, 1, 0, 0, 0,
-		227, 228, 3, 22, 11, 0, 228, 229, 3, 26, 13, 0, 229, 230, 3, 34, 17, 0,
-		230, 242, 1, 0, 0, 0, 231, 232, 3, 22, 11, 0, 232, 233, 3, 30, 15, 0, 233,
-		234, 3, 40, 20, 0, 234, 242, 1, 0, 0, 0, 235, 236, 3, 22, 11, 0, 236, 237,
-		3, 26, 13, 0, 237, 238, 3, 36, 18, 0, 238, 242, 1, 0, 0, 0, 239, 242, 5,
-		70, 0, 0, 240, 242, 5, 68, 0, 0, 241, 159, 1, 0, 0, 0, 241, 163, 1, 0,
-		0, 0, 241, 167, 1, 0, 0, 0, 241, 171, 1, 0, 0, 0, 241, 175, 1, 0, 0, 0,
-		241, 180, 1, 0, 0, 0, 241, 185, 1, 0, 0, 0, 241, 190, 1, 0, 0, 0, 241,
-		195, 1, 0, 0, 0, 241, 200, 1, 0, 0, 0, 241, 205, 1, 0, 0, 0, 241, 210,
-		1, 0, 0, 0, 241, 215, 1, 0, 0, 0, 241, 219, 1, 0, 0, 0, 241, 223, 1, 0,
-		0, 0, 241, 227, 1, 0, 0, 0, 241, 231, 1, 0, 0, 0, 241, 235, 1, 0, 0, 0,
-		241, 239, 1, 0, 0, 0, 241, 240, 1, 0, 0, 0, 242, 15, 1, 0, 0, 0, 243, 246,
-		5, 66, 0, 0, 244, 246, 5, 67, 0, 0, 245, 243, 1, 0, 0, 0, 245, 244, 1,
-		0, 0, 0, 246, 17, 1, 0, 0, 0, 247, 248, 5, 63, 0, 0, 248, 19, 1, 0, 0,
-		0, 249, 254, 3, 24, 12, 0, 250, 251, 5, 57, 0, 0, 251, 253, 3, 24, 12,
-		0, 252, 250, 1, 0, 0, 0, 253, 256, 1, 0, 0, 0, 254, 252, 1, 0, 0, 0, 254,
-		255, 1, 0, 0, 0, 255, 21, 1, 0, 0, 0, 256, 254, 1, 0, 0, 0, 257, 258, 5,
-		28, 0, 0, 258, 259, 5, 53, 0, 0, 259, 264, 3, 24, 12, 0, 260, 261, 5, 57,
-		0, 0, 261, 263, 3, 24, 12, 0, 262, 260, 1, 0, 0, 0, 263, 266, 1, 0, 0,
-		0, 264, 262, 1, 0, 0, 0, 264, 265, 1, 0, 0, 0, 265, 267, 1, 0, 0, 0, 266,
-		264, 1, 0, 0, 0, 267, 268, 5, 54, 0, 0, 268, 23, 1, 0, 0, 0, 269, 270,
-		7, 0, 0, 0, 270, 25, 1, 0, 0, 0, 271, 272, 7, 1, 0, 0, 272, 27, 1, 0, 0,
-		0, 273, 274, 7, 2, 0, 0, 274, 29, 1, 0, 0, 0, 275, 276, 7, 3, 0, 0, 276,
-		31, 1, 0, 0, 0, 277, 278, 7, 4, 0, 0, 278, 33, 1, 0, 0, 0, 279, 280, 7,
-		5, 0, 0, 280, 35, 1, 0, 0, 0, 281, 282, 5, 26, 0, 0, 282, 283, 5, 53, 0,
-		0, 283, 284, 3, 34, 17, 0, 284, 285, 5, 54, 0, 0, 285, 37, 1, 0, 0, 0,
-		286, 287, 5, 27, 0, 0, 287, 290, 5, 53, 0, 0, 288, 291, 5, 62, 0, 0, 289,
-		291, 3, 34, 17, 0, 290, 288, 1, 0, 0, 0, 290, 289, 1, 0, 0, 0, 291, 292,
-		1, 0, 0, 0, 292, 293, 5, 54, 0, 0, 293, 39, 1, 0, 0, 0, 294, 295, 5, 55,
-		0, 0, 295, 300, 3, 42, 21, 0, 296, 297, 5, 57, 0, 0, 297, 299, 3, 42, 21,
-		0, 298, 296, 1, 0, 0, 0, 299, 302, 1, 0, 0, 0, 300, 298, 1, 0, 0, 0, 300,
-		301, 1, 0, 0, 0, 301, 303, 1, 0, 0, 0, 302, 300, 1, 0, 0, 0, 303, 304,
-		5, 56, 0, 0, 304, 41, 1, 0, 0, 0, 305, 308, 3, 38, 19, 0, 306, 308, 3,
-		34, 17, 0, 307, 305, 1, 0, 0, 0, 307, 306, 1, 0, 0, 0, 308, 43, 1, 0, 0,
-		0, 309, 310, 5, 3, 0, 0, 310, 311, 5, 53, 0, 0, 311, 316, 3, 24, 12, 0,
-		312, 313, 5, 57, 0, 0, 313, 315, 3, 24, 12, 0, 314, 312, 1, 0, 0, 0, 315,
-		318, 1, 0, 0, 0, 316, 314, 1, 0, 0, 0, 316, 317, 1, 0, 0, 0, 317, 319,
-		1, 0, 0, 0, 318, 316, 1, 0, 0, 0, 319, 320, 5, 54, 0, 0, 320, 45, 1, 0,
-		0, 0, 321, 322, 5, 4, 0, 0, 322, 323, 5, 53, 0, 0, 323, 324, 3, 48, 24,
-		0, 324, 325, 5, 54, 0, 0, 325, 47, 1, 0, 0, 0, 326, 327, 3, 54, 27, 0,
-		327, 328, 3, 26, 13, 0, 328, 329, 3, 34, 17, 0, 329, 335, 1, 0, 0, 0, 330,
-		331, 3, 56, 28, 0, 331, 332, 3, 26, 13, 0, 332, 333, 3, 34, 17, 0, 333,
-		335, 1, 0, 0, 0, 334, 326, 1, 0, 0, 0, 334, 330, 1, 0, 0, 0, 335, 49, 1,
-		0, 0, 0, 336, 337, 5, 5, 0, 0, 337, 338, 5, 53, 0, 0, 338, 339, 3, 52,
-		26, 0, 339, 340, 5, 54, 0, 0, 340, 51, 1, 0, 0, 0, 341, 345, 3, 54, 27,
-		0, 342, 345, 3, 56, 28, 0, 343, 345, 3, 58, 29, 0, 344, 341, 1, 0, 0, 0,
-		344, 342, 1, 0, 0, 0, 344, 343, 1, 0, 0, 0, 345, 53, 1, 0, 0, 0, 346, 347,
-		7, 6, 0, 0, 347, 55, 1, 0, 0, 0, 348, 349, 7, 7, 0, 0, 349, 350, 5, 58,
-		0, 0, 350, 351, 3, 24, 12, 0, 351, 57, 1, 0, 0, 0, 352, 353, 7, 8, 0, 0,
-		353, 354, 5, 53, 0, 0, 354, 355, 5, 68, 0, 0, 355, 358, 5, 54, 0, 0, 356,
-		357, 5, 58, 0, 0, 357, 359, 3, 24, 12, 0, 358, 356, 1, 0, 0, 0, 358, 359,
-		1, 0, 0, 0, 359, 59, 1, 0, 0, 0, 360, 361, 5, 6, 0, 0, 361, 362, 5, 53,
-		0, 0, 362, 367, 3, 62, 31, 0, 363, 364, 5, 57, 0, 0, 364, 366, 3, 62, 31,
-		0, 365, 363, 1, 0, 0, 0, 366, 369, 1, 0, 0, 0, 367, 365, 1, 0, 0, 0, 367,
-		368, 1, 0, 0, 0, 368, 370, 1, 0, 0, 0, 369, 367, 1, 0, 0, 0, 370, 371,
-		5, 54, 0, 0, 371, 61, 1, 0, 0, 0, 372, 376, 3, 64, 32, 0, 373, 374, 5,
-		61, 0, 0, 374, 377, 5, 70, 0, 0, 375, 377, 5, 70, 0, 0, 376, 373, 1, 0,
-		0, 0, 376, 375, 1, 0, 0, 0, 376, 377, 1, 0, 0, 0, 377, 63, 1, 0, 0, 0,
-		378, 379, 7, 9, 0, 0, 379, 65, 1, 0, 0, 0, 380, 381, 5, 7, 0, 0, 381, 382,
-		5, 53, 0, 0, 382, 387, 5, 68, 0, 0, 383, 384, 5, 57, 0, 0, 384, 386, 5,
-		68, 0, 0, 385, 383, 1, 0, 0, 0, 386, 389, 1, 0, 0, 0, 387, 385, 1, 0, 0,
-		0, 387, 388, 1, 0, 0, 0, 388, 390, 1, 0, 0, 0, 389, 387, 1, 0, 0, 0, 390,
-		391, 5, 54, 0, 0, 391, 67, 1, 0, 0, 0, 392, 393, 5, 8, 0, 0, 393, 394,
-		5, 53, 0, 0, 394, 395, 7, 10, 0, 0, 395, 396, 5, 54, 0, 0, 396, 69, 1,
-		0, 0, 0, 29, 71, 74, 77, 80, 83, 86, 89, 92, 95, 114, 120, 127, 146, 154,
-		156, 241, 245, 254, 264, 290, 300, 307, 316, 334, 344, 358, 367, 376, 387,
+		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
+		1, 7, 1, 7, 3, 7, 245, 8, 7, 1, 8, 1, 8, 3, 8, 249, 8, 8, 1, 9, 1, 9, 1,
+		10, 1, 10, 1, 10, 5, 10, 256, 8, 10, 10, 10, 12, 10, 259, 9, 10, 1, 11,
+		1, 11, 1, 11, 1, 11, 1, 11, 5, 11, 266, 8, 11, 10, 11, 12, 11, 269, 9,
+		11, 1, 11, 1, 11, 1, 12, 1, 12, 1, 13, 1, 13, 1, 14, 1, 14, 1, 15, 1, 15,
+		1, 16, 1, 16, 1, 17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 19, 1,
+		19, 1, 19, 1, 19, 3, 19, 294, 8, 19, 1, 19, 1, 19, 1, 20, 1, 20, 1, 20,
+		1, 20, 5, 20, 302, 8, 20, 10, 20, 12, 20, 305, 9, 20, 1, 20, 1, 20, 1,
+		21, 1, 21, 3, 21, 311, 8, 21, 1, 22, 1, 22, 1, 22, 1, 22, 1, 22, 5, 22,
+		318, 8, 22, 10, 22, 12, 22, 321, 9, 22, 1, 22, 1, 22, 1, 23, 1, 23, 1,
+		23, 1, 23, 1, 23, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24,
+		3, 24, 338, 8, 24, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 26, 1, 26, 1,
+		26, 3, 26, 348, 8, 26, 1, 27, 1, 27, 1, 28, 1, 28, 1, 28, 1, 28, 1, 29,
+		1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 3, 29, 362, 8, 29, 1, 30, 1, 30, 1,
+		30, 1, 30, 1, 30, 5, 30, 369, 8, 30, 10, 30, 12, 30, 372, 9, 30, 1, 30,
+		1, 30, 1, 31, 1, 31, 1, 31, 1, 31, 3, 31, 380, 8, 31, 1, 32, 1, 32, 1,
+		33, 1, 33, 1, 33, 1, 33, 1, 33, 5, 33, 389, 8, 33, 10, 33, 12, 33, 392,
+		9, 33, 1, 33, 1, 33, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 0, 1, 12,
+		35, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34,
+		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 0,
+		11, 6, 0, 9, 10, 27, 28, 33, 34, 36, 39, 66, 67, 71, 71, 1, 0, 44, 51,
+		1, 0, 20, 23, 1, 0, 24, 25, 1, 0, 14, 19, 1, 0, 62, 71, 1, 0, 33, 34, 3,
+		0, 29, 29, 31, 34, 36, 39, 2, 0, 30, 30, 35, 35, 1, 0, 40, 43, 1, 0, 68,
+		69, 420, 0, 71, 1, 0, 0, 0, 2, 99, 1, 0, 0, 0, 4, 104, 1, 0, 0, 0, 6, 109,
+		1, 0, 0, 0, 8, 117, 1, 0, 0, 0, 10, 122, 1, 0, 0, 0, 12, 146, 1, 0, 0,
+		0, 14, 244, 1, 0, 0, 0, 16, 248, 1, 0, 0, 0, 18, 250, 1, 0, 0, 0, 20, 252,
+		1, 0, 0, 0, 22, 260, 1, 0, 0, 0, 24, 272, 1, 0, 0, 0, 26, 274, 1, 0, 0,
+		0, 28, 276, 1, 0, 0, 0, 30, 278, 1, 0, 0, 0, 32, 280, 1, 0, 0, 0, 34, 282,
+		1, 0, 0, 0, 36, 284, 1, 0, 0, 0, 38, 289, 1, 0, 0, 0, 40, 297, 1, 0, 0,
+		0, 42, 310, 1, 0, 0, 0, 44, 312, 1, 0, 0, 0, 46, 324, 1, 0, 0, 0, 48, 337,
+		1, 0, 0, 0, 50, 339, 1, 0, 0, 0, 52, 347, 1, 0, 0, 0, 54, 349, 1, 0, 0,
+		0, 56, 351, 1, 0, 0, 0, 58, 355, 1, 0, 0, 0, 60, 363, 1, 0, 0, 0, 62, 375,
+		1, 0, 0, 0, 64, 381, 1, 0, 0, 0, 66, 383, 1, 0, 0, 0, 68, 395, 1, 0, 0,
+		0, 70, 72, 3, 2, 1, 0, 71, 70, 1, 0, 0, 0, 71, 72, 1, 0, 0, 0, 72, 74,
+		1, 0, 0, 0, 73, 75, 3, 4, 2, 0, 74, 73, 1, 0, 0, 0, 74, 75, 1, 0, 0, 0,
+		75, 77, 1, 0, 0, 0, 76, 78, 3, 10, 5, 0, 77, 76, 1, 0, 0, 0, 77, 78, 1,
+		0, 0, 0, 78, 80, 1, 0, 0, 0, 79, 81, 3, 44, 22, 0, 80, 79, 1, 0, 0, 0,
+		80, 81, 1, 0, 0, 0, 81, 83, 1, 0, 0, 0, 82, 84, 3, 50, 25, 0, 83, 82, 1,
+		0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 86, 1, 0, 0, 0, 85, 87, 3, 46, 23, 0,
+		86, 85, 1, 0, 0, 0, 86, 87, 1, 0, 0, 0, 87, 89, 1, 0, 0, 0, 88, 90, 3,
+		60, 30, 0, 89, 88, 1, 0, 0, 0, 89, 90, 1, 0, 0, 0, 90, 92, 1, 0, 0, 0,
+		91, 93, 3, 66, 33, 0, 92, 91, 1, 0, 0, 0, 92, 93, 1, 0, 0, 0, 93, 95, 1,
+		0, 0, 0, 94, 96, 3, 68, 34, 0, 95, 94, 1, 0, 0, 0, 95, 96, 1, 0, 0, 0,
+		96, 97, 1, 0, 0, 0, 97, 98, 5, 0, 0, 1, 98, 1, 1, 0, 0, 0, 99, 100, 5,
+		9, 0, 0, 100, 101, 5, 53, 0, 0, 101, 102, 3, 12, 6, 0, 102, 103, 5, 54,
+		0, 0, 103, 3, 1, 0, 0, 0, 104, 105, 5, 1, 0, 0, 105, 106, 5, 53, 0, 0,
+		106, 107, 3, 6, 3, 0, 107, 108, 5, 54, 0, 0, 108, 5, 1, 0, 0, 0, 109, 114,
+		3, 8, 4, 0, 110, 111, 5, 57, 0, 0, 111, 113, 3, 8, 4, 0, 112, 110, 1, 0,
+		0, 0, 113, 116, 1, 0, 0, 0, 114, 112, 1, 0, 0, 0, 114, 115, 1, 0, 0, 0,
+		115, 7, 1, 0, 0, 0, 116, 114, 1, 0, 0, 0, 117, 120, 3, 24, 12, 0, 118,
+		119, 5, 71, 0, 0, 119, 121, 5, 71, 0, 0, 120, 118, 1, 0, 0, 0, 120, 121,
+		1, 0, 0, 0, 121, 9, 1, 0, 0, 0, 122, 123, 5, 2, 0, 0, 123, 124, 5, 53,
+		0, 0, 124, 127, 3, 12, 6, 0, 125, 126, 5, 57, 0, 0, 126, 128, 5, 10, 0,
+		0, 127, 125, 1, 0, 0, 0, 127, 128, 1, 0, 0, 0, 128, 129, 1, 0, 0, 0, 129,
+		130, 5, 54, 0, 0, 130, 11, 1, 0, 0, 0, 131, 132, 6, 6, -1, 0, 132, 133,
+		5, 53, 0, 0, 133, 134, 3, 12, 6, 0, 134, 135, 5, 54, 0, 0, 135, 147, 1,
+		0, 0, 0, 136, 137, 5, 2, 0, 0, 137, 138, 5, 53, 0, 0, 138, 139, 3, 12,
+		6, 0, 139, 140, 5, 54, 0, 0, 140, 147, 1, 0, 0, 0, 141, 142, 5, 13, 0,
+		0, 142, 147, 3, 12, 6, 7, 143, 147, 3, 14, 7, 0, 144, 147, 3, 16, 8, 0,
+		145, 147, 3, 18, 9, 0, 146, 131, 1, 0, 0, 0, 146, 136, 1, 0, 0, 0, 146,
+		141, 1, 0, 0, 0, 146, 143, 1, 0, 0, 0, 146, 144, 1, 0, 0, 0, 146, 145,
+		1, 0, 0, 0, 147, 158, 1, 0, 0, 0, 148, 149, 10, 6, 0, 0, 149, 150, 5, 11,
+		0, 0, 150, 157, 3, 12, 6, 7, 151, 152, 10, 5, 0, 0, 152, 157, 3, 12, 6,
+		6, 153, 154, 10, 4, 0, 0, 154, 155, 5, 12, 0, 0, 155, 157, 3, 12, 6, 5,
+		156, 148, 1, 0, 0, 0, 156, 151, 1, 0, 0, 0, 156, 153, 1, 0, 0, 0, 157,
+		160, 1, 0, 0, 0, 158, 156, 1, 0, 0, 0, 158, 159, 1, 0, 0, 0, 159, 13, 1,
+		0, 0, 0, 160, 158, 1, 0, 0, 0, 161, 162, 3, 20, 10, 0, 162, 163, 3, 26,
+		13, 0, 163, 164, 3, 34, 17, 0, 164, 245, 1, 0, 0, 0, 165, 166, 3, 20, 10,
+		0, 166, 167, 3, 28, 14, 0, 167, 168, 3, 34, 17, 0, 168, 245, 1, 0, 0, 0,
+		169, 170, 3, 20, 10, 0, 170, 171, 3, 30, 15, 0, 171, 172, 3, 40, 20, 0,
+		172, 245, 1, 0, 0, 0, 173, 174, 3, 20, 10, 0, 174, 175, 3, 32, 16, 0, 175,
+		176, 3, 40, 20, 0, 176, 245, 1, 0, 0, 0, 177, 178, 5, 13, 0, 0, 178, 179,
+		3, 20, 10, 0, 179, 180, 3, 26, 13, 0, 180, 181, 3, 34, 17, 0, 181, 245,
+		1, 0, 0, 0, 182, 183, 5, 13, 0, 0, 183, 184, 3, 20, 10, 0, 184, 185, 3,
+		28, 14, 0, 185, 186, 3, 34, 17, 0, 186, 245, 1, 0, 0, 0, 187, 188, 5, 13,
+		0, 0, 188, 189, 3, 20, 10, 0, 189, 190, 3, 30, 15, 0, 190, 191, 3, 40,
+		20, 0, 191, 245, 1, 0, 0, 0, 192, 193, 5, 13, 0, 0, 193, 194, 3, 20, 10,
+		0, 194, 195, 3, 32, 16, 0, 195, 196, 3, 40, 20, 0, 196, 245, 1, 0, 0, 0,
+		197, 198, 3, 20, 10, 0, 198, 199, 5, 13, 0, 0, 199, 200, 3, 26, 13, 0,
+		200, 201, 3, 34, 17, 0, 201, 245, 1, 0, 0, 0, 202, 203, 3, 20, 10, 0, 203,
+		204, 5, 13, 0, 0, 204, 205, 3, 28, 14, 0, 205, 206, 3, 34, 17, 0, 206,
+		245, 1, 0, 0, 0, 207, 208, 3, 20, 10, 0, 208, 209, 5, 13, 0, 0, 209, 210,
+		3, 30, 15, 0, 210, 211, 3, 40, 20, 0, 211, 245, 1, 0, 0, 0, 212, 213, 3,
+		20, 10, 0, 213, 214, 5, 13, 0, 0, 214, 215, 3, 32, 16, 0, 215, 216, 3,
+		40, 20, 0, 216, 245, 1, 0, 0, 0, 217, 218, 3, 20, 10, 0, 218, 219, 3, 26,
+		13, 0, 219, 220, 3, 36, 18, 0, 220, 245, 1, 0, 0, 0, 221, 222, 3, 20, 10,
+		0, 222, 223, 3, 26, 13, 0, 223, 224, 3, 38, 19, 0, 224, 245, 1, 0, 0, 0,
+		225, 226, 3, 20, 10, 0, 226, 227, 3, 30, 15, 0, 227, 228, 3, 40, 20, 0,
+		228, 245, 1, 0, 0, 0, 229, 230, 3, 22, 11, 0, 230, 231, 3, 26, 13, 0, 231,
+		232, 3, 34, 17, 0, 232, 245, 1, 0, 0, 0, 233, 234, 3, 22, 11, 0, 234, 235,
+		3, 30, 15, 0, 235, 236, 3, 40, 20, 0, 236, 245, 1, 0, 0, 0, 237, 238, 3,
+		22, 11, 0, 238, 239, 3, 26, 13, 0, 239, 240, 3, 36, 18, 0, 240, 245, 1,
+		0, 0, 0, 241, 245, 5, 71, 0, 0, 242, 245, 5, 68, 0, 0, 243, 245, 5, 70,
+		0, 0, 244, 161, 1, 0, 0, 0, 244, 165, 1, 0, 0, 0, 244, 169, 1, 0, 0, 0,
+		244, 173, 1, 0, 0, 0, 244, 177, 1, 0, 0, 0, 244, 182, 1, 0, 0, 0, 244,
+		187, 1, 0, 0, 0, 244, 192, 1, 0, 0, 0, 244, 197, 1, 0, 0, 0, 244, 202,
+		1, 0, 0, 0, 244, 207, 1, 0, 0, 0, 244, 212, 1, 0, 0, 0, 244, 217, 1, 0,
+		0, 0, 244, 221, 1, 0, 0, 0, 244, 225, 1, 0, 0, 0, 244, 229, 1, 0, 0, 0,
+		244, 233, 1, 0, 0, 0, 244, 237, 1, 0, 0, 0, 244, 241, 1, 0, 0, 0, 244,
+		242, 1, 0, 0, 0, 244, 243, 1, 0, 0, 0, 245, 15, 1, 0, 0, 0, 246, 249, 5,
+		66, 0, 0, 247, 249, 5, 67, 0, 0, 248, 246, 1, 0, 0, 0, 248, 247, 1, 0,
+		0, 0, 249, 17, 1, 0, 0, 0, 250, 251, 5, 63, 0, 0, 251, 19, 1, 0, 0, 0,
+		252, 257, 3, 24, 12, 0, 253, 254, 5, 57, 0, 0, 254, 256, 3, 24, 12, 0,
+		255, 253, 1, 0, 0, 0, 256, 259, 1, 0, 0, 0, 257, 255, 1, 0, 0, 0, 257,
+		258, 1, 0, 0, 0, 258, 21, 1, 0, 0, 0, 259, 257, 1, 0, 0, 0, 260, 261, 5,
+		28, 0, 0, 261, 262, 5, 53, 0, 0, 262, 267, 3, 24, 12, 0, 263, 264, 5, 57,
+		0, 0, 264, 266, 3, 24, 12, 0, 265, 263, 1, 0, 0, 0, 266, 269, 1, 0, 0,
+		0, 267, 265, 1, 0, 0, 0, 267, 268, 1, 0, 0, 0, 268, 270, 1, 0, 0, 0, 269,
+		267, 1, 0, 0, 0, 270, 271, 5, 54, 0, 0, 271, 23, 1, 0, 0, 0, 272, 273,
+		7, 0, 0, 0, 273, 25, 1, 0, 0, 0, 274, 275, 7, 1, 0, 0, 275, 27, 1, 0, 0,
+		0, 276, 277, 7, 2, 0, 0, 277, 29, 1, 0, 0, 0, 278, 279, 7, 3, 0, 0, 279,
+		31, 1, 0, 0, 0, 280, 281, 7, 4, 0, 0, 281, 33, 1, 0, 0, 0, 282, 283, 7,
+		5, 0, 0, 283, 35, 1, 0, 0, 0, 284, 285, 5, 26, 0, 0, 285, 286, 5, 53, 0,
+		0, 286, 287, 3, 34, 17, 0, 287, 288, 5, 54, 0, 0, 288, 37, 1, 0, 0, 0,
+		289, 290, 5, 27, 0, 0, 290, 293, 5, 53, 0, 0, 291, 294, 5, 62, 0, 0, 292,
+		294, 3, 34, 17, 0, 293, 291, 1, 0, 0, 0, 293, 292, 1, 0, 0, 0, 294, 295,
+		1, 0, 0, 0, 295, 296, 5, 54, 0, 0, 296, 39, 1, 0, 0, 0, 297, 298, 5, 55,
+		0, 0, 298, 303, 3, 42, 21, 0, 299, 300, 5, 57, 0, 0, 300, 302, 3, 42, 21,
+		0, 301, 299, 1, 0, 0, 0, 302, 305, 1, 0, 0, 0, 303, 301, 1, 0, 0, 0, 303,
+		304, 1, 0, 0, 0, 304, 306, 1, 0, 0, 0, 305, 303, 1, 0, 0, 0, 306, 307,
+		5, 56, 0, 0, 307, 41, 1, 0, 0, 0, 308, 311, 3, 38, 19, 0, 309, 311, 3,
+		34, 17, 0, 310, 308, 1, 0, 0, 0, 310, 309, 1, 0, 0, 0, 311, 43, 1, 0, 0,
+		0, 312, 313, 5, 3, 0, 0, 313, 314, 5, 53, 0, 0, 314, 319, 3, 24, 12, 0,
+		315, 316, 5, 57, 0, 0, 316, 318, 3, 24, 12, 0, 317, 315, 1, 0, 0, 0, 318,
+		321, 1, 0, 0, 0, 319, 317, 1, 0, 0, 0, 319, 320, 1, 0, 0, 0, 320, 322,
+		1, 0, 0, 0, 321, 319, 1, 0, 0, 0, 322, 323, 5, 54, 0, 0, 323, 45, 1, 0,
+		0, 0, 324, 325, 5, 4, 0, 0, 325, 326, 5, 53, 0, 0, 326, 327, 3, 48, 24,
+		0, 327, 328, 5, 54, 0, 0, 328, 47, 1, 0, 0, 0, 329, 330, 3, 54, 27, 0,
+		330, 331, 3, 26, 13, 0, 331, 332, 3, 34, 17, 0, 332, 338, 1, 0, 0, 0, 333,
+		334, 3, 56, 28, 0, 334, 335, 3, 26, 13, 0, 335, 336, 3, 34, 17, 0, 336,
+		338, 1, 0, 0, 0, 337, 329, 1, 0, 0, 0, 337, 333, 1, 0, 0, 0, 338, 49, 1,
+		0, 0, 0, 339, 340, 5, 5, 0, 0, 340, 341, 5, 53, 0, 0, 341, 342, 3, 52,
+		26, 0, 342, 343, 5, 54, 0, 0, 343, 51, 1, 0, 0, 0, 344, 348, 3, 54, 27,
+		0, 345, 348, 3, 56, 28, 0, 346, 348, 3, 58, 29, 0, 347, 344, 1, 0, 0, 0,
+		347, 345, 1, 0, 0, 0, 347, 346, 1, 0, 0, 0, 348, 53, 1, 0, 0, 0, 349, 350,
+		7, 6, 0, 0, 350, 55, 1, 0, 0, 0, 351, 352, 7, 7, 0, 0, 352, 353, 5, 58,
+		0, 0, 353, 354, 3, 24, 12, 0, 354, 57, 1, 0, 0, 0, 355, 356, 7, 8, 0, 0,
+		356, 357, 5, 53, 0, 0, 357, 358, 5, 68, 0, 0, 358, 361, 5, 54, 0, 0, 359,
+		360, 5, 58, 0, 0, 360, 362, 3, 24, 12, 0, 361, 359, 1, 0, 0, 0, 361, 362,
+		1, 0, 0, 0, 362, 59, 1, 0, 0, 0, 363, 364, 5, 6, 0, 0, 364, 365, 5, 53,
+		0, 0, 365, 370, 3, 62, 31, 0, 366, 367, 5, 57, 0, 0, 367, 369, 3, 62, 31,
+		0, 368, 366, 1, 0, 0, 0, 369, 372, 1, 0, 0, 0, 370, 368, 1, 0, 0, 0, 370,
+		371, 1, 0, 0, 0, 371, 373, 1, 0, 0, 0, 372, 370, 1, 0, 0, 0, 373, 374,
+		5, 54, 0, 0, 374, 61, 1, 0, 0, 0, 375, 379, 3, 64, 32, 0, 376, 377, 5,
+		61, 0, 0, 377, 380, 5, 71, 0, 0, 378, 380, 5, 71, 0, 0, 379, 376, 1, 0,
+		0, 0, 379, 378, 1, 0, 0, 0, 379, 380, 1, 0, 0, 0, 380, 63, 1, 0, 0, 0,
+		381, 382, 7, 9, 0, 0, 382, 65, 1, 0, 0, 0, 383, 384, 5, 7, 0, 0, 384, 385,
+		5, 53, 0, 0, 385, 390, 5, 68, 0, 0, 386, 387, 5, 57, 0, 0, 387, 389, 5,
+		68, 0, 0, 388, 386, 1, 0, 0, 0, 389, 392, 1, 0, 0, 0, 390, 388, 1, 0, 0,
+		0, 390, 391, 1, 0, 0, 0, 391, 393, 1, 0, 0, 0, 392, 390, 1, 0, 0, 0, 393,
+		394, 5, 54, 0, 0, 394, 67, 1, 0, 0, 0, 395, 396, 5, 8, 0, 0, 396, 397,
+		5, 53, 0, 0, 397, 398, 7, 10, 0, 0, 398, 399, 5, 54, 0, 0, 399, 69, 1,
+		0, 0, 0, 29, 71, 74, 77, 80, 83, 86, 89, 92, 95, 114, 120, 127, 146, 156,
+		158, 244, 248, 257, 267, 293, 303, 310, 319, 337, 347, 361, 370, 379, 390,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -344,8 +346,9 @@ const (
 	LEQLParserSINGLE_STRING        = 67
 	LEQLParserNUMBER               = 68
 	LEQLParserTIME_UNIT            = 69
-	LEQLParserIDENTIFIER           = 70
-	LEQLParserWS                   = 71
+	LEQLParserVARIABLE             = 70
+	LEQLParserIDENTIFIER           = 71
+	LEQLParserWS                   = 72
 )
 
 // LEQLParser rules.
@@ -1914,6 +1917,87 @@ func (s *RegexExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	}
 }
 
+type ImplicitAndExprContext struct {
+	ExpressionContext
+}
+
+func NewImplicitAndExprContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ImplicitAndExprContext {
+	var p = new(ImplicitAndExprContext)
+
+	InitEmptyExpressionContext(&p.ExpressionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ExpressionContext))
+
+	return p
+}
+
+func (s *ImplicitAndExprContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ImplicitAndExprContext) AllExpression() []IExpressionContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExpressionContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]IExpressionContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExpressionContext); ok {
+			tst[i] = t.(IExpressionContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *ImplicitAndExprContext) Expression(i int) IExpressionContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExpressionContext)
+}
+
+func (s *ImplicitAndExprContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterImplicitAndExpr(s)
+	}
+}
+
+func (s *ImplicitAndExprContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitImplicitAndExpr(s)
+	}
+}
+
+func (s *ImplicitAndExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitImplicitAndExpr(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type NestedWhereExprContext struct {
 	ExpressionContext
 }
@@ -2283,7 +2367,7 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 		}
 		{
 			p.SetState(142)
-			p.expression(6)
+			p.expression(7)
 		}
 
 	case 4:
@@ -2317,7 +2401,7 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(156)
+	p.SetState(158)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2332,7 +2416,7 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(154)
+			p.SetState(156)
 			p.GetErrorHandler().Sync(p)
 			if p.HasError() {
 				goto errorExit
@@ -2344,8 +2428,8 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 				p.PushNewRecursionContext(localctx, _startState, LEQLParserRULE_expression)
 				p.SetState(148)
 
-				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
 					goto errorExit
 				}
 				{
@@ -2358,20 +2442,34 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 				}
 				{
 					p.SetState(150)
-					p.expression(6)
+					p.expression(7)
 				}
 
 			case 2:
-				localctx = NewOrExprContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				localctx = NewImplicitAndExprContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, LEQLParserRULE_expression)
 				p.SetState(151)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					goto errorExit
+				}
+				{
+					p.SetState(152)
+					p.expression(6)
+				}
+
+			case 3:
+				localctx = NewOrExprContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, LEQLParserRULE_expression)
+				p.SetState(153)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(152)
+					p.SetState(154)
 					p.Match(LEQLParserOR)
 					if p.HasError() {
 						// Recognition error - abort rule
@@ -2379,7 +2477,7 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(153)
+					p.SetState(155)
 					p.expression(5)
 				}
 
@@ -2388,7 +2486,7 @@ func (p *LEQLParser) expression(_p int) (localctx IExpressionContext) {
 			}
 
 		}
-		p.SetState(158)
+		p.SetState(160)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -2864,6 +2962,50 @@ func (s *FieldExistsConditionContext) Accept(visitor antlr.ParseTreeVisitor) int
 	switch t := visitor.(type) {
 	case LEQLParserVisitor:
 		return t.VisitFieldExistsCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type VariableConditionContext struct {
+	ConditionContext
+}
+
+func NewVariableConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *VariableConditionContext {
+	var p = new(VariableConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *VariableConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *VariableConditionContext) VARIABLE() antlr.TerminalNode {
+	return s.GetToken(LEQLParserVARIABLE, 0)
+}
+
+func (s *VariableConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterVariableCondition(s)
+	}
+}
+
+func (s *VariableConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitVariableCondition(s)
+	}
+}
+
+func (s *VariableConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitVariableCondition(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -4173,7 +4315,7 @@ func (s *PostfixNegatedListStringConditionContext) Accept(visitor antlr.ParseTre
 func (p *LEQLParser) Condition() (localctx IConditionContext) {
 	localctx = NewConditionContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 14, LEQLParserRULE_condition)
-	p.SetState(241)
+	p.SetState(244)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4184,15 +4326,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(159)
+			p.SetState(161)
 			p.FieldList()
 		}
 		{
-			p.SetState(160)
+			p.SetState(162)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(161)
+			p.SetState(163)
 			p.Value()
 		}
 
@@ -4200,15 +4342,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(163)
+			p.SetState(165)
 			p.FieldList()
 		}
 		{
-			p.SetState(164)
+			p.SetState(166)
 			p.StringOp()
 		}
 		{
-			p.SetState(165)
+			p.SetState(167)
 			p.Value()
 		}
 
@@ -4216,15 +4358,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(167)
+			p.SetState(169)
 			p.FieldList()
 		}
 		{
-			p.SetState(168)
+			p.SetState(170)
 			p.SetOp()
 		}
 		{
-			p.SetState(169)
+			p.SetState(171)
 			p.ValueList()
 		}
 
@@ -4232,15 +4374,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewListStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(171)
+			p.SetState(173)
 			p.FieldList()
 		}
 		{
-			p.SetState(172)
+			p.SetState(174)
 			p.ListStringOp()
 		}
 		{
-			p.SetState(173)
+			p.SetState(175)
 			p.ValueList()
 		}
 
@@ -4248,7 +4390,7 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNegatedComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(175)
+			p.SetState(177)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4256,15 +4398,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(176)
+			p.SetState(178)
 			p.FieldList()
 		}
 		{
-			p.SetState(177)
+			p.SetState(179)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(178)
+			p.SetState(180)
 			p.Value()
 		}
 
@@ -4272,7 +4414,7 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNegatedStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(180)
+			p.SetState(182)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4280,15 +4422,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(181)
+			p.SetState(183)
 			p.FieldList()
 		}
 		{
-			p.SetState(182)
+			p.SetState(184)
 			p.StringOp()
 		}
 		{
-			p.SetState(183)
+			p.SetState(185)
 			p.Value()
 		}
 
@@ -4296,7 +4438,7 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNegatedSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(185)
+			p.SetState(187)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4304,15 +4446,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(186)
+			p.SetState(188)
 			p.FieldList()
 		}
 		{
-			p.SetState(187)
+			p.SetState(189)
 			p.SetOp()
 		}
 		{
-			p.SetState(188)
+			p.SetState(190)
 			p.ValueList()
 		}
 
@@ -4320,7 +4462,7 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNegatedListStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(190)
+			p.SetState(192)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4328,15 +4470,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(191)
+			p.SetState(193)
 			p.FieldList()
 		}
 		{
-			p.SetState(192)
+			p.SetState(194)
 			p.ListStringOp()
 		}
 		{
-			p.SetState(193)
+			p.SetState(195)
 			p.ValueList()
 		}
 
@@ -4344,11 +4486,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewPostfixNegatedComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 9)
 		{
-			p.SetState(195)
+			p.SetState(197)
 			p.FieldList()
 		}
 		{
-			p.SetState(196)
+			p.SetState(198)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4356,11 +4498,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(197)
+			p.SetState(199)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(198)
+			p.SetState(200)
 			p.Value()
 		}
 
@@ -4368,11 +4510,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewPostfixNegatedStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 10)
 		{
-			p.SetState(200)
+			p.SetState(202)
 			p.FieldList()
 		}
 		{
-			p.SetState(201)
+			p.SetState(203)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4380,11 +4522,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(202)
+			p.SetState(204)
 			p.StringOp()
 		}
 		{
-			p.SetState(203)
+			p.SetState(205)
 			p.Value()
 		}
 
@@ -4392,11 +4534,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewPostfixNegatedSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 11)
 		{
-			p.SetState(205)
+			p.SetState(207)
 			p.FieldList()
 		}
 		{
-			p.SetState(206)
+			p.SetState(208)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4404,11 +4546,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(207)
+			p.SetState(209)
 			p.SetOp()
 		}
 		{
-			p.SetState(208)
+			p.SetState(210)
 			p.ValueList()
 		}
 
@@ -4416,11 +4558,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewPostfixNegatedListStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 12)
 		{
-			p.SetState(210)
+			p.SetState(212)
 			p.FieldList()
 		}
 		{
-			p.SetState(211)
+			p.SetState(213)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4428,11 +4570,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(212)
+			p.SetState(214)
 			p.ListStringOp()
 		}
 		{
-			p.SetState(213)
+			p.SetState(215)
 			p.ValueList()
 		}
 
@@ -4440,15 +4582,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNocaseConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 13)
 		{
-			p.SetState(215)
+			p.SetState(217)
 			p.FieldList()
 		}
 		{
-			p.SetState(216)
+			p.SetState(218)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(217)
+			p.SetState(219)
 			p.NocaseValue()
 		}
 
@@ -4456,15 +4598,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewIpConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 14)
 		{
-			p.SetState(219)
+			p.SetState(221)
 			p.FieldList()
 		}
 		{
-			p.SetState(220)
+			p.SetState(222)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(221)
+			p.SetState(223)
 			p.IpValue()
 		}
 
@@ -4472,15 +4614,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewIpSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 15)
 		{
-			p.SetState(223)
+			p.SetState(225)
 			p.FieldList()
 		}
 		{
-			p.SetState(224)
+			p.SetState(226)
 			p.SetOp()
 		}
 		{
-			p.SetState(225)
+			p.SetState(227)
 			p.ValueList()
 		}
 
@@ -4488,15 +4630,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewAllFieldsComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 16)
 		{
-			p.SetState(227)
+			p.SetState(229)
 			p.AllFieldList()
 		}
 		{
-			p.SetState(228)
+			p.SetState(230)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(229)
+			p.SetState(231)
 			p.Value()
 		}
 
@@ -4504,15 +4646,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewAllFieldsSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 17)
 		{
-			p.SetState(231)
+			p.SetState(233)
 			p.AllFieldList()
 		}
 		{
-			p.SetState(232)
+			p.SetState(234)
 			p.SetOp()
 		}
 		{
-			p.SetState(233)
+			p.SetState(235)
 			p.ValueList()
 		}
 
@@ -4520,15 +4662,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewAllFieldsNocaseConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 18)
 		{
-			p.SetState(235)
+			p.SetState(237)
 			p.AllFieldList()
 		}
 		{
-			p.SetState(236)
+			p.SetState(238)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(237)
+			p.SetState(239)
 			p.NocaseValue()
 		}
 
@@ -4536,7 +4678,7 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewFieldExistsConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 19)
 		{
-			p.SetState(239)
+			p.SetState(241)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4548,8 +4690,20 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		localctx = NewNumberKeywordConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 20)
 		{
-			p.SetState(240)
+			p.SetState(242)
 			p.Match(LEQLParserNUMBER)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case 21:
+		localctx = NewVariableConditionContext(p, localctx)
+		p.EnterOuterAlt(localctx, 21)
+		{
+			p.SetState(243)
+			p.Match(LEQLParserVARIABLE)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -4718,7 +4872,7 @@ func (s *QuotedKeywordContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 	localctx = NewKeywordSearchContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 16, LEQLParserRULE_keywordSearch)
-	p.SetState(245)
+	p.SetState(248)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4729,7 +4883,7 @@ func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 		localctx = NewQuotedKeywordContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(243)
+			p.SetState(246)
 			p.Match(LEQLParserDOUBLE_STRING)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4741,7 +4895,7 @@ func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 		localctx = NewSingleQuotedKeywordContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(244)
+			p.SetState(247)
 			p.Match(LEQLParserSINGLE_STRING)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4871,7 +5025,7 @@ func (p *LEQLParser) RegexSearch() (localctx IRegexSearchContext) {
 	localctx = NewRegexPatternContext(p, localctx)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(247)
+		p.SetState(250)
 		p.Match(LEQLParserREGEX)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5027,10 +5181,10 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(249)
+		p.SetState(252)
 		p.FieldName()
 	}
-	p.SetState(254)
+	p.SetState(257)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5039,7 +5193,7 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(250)
+			p.SetState(253)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5047,11 +5201,11 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 			}
 		}
 		{
-			p.SetState(251)
+			p.SetState(254)
 			p.FieldName()
 		}
 
-		p.SetState(256)
+		p.SetState(259)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -5222,7 +5376,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(257)
+		p.SetState(260)
 		p.Match(LEQLParserALL_FUNC)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5230,7 +5384,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		}
 	}
 	{
-		p.SetState(258)
+		p.SetState(261)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5238,10 +5392,10 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		}
 	}
 	{
-		p.SetState(259)
+		p.SetState(262)
 		p.FieldName()
 	}
-	p.SetState(264)
+	p.SetState(267)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5250,7 +5404,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(260)
+			p.SetState(263)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5258,11 +5412,11 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 			}
 		}
 		{
-			p.SetState(261)
+			p.SetState(264)
 			p.FieldName()
 		}
 
-		p.SetState(266)
+		p.SetState(269)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -5270,7 +5424,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(267)
+		p.SetState(270)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5305,6 +5459,7 @@ type IFieldNameContext interface {
 	IP_FUNC() antlr.TerminalNode
 	ALL_FUNC() antlr.TerminalNode
 	COUNT() antlr.TerminalNode
+	BYTES() antlr.TerminalNode
 	MIN() antlr.TerminalNode
 	MAX() antlr.TerminalNode
 	SUM() antlr.TerminalNode
@@ -5372,6 +5527,10 @@ func (s *FieldNameContext) COUNT() antlr.TerminalNode {
 	return s.GetToken(LEQLParserCOUNT, 0)
 }
 
+func (s *FieldNameContext) BYTES() antlr.TerminalNode {
+	return s.GetToken(LEQLParserBYTES, 0)
+}
+
 func (s *FieldNameContext) MIN() antlr.TerminalNode {
 	return s.GetToken(LEQLParserMIN, 0)
 }
@@ -5433,10 +5592,10 @@ func (p *LEQLParser) FieldName() (localctx IFieldNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(269)
+		p.SetState(272)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-9)) & ^0x3f) == 0 && ((int64(1)<<(_la-9))&2738188575472091139) != 0) {
+		if !((int64((_la-9)) & ^0x3f) == 0 && ((int64(1)<<(_la-9))&5044031584719339523) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -5579,7 +5738,7 @@ func (p *LEQLParser) ComparisonOp() (localctx IComparisonOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(271)
+		p.SetState(274)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&4486007441326080) != 0) {
@@ -5705,7 +5864,7 @@ func (p *LEQLParser) StringOp() (localctx IStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(273)
+		p.SetState(276)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&15728640) != 0) {
@@ -5821,7 +5980,7 @@ func (p *LEQLParser) SetOp() (localctx ISetOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(275)
+		p.SetState(278)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserIIN_OP || _la == LEQLParserIN_OP) {
@@ -5957,7 +6116,7 @@ func (p *LEQLParser) ListStringOp() (localctx IListStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(277)
+		p.SetState(280)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1032192) != 0) {
@@ -5997,6 +6156,7 @@ type IValueContext interface {
 	TIME_UNIT() antlr.TerminalNode
 	REGEX() antlr.TerminalNode
 	IP_CIDR() antlr.TerminalNode
+	VARIABLE() antlr.TerminalNode
 	IDENTIFIER() antlr.TerminalNode
 
 	// IsValueContext differentiates from other interfaces.
@@ -6067,6 +6227,10 @@ func (s *ValueContext) IP_CIDR() antlr.TerminalNode {
 	return s.GetToken(LEQLParserIP_CIDR, 0)
 }
 
+func (s *ValueContext) VARIABLE() antlr.TerminalNode {
+	return s.GetToken(LEQLParserVARIABLE, 0)
+}
+
 func (s *ValueContext) IDENTIFIER() antlr.TerminalNode {
 	return s.GetToken(LEQLParserIDENTIFIER, 0)
 }
@@ -6108,10 +6272,10 @@ func (p *LEQLParser) Value() (localctx IValueContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(279)
+		p.SetState(282)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-62)) & ^0x3f) == 0 && ((int64(1)<<(_la-62))&511) != 0) {
+		if !((int64((_la-62)) & ^0x3f) == 0 && ((int64(1)<<(_la-62))&1023) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -6244,7 +6408,7 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 	p.EnterRule(localctx, 36, LEQLParserRULE_nocaseValue)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(281)
+		p.SetState(284)
 		p.Match(LEQLParserNOCASE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6252,7 +6416,7 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 		}
 	}
 	{
-		p.SetState(282)
+		p.SetState(285)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6260,11 +6424,11 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 		}
 	}
 	{
-		p.SetState(283)
+		p.SetState(286)
 		p.Value()
 	}
 	{
-		p.SetState(284)
+		p.SetState(287)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6402,7 +6566,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 	p.EnterRule(localctx, 38, LEQLParserRULE_ipValue)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(286)
+		p.SetState(289)
 		p.Match(LEQLParserIP_FUNC)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6410,14 +6574,14 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 		}
 	}
 	{
-		p.SetState(287)
+		p.SetState(290)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(290)
+	p.SetState(293)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6426,7 +6590,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 19, p.GetParserRuleContext()) {
 	case 1:
 		{
-			p.SetState(288)
+			p.SetState(291)
 			p.Match(LEQLParserIP_CIDR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -6436,7 +6600,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 
 	case 2:
 		{
-			p.SetState(289)
+			p.SetState(292)
 			p.Value()
 		}
 
@@ -6444,7 +6608,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 		goto errorExit
 	}
 	{
-		p.SetState(292)
+		p.SetState(295)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6610,7 +6774,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(294)
+		p.SetState(297)
 		p.Match(LEQLParserLBRACKET)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6618,10 +6782,10 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 		}
 	}
 	{
-		p.SetState(295)
+		p.SetState(298)
 		p.ValueListItem()
 	}
-	p.SetState(300)
+	p.SetState(303)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6630,7 +6794,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(296)
+			p.SetState(299)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -6638,11 +6802,11 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 			}
 		}
 		{
-			p.SetState(297)
+			p.SetState(300)
 			p.ValueListItem()
 		}
 
-		p.SetState(302)
+		p.SetState(305)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -6650,7 +6814,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(303)
+		p.SetState(306)
 		p.Match(LEQLParserRBRACKET)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6783,7 +6947,7 @@ func (s *ValueListItemContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 func (p *LEQLParser) ValueListItem() (localctx IValueListItemContext) {
 	localctx = NewValueListItemContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 42, LEQLParserRULE_valueListItem)
-	p.SetState(307)
+	p.SetState(310)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -6793,14 +6957,14 @@ func (p *LEQLParser) ValueListItem() (localctx IValueListItemContext) {
 	case LEQLParserIP_FUNC:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(305)
+			p.SetState(308)
 			p.IpValue()
 		}
 
-	case LEQLParserIP_CIDR, LEQLParserREGEX, LEQLParserTRIPLE_SINGLE_STRING, LEQLParserTRIPLE_DOUBLE_STRING, LEQLParserDOUBLE_STRING, LEQLParserSINGLE_STRING, LEQLParserNUMBER, LEQLParserTIME_UNIT, LEQLParserIDENTIFIER:
+	case LEQLParserIP_CIDR, LEQLParserREGEX, LEQLParserTRIPLE_SINGLE_STRING, LEQLParserTRIPLE_DOUBLE_STRING, LEQLParserDOUBLE_STRING, LEQLParserSINGLE_STRING, LEQLParserNUMBER, LEQLParserTIME_UNIT, LEQLParserVARIABLE, LEQLParserIDENTIFIER:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(306)
+			p.SetState(309)
 			p.Value()
 		}
 
@@ -6972,7 +7136,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(309)
+		p.SetState(312)
 		p.Match(LEQLParserGROUPBY)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6980,7 +7144,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		}
 	}
 	{
-		p.SetState(310)
+		p.SetState(313)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6988,10 +7152,10 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		}
 	}
 	{
-		p.SetState(311)
+		p.SetState(314)
 		p.FieldName()
 	}
-	p.SetState(316)
+	p.SetState(319)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7000,7 +7164,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(312)
+			p.SetState(315)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -7008,11 +7172,11 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 			}
 		}
 		{
-			p.SetState(313)
+			p.SetState(316)
 			p.FieldName()
 		}
 
-		p.SetState(318)
+		p.SetState(321)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -7020,7 +7184,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(319)
+		p.SetState(322)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7153,7 +7317,7 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 	p.EnterRule(localctx, 46, LEQLParserRULE_havingClause)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(321)
+		p.SetState(324)
 		p.Match(LEQLParserHAVING)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7161,7 +7325,7 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 		}
 	}
 	{
-		p.SetState(322)
+		p.SetState(325)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7169,11 +7333,11 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 		}
 	}
 	{
-		p.SetState(323)
+		p.SetState(326)
 		p.HavingCondition()
 	}
 	{
-		p.SetState(324)
+		p.SetState(327)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7340,7 +7504,7 @@ func (s *HavingConditionContext) Accept(visitor antlr.ParseTreeVisitor) interfac
 func (p *LEQLParser) HavingCondition() (localctx IHavingConditionContext) {
 	localctx = NewHavingConditionContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 48, LEQLParserRULE_havingCondition)
-	p.SetState(334)
+	p.SetState(337)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7350,30 +7514,30 @@ func (p *LEQLParser) HavingCondition() (localctx IHavingConditionContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(326)
+			p.SetState(329)
 			p.CalcFunction()
 		}
 		{
-			p.SetState(327)
+			p.SetState(330)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(328)
+			p.SetState(331)
 			p.Value()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(330)
+			p.SetState(333)
 			p.CalcFunctionWithField()
 		}
 		{
-			p.SetState(331)
+			p.SetState(334)
 			p.ComparisonOp()
 		}
 		{
-			p.SetState(332)
+			p.SetState(335)
 			p.Value()
 		}
 
@@ -7506,7 +7670,7 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 	p.EnterRule(localctx, 50, LEQLParserRULE_calculateClause)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(336)
+		p.SetState(339)
 		p.Match(LEQLParserCALCULATE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7514,7 +7678,7 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 		}
 	}
 	{
-		p.SetState(337)
+		p.SetState(340)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7522,11 +7686,11 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 		}
 	}
 	{
-		p.SetState(338)
+		p.SetState(341)
 		p.CalcExpr()
 	}
 	{
-		p.SetState(339)
+		p.SetState(342)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7676,7 +7840,7 @@ func (s *CalcExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 func (p *LEQLParser) CalcExpr() (localctx ICalcExprContext) {
 	localctx = NewCalcExprContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 52, LEQLParserRULE_calcExpr)
-	p.SetState(344)
+	p.SetState(347)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7686,21 +7850,21 @@ func (p *LEQLParser) CalcExpr() (localctx ICalcExprContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(341)
+			p.SetState(344)
 			p.CalcFunction()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(342)
+			p.SetState(345)
 			p.CalcFunctionWithField()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(343)
+			p.SetState(346)
 			p.PercentileFunction()
 		}
 
@@ -7813,7 +7977,7 @@ func (p *LEQLParser) CalcFunction() (localctx ICalcFunctionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(346)
+		p.SetState(349)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserCOUNT || _la == LEQLParserBYTES) {
@@ -7986,7 +8150,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(348)
+		p.SetState(351)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1063541276672) != 0) {
@@ -7997,7 +8161,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 		}
 	}
 	{
-		p.SetState(349)
+		p.SetState(352)
 		p.Match(LEQLParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8005,7 +8169,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 		}
 	}
 	{
-		p.SetState(350)
+		p.SetState(353)
 		p.FieldName()
 	}
 
@@ -8151,7 +8315,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(352)
+		p.SetState(355)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserPERCENTILE || _la == LEQLParserPCTL) {
@@ -8162,7 +8326,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(353)
+		p.SetState(356)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8170,7 +8334,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(354)
+		p.SetState(357)
 		p.Match(LEQLParserNUMBER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8178,14 +8342,14 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(355)
+		p.SetState(358)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(358)
+	p.SetState(361)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8194,7 +8358,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 
 	if _la == LEQLParserCOLON {
 		{
-			p.SetState(356)
+			p.SetState(359)
 			p.Match(LEQLParserCOLON)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8202,7 +8366,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 			}
 		}
 		{
-			p.SetState(357)
+			p.SetState(360)
 			p.FieldName()
 		}
 
@@ -8371,7 +8535,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(360)
+		p.SetState(363)
 		p.Match(LEQLParserSORT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8379,7 +8543,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		}
 	}
 	{
-		p.SetState(361)
+		p.SetState(364)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8387,10 +8551,10 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		}
 	}
 	{
-		p.SetState(362)
+		p.SetState(365)
 		p.SortSpec()
 	}
-	p.SetState(367)
+	p.SetState(370)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8399,7 +8563,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(363)
+			p.SetState(366)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8407,11 +8571,11 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 			}
 		}
 		{
-			p.SetState(364)
+			p.SetState(367)
 			p.SortSpec()
 		}
 
-		p.SetState(369)
+		p.SetState(372)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -8419,7 +8583,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(370)
+		p.SetState(373)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8547,10 +8711,10 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 	p.EnterRule(localctx, 62, LEQLParserRULE_sortSpec)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(372)
+		p.SetState(375)
 		p.SortDirection()
 	}
-	p.SetState(376)
+	p.SetState(379)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8558,7 +8722,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 	switch p.GetTokenStream().LA(1) {
 	case LEQLParserHASH:
 		{
-			p.SetState(373)
+			p.SetState(376)
 			p.Match(LEQLParserHASH)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8566,7 +8730,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 			}
 		}
 		{
-			p.SetState(374)
+			p.SetState(377)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8576,7 +8740,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 
 	case LEQLParserIDENTIFIER:
 		{
-			p.SetState(375)
+			p.SetState(378)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8704,7 +8868,7 @@ func (p *LEQLParser) SortDirection() (localctx ISortDirectionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(378)
+		p.SetState(381)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&16492674416640) != 0) {
@@ -8845,7 +9009,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(380)
+		p.SetState(383)
 		p.Match(LEQLParserLIMIT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8853,7 +9017,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		}
 	}
 	{
-		p.SetState(381)
+		p.SetState(384)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8861,14 +9025,14 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		}
 	}
 	{
-		p.SetState(382)
+		p.SetState(385)
 		p.Match(LEQLParserNUMBER)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(387)
+	p.SetState(390)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8877,7 +9041,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(383)
+			p.SetState(386)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8885,7 +9049,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 			}
 		}
 		{
-			p.SetState(384)
+			p.SetState(387)
 			p.Match(LEQLParserNUMBER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8893,7 +9057,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 			}
 		}
 
-		p.SetState(389)
+		p.SetState(392)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -8901,7 +9065,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(390)
+		p.SetState(393)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9029,7 +9193,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(392)
+		p.SetState(395)
 		p.Match(LEQLParserTIMESLICE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9037,7 +9201,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(393)
+		p.SetState(396)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9045,7 +9209,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(394)
+		p.SetState(397)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserNUMBER || _la == LEQLParserTIME_UNIT) {
@@ -9056,7 +9220,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(395)
+		p.SetState(398)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9094,9 +9258,12 @@ func (p *LEQLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex in
 func (p *LEQLParser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 0:
-		return p.Precpred(p.GetParserRuleContext(), 5)
+		return p.Precpred(p.GetParserRuleContext(), 6)
 
 	case 1:
+		return p.Precpred(p.GetParserRuleContext(), 5)
+
+	case 2:
 		return p.Precpred(p.GetParserRuleContext(), 4)
 
 	default:

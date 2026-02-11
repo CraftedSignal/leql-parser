@@ -37,6 +37,9 @@ type LEQLParserListener interface {
 	// EnterRegexExpr is called when entering the regexExpr production.
 	EnterRegexExpr(c *RegexExprContext)
 
+	// EnterImplicitAndExpr is called when entering the implicitAndExpr production.
+	EnterImplicitAndExpr(c *ImplicitAndExprContext)
+
 	// EnterNestedWhereExpr is called when entering the nestedWhereExpr production.
 	EnterNestedWhereExpr(c *NestedWhereExprContext)
 
@@ -108,6 +111,9 @@ type LEQLParserListener interface {
 
 	// EnterNumberKeywordCondition is called when entering the numberKeywordCondition production.
 	EnterNumberKeywordCondition(c *NumberKeywordConditionContext)
+
+	// EnterVariableCondition is called when entering the variableCondition production.
+	EnterVariableCondition(c *VariableConditionContext)
 
 	// EnterQuotedKeyword is called when entering the quotedKeyword production.
 	EnterQuotedKeyword(c *QuotedKeywordContext)
@@ -223,6 +229,9 @@ type LEQLParserListener interface {
 	// ExitRegexExpr is called when exiting the regexExpr production.
 	ExitRegexExpr(c *RegexExprContext)
 
+	// ExitImplicitAndExpr is called when exiting the implicitAndExpr production.
+	ExitImplicitAndExpr(c *ImplicitAndExprContext)
+
 	// ExitNestedWhereExpr is called when exiting the nestedWhereExpr production.
 	ExitNestedWhereExpr(c *NestedWhereExprContext)
 
@@ -294,6 +303,9 @@ type LEQLParserListener interface {
 
 	// ExitNumberKeywordCondition is called when exiting the numberKeywordCondition production.
 	ExitNumberKeywordCondition(c *NumberKeywordConditionContext)
+
+	// ExitVariableCondition is called when exiting the variableCondition production.
+	ExitVariableCondition(c *VariableConditionContext)
 
 	// ExitQuotedKeyword is called when exiting the quotedKeyword production.
 	ExitQuotedKeyword(c *QuotedKeywordContext)

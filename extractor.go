@@ -181,6 +181,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 	// Boolean expression nodes
 	case *AndExprContext:
 		e.visitAndExpr(ctx)
+	case *ImplicitAndExprContext:
+		e.visitImplicitAndExpr(ctx)
 	case *OrExprContext:
 		e.visitOrExpr(ctx)
 	case *NotExprContext:
@@ -236,6 +238,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitFieldExistsCondition(ctx)
 	case *NumberKeywordConditionContext:
 		e.visitNumberKeywordCondition(ctx)
+	case *VariableConditionContext:
+		e.visitVariableCondition(ctx)
 	default:
 		// For unknown nodes, visit children
 		if node, ok := tree.(antlr.RuleNode); ok {
@@ -337,6 +341,17 @@ func (e *conditionExtractor) visitHavingClause(_ *HavingClauseContext) {
 // --- Boolean expression visitors ---
 
 func (e *conditionExtractor) visitAndExpr(ctx *AndExprContext) {
+	exprs := ctx.AllExpression()
+	if len(exprs) >= 1 {
+		e.visit(exprs[0].(antlr.ParseTree))
+	}
+	e.currentLogicalOp = "AND"
+	if len(exprs) >= 2 {
+		e.visit(exprs[1].(antlr.ParseTree))
+	}
+}
+
+func (e *conditionExtractor) visitImplicitAndExpr(ctx *ImplicitAndExprContext) {
 	exprs := ctx.AllExpression()
 	if len(exprs) >= 1 {
 		e.visit(exprs[0].(antlr.ParseTree))
@@ -872,6 +887,13 @@ func (e *conditionExtractor) visitNumberKeywordCondition(ctx *NumberKeywordCondi
 	e.addCondition("_keyword", "search", ctx.NUMBER().GetText())
 }
 
+func (e *conditionExtractor) visitVariableCondition(ctx *VariableConditionContext) {
+	if ctx.VARIABLE() == nil {
+		return
+	}
+	e.addCondition("_variable", "keyword", ctx.VARIABLE().GetText())
+}
+
 // addCondition appends a new condition using current extractor state.
 func (e *conditionExtractor) addCondition(field, operator, value string) {
 	e.conditions = append(e.conditions, Condition{
@@ -1004,6 +1026,9 @@ func extractValue(ctx IValueContext) string {
 	}
 	if valCtx.REGEX() != nil {
 		return stripRegexSlashes(valCtx.REGEX().GetText())
+	}
+	if valCtx.VARIABLE() != nil {
+		return valCtx.VARIABLE().GetText()
 	}
 	// NUMBER, TIME_UNIT, IDENTIFIER: return raw text
 	return valCtx.GetText()

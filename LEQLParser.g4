@@ -31,12 +31,15 @@ whereClause
     : WHERE LPAREN expression (COMMA LOOSE)? RPAREN
     ;
 
-// Boolean expressions with AND/OR/NOT and parenthesized grouping
+// Boolean expressions with AND/OR/NOT, parenthesized grouping, and implicit AND
+// Implicit AND: space-separated expressions without explicit AND/OR are implicitly ANDed.
+// Precedence (highest first): NOT > AND > implicit-AND > OR
 expression
     : LPAREN expression RPAREN                          # parenExpr
     | WHERE LPAREN expression RPAREN                    # nestedWhereExpr
     | NOT expression                                    # notExpr
     | expression AND expression                         # andExpr
+    | expression expression                             # implicitAndExpr
     | expression OR expression                          # orExpr
     | condition                                         # conditionExpr
     | keywordSearch                                     # keywordExpr
@@ -65,6 +68,7 @@ condition
     | allFieldList comparisonOp nocaseValue              # allFieldsNocaseCondition
     | IDENTIFIER                                        # fieldExistsCondition
     | NUMBER                                            # numberKeywordCondition
+    | VARIABLE                                          # variableCondition
     ;
 
 // Keyword search: bare string or quoted phrase
@@ -97,6 +101,7 @@ fieldName
     | IP_FUNC
     | ALL_FUNC
     | COUNT
+    | BYTES
     | MIN
     | MAX
     | SUM
@@ -136,6 +141,7 @@ value
     | TIME_UNIT
     | REGEX
     | IP_CIDR
+    | VARIABLE
     | IDENTIFIER
     ;
 
