@@ -105,7 +105,7 @@ func leqlparserParserInit() {
 		9, 33, 1, 33, 1, 33, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 0, 1, 12,
 		35, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34,
 		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 0,
-		11, 6, 0, 9, 10, 27, 28, 33, 34, 36, 39, 66, 67, 71, 71, 1, 0, 44, 51,
+		11, 6, 0, 9, 10, 27, 28, 33, 34, 36, 39, 66, 68, 71, 71, 1, 0, 44, 51,
 		1, 0, 20, 23, 1, 0, 24, 25, 1, 0, 14, 19, 1, 0, 62, 71, 1, 0, 33, 34, 3,
 		0, 29, 29, 31, 34, 36, 39, 2, 0, 30, 30, 35, 35, 1, 0, 40, 43, 1, 0, 68,
 		69, 420, 0, 71, 1, 0, 0, 0, 2, 99, 1, 0, 0, 0, 4, 104, 1, 0, 0, 0, 6, 109,
@@ -5454,6 +5454,7 @@ type IFieldNameContext interface {
 
 	// Getter signatures
 	IDENTIFIER() antlr.TerminalNode
+	NUMBER() antlr.TerminalNode
 	DOUBLE_STRING() antlr.TerminalNode
 	SINGLE_STRING() antlr.TerminalNode
 	IP_FUNC() antlr.TerminalNode
@@ -5505,6 +5506,10 @@ func (s *FieldNameContext) GetParser() antlr.Parser { return s.parser }
 
 func (s *FieldNameContext) IDENTIFIER() antlr.TerminalNode {
 	return s.GetToken(LEQLParserIDENTIFIER, 0)
+}
+
+func (s *FieldNameContext) NUMBER() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNUMBER, 0)
 }
 
 func (s *FieldNameContext) DOUBLE_STRING() antlr.TerminalNode {
@@ -5595,7 +5600,7 @@ func (p *LEQLParser) FieldName() (localctx IFieldNameContext) {
 		p.SetState(272)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-9)) & ^0x3f) == 0 && ((int64(1)<<(_la-9))&5044031584719339523) != 0) {
+		if !((int64((_la-9)) & ^0x3f) == 0 && ((int64(1)<<(_la-9))&5620492337022763011) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)

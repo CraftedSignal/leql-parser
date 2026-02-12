@@ -96,6 +96,7 @@ allFieldList
 // Keywords that might also appear as field names are listed explicitly
 fieldName
     : IDENTIFIER
+    | NUMBER
     | DOUBLE_STRING
     | SINGLE_STRING
     | IP_FUNC
