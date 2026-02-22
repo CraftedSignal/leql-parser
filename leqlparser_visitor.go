@@ -55,6 +55,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#comparisonCondition.
 	VisitComparisonCondition(ctx *ComparisonConditionContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#regexMatchCondition.
+	VisitRegexMatchCondition(ctx *RegexMatchConditionContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#stringCondition.
 	VisitStringCondition(ctx *StringConditionContext) interface{}
 
@@ -67,6 +70,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#negatedComparisonCondition.
 	VisitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#negatedRegexMatchCondition.
+	VisitNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#negatedStringCondition.
 	VisitNegatedStringCondition(ctx *NegatedStringConditionContext) interface{}
 
@@ -78,6 +84,9 @@ type LEQLParserVisitor interface {
 
 	// Visit a parse tree produced by LEQLParser#postfixNegatedComparisonCondition.
 	VisitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#postfixNegatedRegexMatchCondition.
+	VisitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#postfixNegatedStringCondition.
 	VisitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) interface{}
@@ -135,6 +144,9 @@ type LEQLParserVisitor interface {
 
 	// Visit a parse tree produced by LEQLParser#comparisonOp.
 	VisitComparisonOp(ctx *ComparisonOpContext) interface{}
+
+	// Visit a parse tree produced by LEQLParser#regexMatchOp.
+	VisitRegexMatchOp(ctx *RegexMatchOpContext) interface{}
 
 	// Visit a parse tree produced by LEQLParser#stringOp.
 	VisitStringOp(ctx *StringOpContext) interface{}

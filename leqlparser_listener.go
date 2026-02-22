@@ -55,6 +55,9 @@ type LEQLParserListener interface {
 	// EnterComparisonCondition is called when entering the comparisonCondition production.
 	EnterComparisonCondition(c *ComparisonConditionContext)
 
+	// EnterRegexMatchCondition is called when entering the regexMatchCondition production.
+	EnterRegexMatchCondition(c *RegexMatchConditionContext)
+
 	// EnterStringCondition is called when entering the stringCondition production.
 	EnterStringCondition(c *StringConditionContext)
 
@@ -67,6 +70,9 @@ type LEQLParserListener interface {
 	// EnterNegatedComparisonCondition is called when entering the negatedComparisonCondition production.
 	EnterNegatedComparisonCondition(c *NegatedComparisonConditionContext)
 
+	// EnterNegatedRegexMatchCondition is called when entering the negatedRegexMatchCondition production.
+	EnterNegatedRegexMatchCondition(c *NegatedRegexMatchConditionContext)
+
 	// EnterNegatedStringCondition is called when entering the negatedStringCondition production.
 	EnterNegatedStringCondition(c *NegatedStringConditionContext)
 
@@ -78,6 +84,9 @@ type LEQLParserListener interface {
 
 	// EnterPostfixNegatedComparisonCondition is called when entering the postfixNegatedComparisonCondition production.
 	EnterPostfixNegatedComparisonCondition(c *PostfixNegatedComparisonConditionContext)
+
+	// EnterPostfixNegatedRegexMatchCondition is called when entering the postfixNegatedRegexMatchCondition production.
+	EnterPostfixNegatedRegexMatchCondition(c *PostfixNegatedRegexMatchConditionContext)
 
 	// EnterPostfixNegatedStringCondition is called when entering the postfixNegatedStringCondition production.
 	EnterPostfixNegatedStringCondition(c *PostfixNegatedStringConditionContext)
@@ -135,6 +144,9 @@ type LEQLParserListener interface {
 
 	// EnterComparisonOp is called when entering the comparisonOp production.
 	EnterComparisonOp(c *ComparisonOpContext)
+
+	// EnterRegexMatchOp is called when entering the regexMatchOp production.
+	EnterRegexMatchOp(c *RegexMatchOpContext)
 
 	// EnterStringOp is called when entering the stringOp production.
 	EnterStringOp(c *StringOpContext)
@@ -247,6 +259,9 @@ type LEQLParserListener interface {
 	// ExitComparisonCondition is called when exiting the comparisonCondition production.
 	ExitComparisonCondition(c *ComparisonConditionContext)
 
+	// ExitRegexMatchCondition is called when exiting the regexMatchCondition production.
+	ExitRegexMatchCondition(c *RegexMatchConditionContext)
+
 	// ExitStringCondition is called when exiting the stringCondition production.
 	ExitStringCondition(c *StringConditionContext)
 
@@ -259,6 +274,9 @@ type LEQLParserListener interface {
 	// ExitNegatedComparisonCondition is called when exiting the negatedComparisonCondition production.
 	ExitNegatedComparisonCondition(c *NegatedComparisonConditionContext)
 
+	// ExitNegatedRegexMatchCondition is called when exiting the negatedRegexMatchCondition production.
+	ExitNegatedRegexMatchCondition(c *NegatedRegexMatchConditionContext)
+
 	// ExitNegatedStringCondition is called when exiting the negatedStringCondition production.
 	ExitNegatedStringCondition(c *NegatedStringConditionContext)
 
@@ -270,6 +288,9 @@ type LEQLParserListener interface {
 
 	// ExitPostfixNegatedComparisonCondition is called when exiting the postfixNegatedComparisonCondition production.
 	ExitPostfixNegatedComparisonCondition(c *PostfixNegatedComparisonConditionContext)
+
+	// ExitPostfixNegatedRegexMatchCondition is called when exiting the postfixNegatedRegexMatchCondition production.
+	ExitPostfixNegatedRegexMatchCondition(c *PostfixNegatedRegexMatchConditionContext)
 
 	// ExitPostfixNegatedStringCondition is called when exiting the postfixNegatedStringCondition production.
 	ExitPostfixNegatedStringCondition(c *PostfixNegatedStringConditionContext)
@@ -327,6 +348,9 @@ type LEQLParserListener interface {
 
 	// ExitComparisonOp is called when exiting the comparisonOp production.
 	ExitComparisonOp(c *ComparisonOpContext)
+
+	// ExitRegexMatchOp is called when exiting the regexMatchOp production.
+	ExitRegexMatchOp(c *RegexMatchOpContext)
 
 	// ExitStringOp is called when exiting the stringOp production.
 	ExitStringOp(c *StringOpContext)

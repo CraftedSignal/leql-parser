@@ -61,7 +61,9 @@ DESC        : [Dd][Ee][Ss][Cc] ;
 
 // Multi-char comparison operators (before single-char to avoid prefix issues)
 STRICT_NEQ  : '!==' ;
+REGEX_NEQ   : '!~' ;
 NEQ         : '!=' ;
+REGEX_EQ    : '=~' ;
 GTE         : '>=' ;
 LTE         : '<=' ;
 STRICT_EQ   : '==' ;

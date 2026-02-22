@@ -49,14 +49,17 @@ expression
 // Key-value pair conditions
 condition
     : fieldList comparisonOp value                      # comparisonCondition
+    | fieldList regexMatchOp value                      # regexMatchCondition
     | fieldList stringOp value                          # stringCondition
     | fieldList setOp valueList                         # setCondition
     | fieldList listStringOp valueList                  # listStringCondition
     | NOT fieldList comparisonOp value                  # negatedComparisonCondition
+    | NOT fieldList regexMatchOp value                  # negatedRegexMatchCondition
     | NOT fieldList stringOp value                      # negatedStringCondition
     | NOT fieldList setOp valueList                     # negatedSetCondition
     | NOT fieldList listStringOp valueList              # negatedListStringCondition
     | fieldList NOT comparisonOp value                  # postfixNegatedComparisonCondition
+    | fieldList NOT regexMatchOp value                  # postfixNegatedRegexMatchCondition
     | fieldList NOT stringOp value                      # postfixNegatedStringCondition
     | fieldList NOT setOp valueList                     # postfixNegatedSetCondition
     | fieldList NOT listStringOp valueList              # postfixNegatedListStringCondition
@@ -114,6 +117,11 @@ fieldName
 // Comparison operators
 comparisonOp
     : EQ | NEQ | STRICT_EQ | STRICT_NEQ | GT | GTE | LT | LTE
+    ;
+
+// Regex match operators: =~ (match) and !~ (not match)
+regexMatchOp
+    : REGEX_EQ | REGEX_NEQ
     ;
 
 // String operators

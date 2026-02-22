@@ -690,3 +690,45 @@ func TestParseResult_GroupByFields(t *testing.T) {
 		}
 	}
 }
+
+// ===== Regex match operator tests =====
+
+func TestRegexMatchOperator(t *testing.T) {
+	query := `where(process.name =~ /mimikatz/i)`
+	result := ExtractConditions(query)
+
+	if len(result.Errors) > 0 {
+		t.Errorf("Unexpected errors: %v", result.Errors)
+	}
+
+	// Regex slashes are stripped by extractValue — we get the raw pattern
+	assertConditions(t, result, []Condition{
+		{Field: "process.name", Operator: "=~", Value: "mimikatz"},
+	})
+}
+
+func TestNegatedRegexMatchOperator(t *testing.T) {
+	query := `where(NOT process.name =~ /benign/)`
+	result := ExtractConditions(query)
+
+	if len(result.Errors) > 0 {
+		t.Errorf("Unexpected errors: %v", result.Errors)
+	}
+
+	assertConditions(t, result, []Condition{
+		{Field: "process.name", Operator: "=~", Value: "benign", Negated: true},
+	})
+}
+
+func TestRegexNotMatchOperator(t *testing.T) {
+	query := `where(process.name !~ /safe/)`
+	result := ExtractConditions(query)
+
+	if len(result.Errors) > 0 {
+		t.Errorf("Unexpected errors: %v", result.Errors)
+	}
+
+	assertConditions(t, result, []Condition{
+		{Field: "process.name", Operator: "!~", Value: "safe"},
+	})
+}

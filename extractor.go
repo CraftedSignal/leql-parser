@@ -200,6 +200,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 	// Condition nodes
 	case *ComparisonConditionContext:
 		e.visitComparisonCondition(ctx)
+	case *RegexMatchConditionContext:
+		e.visitRegexMatchCondition(ctx)
 	case *StringConditionContext:
 		e.visitStringCondition(ctx)
 	case *SetConditionContext:
@@ -208,6 +210,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitListStringCondition(ctx)
 	case *NegatedComparisonConditionContext:
 		e.visitNegatedComparisonCondition(ctx)
+	case *NegatedRegexMatchConditionContext:
+		e.visitNegatedRegexMatchCondition(ctx)
 	case *NegatedStringConditionContext:
 		e.visitNegatedStringCondition(ctx)
 	case *NegatedSetConditionContext:
@@ -216,6 +220,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitNegatedListStringCondition(ctx)
 	case *PostfixNegatedComparisonConditionContext:
 		e.visitPostfixNegatedComparisonCondition(ctx)
+	case *PostfixNegatedRegexMatchConditionContext:
+		e.visitPostfixNegatedRegexMatchCondition(ctx)
 	case *PostfixNegatedStringConditionContext:
 		e.visitPostfixNegatedStringCondition(ctx)
 	case *PostfixNegatedSetConditionContext:
@@ -469,6 +475,49 @@ func (e *conditionExtractor) visitComparisonCondition(ctx *ComparisonConditionCo
 		// Reset logical op for next condition
 		e.currentLogicalOp = "AND"
 	}
+}
+
+func (e *conditionExtractor) visitRegexMatchCondition(ctx *RegexMatchConditionContext) {
+	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := ctx.RegexMatchOp().GetText()
+	val := extractValue(ctx.Value())
+
+	for _, f := range fields {
+		e.addCondition(f, op, val)
+	}
+}
+
+func (e *conditionExtractor) visitNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) {
+	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := ctx.RegexMatchOp().GetText()
+	val := extractValue(ctx.Value())
+
+	e.negated = true
+	for _, f := range fields {
+		e.addCondition(f, op, val)
+	}
+	e.negated = false
+}
+
+func (e *conditionExtractor) visitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) {
+	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
+		return
+	}
+	fields := extractFieldNames(ctx.FieldList())
+	op := ctx.RegexMatchOp().GetText()
+	val := extractValue(ctx.Value())
+
+	e.negated = true
+	for _, f := range fields {
+		e.addCondition(f, op, val)
+	}
+	e.negated = false
 }
 
 func (e *conditionExtractor) visitStringCondition(ctx *StringConditionContext) {

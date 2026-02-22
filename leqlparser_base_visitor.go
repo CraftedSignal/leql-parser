@@ -71,6 +71,10 @@ func (v *BaseLEQLParserVisitor) VisitComparisonCondition(ctx *ComparisonConditio
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitRegexMatchCondition(ctx *RegexMatchConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitStringCondition(ctx *StringConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -87,6 +91,10 @@ func (v *BaseLEQLParserVisitor) VisitNegatedComparisonCondition(ctx *NegatedComp
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitNegatedStringCondition(ctx *NegatedStringConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -100,6 +108,10 @@ func (v *BaseLEQLParserVisitor) VisitNegatedListStringCondition(ctx *NegatedList
 }
 
 func (v *BaseLEQLParserVisitor) VisitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -176,6 +188,10 @@ func (v *BaseLEQLParserVisitor) VisitFieldName(ctx *FieldNameContext) interface{
 }
 
 func (v *BaseLEQLParserVisitor) VisitComparisonOp(ctx *ComparisonOpContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseLEQLParserVisitor) VisitRegexMatchOp(ctx *RegexMatchOpContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

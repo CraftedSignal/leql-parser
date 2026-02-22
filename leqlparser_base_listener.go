@@ -116,6 +116,12 @@ func (s *BaseLEQLParserListener) EnterComparisonCondition(ctx *ComparisonConditi
 // ExitComparisonCondition is called when production comparisonCondition is exited.
 func (s *BaseLEQLParserListener) ExitComparisonCondition(ctx *ComparisonConditionContext) {}
 
+// EnterRegexMatchCondition is called when production regexMatchCondition is entered.
+func (s *BaseLEQLParserListener) EnterRegexMatchCondition(ctx *RegexMatchConditionContext) {}
+
+// ExitRegexMatchCondition is called when production regexMatchCondition is exited.
+func (s *BaseLEQLParserListener) ExitRegexMatchCondition(ctx *RegexMatchConditionContext) {}
+
 // EnterStringCondition is called when production stringCondition is entered.
 func (s *BaseLEQLParserListener) EnterStringCondition(ctx *StringConditionContext) {}
 
@@ -140,6 +146,14 @@ func (s *BaseLEQLParserListener) EnterNegatedComparisonCondition(ctx *NegatedCom
 
 // ExitNegatedComparisonCondition is called when production negatedComparisonCondition is exited.
 func (s *BaseLEQLParserListener) ExitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) {
+}
+
+// EnterNegatedRegexMatchCondition is called when production negatedRegexMatchCondition is entered.
+func (s *BaseLEQLParserListener) EnterNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) {
+}
+
+// ExitNegatedRegexMatchCondition is called when production negatedRegexMatchCondition is exited.
+func (s *BaseLEQLParserListener) ExitNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) {
 }
 
 // EnterNegatedStringCondition is called when production negatedStringCondition is entered.
@@ -168,6 +182,14 @@ func (s *BaseLEQLParserListener) EnterPostfixNegatedComparisonCondition(ctx *Pos
 
 // ExitPostfixNegatedComparisonCondition is called when production postfixNegatedComparisonCondition is exited.
 func (s *BaseLEQLParserListener) ExitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) {
+}
+
+// EnterPostfixNegatedRegexMatchCondition is called when production postfixNegatedRegexMatchCondition is entered.
+func (s *BaseLEQLParserListener) EnterPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) {
+}
+
+// ExitPostfixNegatedRegexMatchCondition is called when production postfixNegatedRegexMatchCondition is exited.
+func (s *BaseLEQLParserListener) ExitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) {
 }
 
 // EnterPostfixNegatedStringCondition is called when production postfixNegatedStringCondition is entered.
@@ -292,6 +314,12 @@ func (s *BaseLEQLParserListener) EnterComparisonOp(ctx *ComparisonOpContext) {}
 
 // ExitComparisonOp is called when production comparisonOp is exited.
 func (s *BaseLEQLParserListener) ExitComparisonOp(ctx *ComparisonOpContext) {}
+
+// EnterRegexMatchOp is called when production regexMatchOp is entered.
+func (s *BaseLEQLParserListener) EnterRegexMatchOp(ctx *RegexMatchOpContext) {}
+
+// ExitRegexMatchOp is called when production regexMatchOp is exited.
+func (s *BaseLEQLParserListener) ExitRegexMatchOp(ctx *RegexMatchOpContext) {}
 
 // EnterStringOp is called when production stringOp is entered.
 func (s *BaseLEQLParserListener) EnterStringOp(ctx *StringOpContext) {}
