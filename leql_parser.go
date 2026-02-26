@@ -34,16 +34,17 @@ func leqlparserParserInit() {
 	staticData.LiteralNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"", "", "", "", "", "", "", "", "", "", "'!=='", "'!~'", "'!='", "'=~'",
-		"'>='", "'<='", "'=='", "'='", "'>'", "'<'", "'!'", "'('", "')'", "'['",
-		"']'", "','", "':'", "'.'", "'*'", "'#'",
+		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "'!=='", "'!~'",
+		"'!='", "'=~'", "'>='", "'<='", "'=='", "'='", "'>'", "'<'", "'!'",
+		"'('", "')'", "'['", "']'", "','", "':'", "'.'", "'*'", "'#'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "SELECT", "WHERE", "GROUPBY", "HAVING", "CALCULATE", "SORT", "LIMIT",
 		"TIMESLICE", "FROM", "LOOSE", "AND", "OR", "NOT", "ICONTAINS_ALL_OP",
 		"ICONTAINS_ANY_OP", "CONTAINS_ALL_OP", "CONTAINS_ANY_OP", "ISTARTS_WITH_ANY_OP",
-		"STARTS_WITH_ANY_OP", "ISTARTS_WITH_OP", "STARTS_WITH_OP", "ICONTAINS_OP",
-		"CONTAINS_OP", "IIN_OP", "IN_OP", "NOCASE", "IP_FUNC", "ALL_FUNC", "STANDARDDEVIATION",
+		"STARTS_WITH_ANY_OP", "IENDS_WITH_ANY_OP", "ENDS_WITH_ANY_OP", "ISTARTS_WITH_OP",
+		"STARTS_WITH_OP", "IENDS_WITH_OP", "ENDS_WITH_OP", "ICONTAINS_OP", "CONTAINS_OP",
+		"IIN_OP", "IN_OP", "NOCASE", "IP_FUNC", "ALL_FUNC", "STANDARDDEVIATION",
 		"PERCENTILE", "AVERAGE", "UNIQUE", "COUNT", "BYTES", "PCTL", "SUM",
 		"MIN", "MAX", "SD", "ASCENDING", "DESCENDING", "ASC", "DESC", "STRICT_NEQ",
 		"REGEX_NEQ", "NEQ", "REGEX_EQ", "GTE", "LTE", "STRICT_EQ", "EQ", "GT",
@@ -64,7 +65,7 @@ func leqlparserParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 74, 419, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 78, 419, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
@@ -106,11 +107,11 @@ func leqlparserParserInit() {
 		407, 8, 34, 10, 34, 12, 34, 410, 9, 34, 1, 34, 1, 34, 1, 35, 1, 35, 1,
 		35, 1, 35, 1, 35, 1, 35, 0, 1, 12, 36, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18,
 		20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54,
-		56, 58, 60, 62, 64, 66, 68, 70, 0, 12, 6, 0, 9, 10, 27, 28, 33, 34, 36,
-		39, 68, 70, 73, 73, 3, 0, 44, 44, 46, 46, 48, 53, 2, 0, 45, 45, 47, 47,
-		1, 0, 20, 23, 1, 0, 24, 25, 1, 0, 14, 19, 1, 0, 64, 73, 1, 0, 33, 34, 3,
-		0, 29, 29, 31, 34, 36, 39, 2, 0, 30, 30, 35, 35, 1, 0, 40, 43, 1, 0, 70,
-		71, 440, 0, 73, 1, 0, 0, 0, 2, 101, 1, 0, 0, 0, 4, 106, 1, 0, 0, 0, 6,
+		56, 58, 60, 62, 64, 66, 68, 70, 0, 12, 6, 0, 9, 10, 31, 32, 37, 38, 40,
+		43, 72, 74, 77, 77, 3, 0, 48, 48, 50, 50, 52, 57, 2, 0, 49, 49, 51, 51,
+		1, 0, 22, 27, 1, 0, 28, 29, 1, 0, 14, 21, 1, 0, 68, 77, 1, 0, 37, 38, 3,
+		0, 33, 33, 35, 38, 40, 43, 2, 0, 34, 34, 39, 39, 1, 0, 44, 47, 1, 0, 74,
+		75, 440, 0, 73, 1, 0, 0, 0, 2, 101, 1, 0, 0, 0, 4, 106, 1, 0, 0, 0, 6,
 		111, 1, 0, 0, 0, 8, 119, 1, 0, 0, 0, 10, 124, 1, 0, 0, 0, 12, 148, 1, 0,
 		0, 0, 14, 260, 1, 0, 0, 0, 16, 264, 1, 0, 0, 0, 18, 266, 1, 0, 0, 0, 20,
 		268, 1, 0, 0, 0, 22, 276, 1, 0, 0, 0, 24, 288, 1, 0, 0, 0, 26, 290, 1,
@@ -131,20 +132,20 @@ func leqlparserParserInit() {
 		0, 0, 92, 94, 1, 0, 0, 0, 93, 95, 3, 68, 34, 0, 94, 93, 1, 0, 0, 0, 94,
 		95, 1, 0, 0, 0, 95, 97, 1, 0, 0, 0, 96, 98, 3, 70, 35, 0, 97, 96, 1, 0,
 		0, 0, 97, 98, 1, 0, 0, 0, 98, 99, 1, 0, 0, 0, 99, 100, 5, 0, 0, 1, 100,
-		1, 1, 0, 0, 0, 101, 102, 5, 9, 0, 0, 102, 103, 5, 55, 0, 0, 103, 104, 3,
-		12, 6, 0, 104, 105, 5, 56, 0, 0, 105, 3, 1, 0, 0, 0, 106, 107, 5, 1, 0,
-		0, 107, 108, 5, 55, 0, 0, 108, 109, 3, 6, 3, 0, 109, 110, 5, 56, 0, 0,
-		110, 5, 1, 0, 0, 0, 111, 116, 3, 8, 4, 0, 112, 113, 5, 59, 0, 0, 113, 115,
+		1, 1, 0, 0, 0, 101, 102, 5, 9, 0, 0, 102, 103, 5, 59, 0, 0, 103, 104, 3,
+		12, 6, 0, 104, 105, 5, 60, 0, 0, 105, 3, 1, 0, 0, 0, 106, 107, 5, 1, 0,
+		0, 107, 108, 5, 59, 0, 0, 108, 109, 3, 6, 3, 0, 109, 110, 5, 60, 0, 0,
+		110, 5, 1, 0, 0, 0, 111, 116, 3, 8, 4, 0, 112, 113, 5, 63, 0, 0, 113, 115,
 		3, 8, 4, 0, 114, 112, 1, 0, 0, 0, 115, 118, 1, 0, 0, 0, 116, 114, 1, 0,
 		0, 0, 116, 117, 1, 0, 0, 0, 117, 7, 1, 0, 0, 0, 118, 116, 1, 0, 0, 0, 119,
-		122, 3, 24, 12, 0, 120, 121, 5, 73, 0, 0, 121, 123, 5, 73, 0, 0, 122, 120,
+		122, 3, 24, 12, 0, 120, 121, 5, 77, 0, 0, 121, 123, 5, 77, 0, 0, 122, 120,
 		1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 9, 1, 0, 0, 0, 124, 125, 5, 2, 0,
-		0, 125, 126, 5, 55, 0, 0, 126, 129, 3, 12, 6, 0, 127, 128, 5, 59, 0, 0,
+		0, 125, 126, 5, 59, 0, 0, 126, 129, 3, 12, 6, 0, 127, 128, 5, 63, 0, 0,
 		128, 130, 5, 10, 0, 0, 129, 127, 1, 0, 0, 0, 129, 130, 1, 0, 0, 0, 130,
-		131, 1, 0, 0, 0, 131, 132, 5, 56, 0, 0, 132, 11, 1, 0, 0, 0, 133, 134,
-		6, 6, -1, 0, 134, 135, 5, 55, 0, 0, 135, 136, 3, 12, 6, 0, 136, 137, 5,
-		56, 0, 0, 137, 149, 1, 0, 0, 0, 138, 139, 5, 2, 0, 0, 139, 140, 5, 55,
-		0, 0, 140, 141, 3, 12, 6, 0, 141, 142, 5, 56, 0, 0, 142, 149, 1, 0, 0,
+		131, 1, 0, 0, 0, 131, 132, 5, 60, 0, 0, 132, 11, 1, 0, 0, 0, 133, 134,
+		6, 6, -1, 0, 134, 135, 5, 59, 0, 0, 135, 136, 3, 12, 6, 0, 136, 137, 5,
+		60, 0, 0, 137, 149, 1, 0, 0, 0, 138, 139, 5, 2, 0, 0, 139, 140, 5, 59,
+		0, 0, 140, 141, 3, 12, 6, 0, 141, 142, 5, 60, 0, 0, 142, 149, 1, 0, 0,
 		0, 143, 144, 5, 13, 0, 0, 144, 149, 3, 12, 6, 7, 145, 149, 3, 14, 7, 0,
 		146, 149, 3, 16, 8, 0, 147, 149, 3, 18, 9, 0, 148, 133, 1, 0, 0, 0, 148,
 		138, 1, 0, 0, 0, 148, 143, 1, 0, 0, 0, 148, 145, 1, 0, 0, 0, 148, 146,
@@ -184,7 +185,7 @@ func leqlparserParserInit() {
 		36, 18, 0, 248, 261, 1, 0, 0, 0, 249, 250, 3, 22, 11, 0, 250, 251, 3, 32,
 		16, 0, 251, 252, 3, 42, 21, 0, 252, 261, 1, 0, 0, 0, 253, 254, 3, 22, 11,
 		0, 254, 255, 3, 26, 13, 0, 255, 256, 3, 38, 19, 0, 256, 261, 1, 0, 0, 0,
-		257, 261, 5, 73, 0, 0, 258, 261, 5, 70, 0, 0, 259, 261, 5, 72, 0, 0, 260,
+		257, 261, 5, 77, 0, 0, 258, 261, 5, 74, 0, 0, 259, 261, 5, 76, 0, 0, 260,
 		163, 1, 0, 0, 0, 260, 167, 1, 0, 0, 0, 260, 171, 1, 0, 0, 0, 260, 175,
 		1, 0, 0, 0, 260, 179, 1, 0, 0, 0, 260, 183, 1, 0, 0, 0, 260, 188, 1, 0,
 		0, 0, 260, 193, 1, 0, 0, 0, 260, 198, 1, 0, 0, 0, 260, 203, 1, 0, 0, 0,
@@ -192,60 +193,60 @@ func leqlparserParserInit() {
 		223, 1, 0, 0, 0, 260, 228, 1, 0, 0, 0, 260, 233, 1, 0, 0, 0, 260, 237,
 		1, 0, 0, 0, 260, 241, 1, 0, 0, 0, 260, 245, 1, 0, 0, 0, 260, 249, 1, 0,
 		0, 0, 260, 253, 1, 0, 0, 0, 260, 257, 1, 0, 0, 0, 260, 258, 1, 0, 0, 0,
-		260, 259, 1, 0, 0, 0, 261, 15, 1, 0, 0, 0, 262, 265, 5, 68, 0, 0, 263,
-		265, 5, 69, 0, 0, 264, 262, 1, 0, 0, 0, 264, 263, 1, 0, 0, 0, 265, 17,
-		1, 0, 0, 0, 266, 267, 5, 65, 0, 0, 267, 19, 1, 0, 0, 0, 268, 273, 3, 24,
-		12, 0, 269, 270, 5, 59, 0, 0, 270, 272, 3, 24, 12, 0, 271, 269, 1, 0, 0,
+		260, 259, 1, 0, 0, 0, 261, 15, 1, 0, 0, 0, 262, 265, 5, 72, 0, 0, 263,
+		265, 5, 73, 0, 0, 264, 262, 1, 0, 0, 0, 264, 263, 1, 0, 0, 0, 265, 17,
+		1, 0, 0, 0, 266, 267, 5, 69, 0, 0, 267, 19, 1, 0, 0, 0, 268, 273, 3, 24,
+		12, 0, 269, 270, 5, 63, 0, 0, 270, 272, 3, 24, 12, 0, 271, 269, 1, 0, 0,
 		0, 272, 275, 1, 0, 0, 0, 273, 271, 1, 0, 0, 0, 273, 274, 1, 0, 0, 0, 274,
-		21, 1, 0, 0, 0, 275, 273, 1, 0, 0, 0, 276, 277, 5, 28, 0, 0, 277, 278,
-		5, 55, 0, 0, 278, 283, 3, 24, 12, 0, 279, 280, 5, 59, 0, 0, 280, 282, 3,
+		21, 1, 0, 0, 0, 275, 273, 1, 0, 0, 0, 276, 277, 5, 32, 0, 0, 277, 278,
+		5, 59, 0, 0, 278, 283, 3, 24, 12, 0, 279, 280, 5, 63, 0, 0, 280, 282, 3,
 		24, 12, 0, 281, 279, 1, 0, 0, 0, 282, 285, 1, 0, 0, 0, 283, 281, 1, 0,
 		0, 0, 283, 284, 1, 0, 0, 0, 284, 286, 1, 0, 0, 0, 285, 283, 1, 0, 0, 0,
-		286, 287, 5, 56, 0, 0, 287, 23, 1, 0, 0, 0, 288, 289, 7, 0, 0, 0, 289,
+		286, 287, 5, 60, 0, 0, 287, 23, 1, 0, 0, 0, 288, 289, 7, 0, 0, 0, 289,
 		25, 1, 0, 0, 0, 290, 291, 7, 1, 0, 0, 291, 27, 1, 0, 0, 0, 292, 293, 7,
 		2, 0, 0, 293, 29, 1, 0, 0, 0, 294, 295, 7, 3, 0, 0, 295, 31, 1, 0, 0, 0,
 		296, 297, 7, 4, 0, 0, 297, 33, 1, 0, 0, 0, 298, 299, 7, 5, 0, 0, 299, 35,
-		1, 0, 0, 0, 300, 301, 7, 6, 0, 0, 301, 37, 1, 0, 0, 0, 302, 303, 5, 26,
-		0, 0, 303, 304, 5, 55, 0, 0, 304, 305, 3, 36, 18, 0, 305, 306, 5, 56, 0,
-		0, 306, 39, 1, 0, 0, 0, 307, 308, 5, 27, 0, 0, 308, 311, 5, 55, 0, 0, 309,
-		312, 5, 64, 0, 0, 310, 312, 3, 36, 18, 0, 311, 309, 1, 0, 0, 0, 311, 310,
-		1, 0, 0, 0, 312, 313, 1, 0, 0, 0, 313, 314, 5, 56, 0, 0, 314, 41, 1, 0,
-		0, 0, 315, 316, 5, 57, 0, 0, 316, 321, 3, 44, 22, 0, 317, 318, 5, 59, 0,
+		1, 0, 0, 0, 300, 301, 7, 6, 0, 0, 301, 37, 1, 0, 0, 0, 302, 303, 5, 30,
+		0, 0, 303, 304, 5, 59, 0, 0, 304, 305, 3, 36, 18, 0, 305, 306, 5, 60, 0,
+		0, 306, 39, 1, 0, 0, 0, 307, 308, 5, 31, 0, 0, 308, 311, 5, 59, 0, 0, 309,
+		312, 5, 68, 0, 0, 310, 312, 3, 36, 18, 0, 311, 309, 1, 0, 0, 0, 311, 310,
+		1, 0, 0, 0, 312, 313, 1, 0, 0, 0, 313, 314, 5, 60, 0, 0, 314, 41, 1, 0,
+		0, 0, 315, 316, 5, 61, 0, 0, 316, 321, 3, 44, 22, 0, 317, 318, 5, 63, 0,
 		0, 318, 320, 3, 44, 22, 0, 319, 317, 1, 0, 0, 0, 320, 323, 1, 0, 0, 0,
 		321, 319, 1, 0, 0, 0, 321, 322, 1, 0, 0, 0, 322, 324, 1, 0, 0, 0, 323,
-		321, 1, 0, 0, 0, 324, 325, 5, 58, 0, 0, 325, 43, 1, 0, 0, 0, 326, 329,
+		321, 1, 0, 0, 0, 324, 325, 5, 62, 0, 0, 325, 43, 1, 0, 0, 0, 326, 329,
 		3, 40, 20, 0, 327, 329, 3, 36, 18, 0, 328, 326, 1, 0, 0, 0, 328, 327, 1,
-		0, 0, 0, 329, 45, 1, 0, 0, 0, 330, 331, 5, 3, 0, 0, 331, 332, 5, 55, 0,
-		0, 332, 337, 3, 24, 12, 0, 333, 334, 5, 59, 0, 0, 334, 336, 3, 24, 12,
+		0, 0, 0, 329, 45, 1, 0, 0, 0, 330, 331, 5, 3, 0, 0, 331, 332, 5, 59, 0,
+		0, 332, 337, 3, 24, 12, 0, 333, 334, 5, 63, 0, 0, 334, 336, 3, 24, 12,
 		0, 335, 333, 1, 0, 0, 0, 336, 339, 1, 0, 0, 0, 337, 335, 1, 0, 0, 0, 337,
 		338, 1, 0, 0, 0, 338, 340, 1, 0, 0, 0, 339, 337, 1, 0, 0, 0, 340, 341,
-		5, 56, 0, 0, 341, 47, 1, 0, 0, 0, 342, 343, 5, 4, 0, 0, 343, 344, 5, 55,
-		0, 0, 344, 345, 3, 50, 25, 0, 345, 346, 5, 56, 0, 0, 346, 49, 1, 0, 0,
+		5, 60, 0, 0, 341, 47, 1, 0, 0, 0, 342, 343, 5, 4, 0, 0, 343, 344, 5, 59,
+		0, 0, 344, 345, 3, 50, 25, 0, 345, 346, 5, 60, 0, 0, 346, 49, 1, 0, 0,
 		0, 347, 348, 3, 56, 28, 0, 348, 349, 3, 26, 13, 0, 349, 350, 3, 36, 18,
 		0, 350, 356, 1, 0, 0, 0, 351, 352, 3, 58, 29, 0, 352, 353, 3, 26, 13, 0,
 		353, 354, 3, 36, 18, 0, 354, 356, 1, 0, 0, 0, 355, 347, 1, 0, 0, 0, 355,
 		351, 1, 0, 0, 0, 356, 51, 1, 0, 0, 0, 357, 358, 5, 5, 0, 0, 358, 359, 5,
-		55, 0, 0, 359, 360, 3, 54, 27, 0, 360, 361, 5, 56, 0, 0, 361, 53, 1, 0,
+		59, 0, 0, 359, 360, 3, 54, 27, 0, 360, 361, 5, 60, 0, 0, 361, 53, 1, 0,
 		0, 0, 362, 366, 3, 56, 28, 0, 363, 366, 3, 58, 29, 0, 364, 366, 3, 60,
 		30, 0, 365, 362, 1, 0, 0, 0, 365, 363, 1, 0, 0, 0, 365, 364, 1, 0, 0, 0,
 		366, 55, 1, 0, 0, 0, 367, 368, 7, 7, 0, 0, 368, 57, 1, 0, 0, 0, 369, 370,
-		7, 8, 0, 0, 370, 371, 5, 60, 0, 0, 371, 372, 3, 24, 12, 0, 372, 59, 1,
-		0, 0, 0, 373, 374, 7, 9, 0, 0, 374, 375, 5, 55, 0, 0, 375, 376, 5, 70,
-		0, 0, 376, 379, 5, 56, 0, 0, 377, 378, 5, 60, 0, 0, 378, 380, 3, 24, 12,
+		7, 8, 0, 0, 370, 371, 5, 64, 0, 0, 371, 372, 3, 24, 12, 0, 372, 59, 1,
+		0, 0, 0, 373, 374, 7, 9, 0, 0, 374, 375, 5, 59, 0, 0, 375, 376, 5, 74,
+		0, 0, 376, 379, 5, 60, 0, 0, 377, 378, 5, 64, 0, 0, 378, 380, 3, 24, 12,
 		0, 379, 377, 1, 0, 0, 0, 379, 380, 1, 0, 0, 0, 380, 61, 1, 0, 0, 0, 381,
-		382, 5, 6, 0, 0, 382, 383, 5, 55, 0, 0, 383, 388, 3, 64, 32, 0, 384, 385,
-		5, 59, 0, 0, 385, 387, 3, 64, 32, 0, 386, 384, 1, 0, 0, 0, 387, 390, 1,
+		382, 5, 6, 0, 0, 382, 383, 5, 59, 0, 0, 383, 388, 3, 64, 32, 0, 384, 385,
+		5, 63, 0, 0, 385, 387, 3, 64, 32, 0, 386, 384, 1, 0, 0, 0, 387, 390, 1,
 		0, 0, 0, 388, 386, 1, 0, 0, 0, 388, 389, 1, 0, 0, 0, 389, 391, 1, 0, 0,
-		0, 390, 388, 1, 0, 0, 0, 391, 392, 5, 56, 0, 0, 392, 63, 1, 0, 0, 0, 393,
-		397, 3, 66, 33, 0, 394, 395, 5, 63, 0, 0, 395, 398, 5, 73, 0, 0, 396, 398,
-		5, 73, 0, 0, 397, 394, 1, 0, 0, 0, 397, 396, 1, 0, 0, 0, 397, 398, 1, 0,
+		0, 390, 388, 1, 0, 0, 0, 391, 392, 5, 60, 0, 0, 392, 63, 1, 0, 0, 0, 393,
+		397, 3, 66, 33, 0, 394, 395, 5, 67, 0, 0, 395, 398, 5, 77, 0, 0, 396, 398,
+		5, 77, 0, 0, 397, 394, 1, 0, 0, 0, 397, 396, 1, 0, 0, 0, 397, 398, 1, 0,
 		0, 0, 398, 65, 1, 0, 0, 0, 399, 400, 7, 10, 0, 0, 400, 67, 1, 0, 0, 0,
-		401, 402, 5, 7, 0, 0, 402, 403, 5, 55, 0, 0, 403, 408, 5, 70, 0, 0, 404,
-		405, 5, 59, 0, 0, 405, 407, 5, 70, 0, 0, 406, 404, 1, 0, 0, 0, 407, 410,
+		401, 402, 5, 7, 0, 0, 402, 403, 5, 59, 0, 0, 403, 408, 5, 74, 0, 0, 404,
+		405, 5, 63, 0, 0, 405, 407, 5, 74, 0, 0, 406, 404, 1, 0, 0, 0, 407, 410,
 		1, 0, 0, 0, 408, 406, 1, 0, 0, 0, 408, 409, 1, 0, 0, 0, 409, 411, 1, 0,
-		0, 0, 410, 408, 1, 0, 0, 0, 411, 412, 5, 56, 0, 0, 412, 69, 1, 0, 0, 0,
-		413, 414, 5, 8, 0, 0, 414, 415, 5, 55, 0, 0, 415, 416, 7, 11, 0, 0, 416,
-		417, 5, 56, 0, 0, 417, 71, 1, 0, 0, 0, 29, 73, 76, 79, 82, 85, 88, 91,
+		0, 0, 410, 408, 1, 0, 0, 0, 411, 412, 5, 60, 0, 0, 412, 69, 1, 0, 0, 0,
+		413, 414, 5, 8, 0, 0, 414, 415, 5, 59, 0, 0, 415, 416, 7, 11, 0, 0, 416,
+		417, 5, 60, 0, 0, 417, 71, 1, 0, 0, 0, 29, 73, 76, 79, 82, 85, 88, 91,
 		94, 97, 116, 122, 129, 148, 158, 160, 260, 264, 273, 283, 311, 321, 328,
 		337, 355, 365, 379, 388, 397, 408,
 	}
@@ -305,61 +306,65 @@ const (
 	LEQLParserCONTAINS_ANY_OP      = 17
 	LEQLParserISTARTS_WITH_ANY_OP  = 18
 	LEQLParserSTARTS_WITH_ANY_OP   = 19
-	LEQLParserISTARTS_WITH_OP      = 20
-	LEQLParserSTARTS_WITH_OP       = 21
-	LEQLParserICONTAINS_OP         = 22
-	LEQLParserCONTAINS_OP          = 23
-	LEQLParserIIN_OP               = 24
-	LEQLParserIN_OP                = 25
-	LEQLParserNOCASE               = 26
-	LEQLParserIP_FUNC              = 27
-	LEQLParserALL_FUNC             = 28
-	LEQLParserSTANDARDDEVIATION    = 29
-	LEQLParserPERCENTILE           = 30
-	LEQLParserAVERAGE              = 31
-	LEQLParserUNIQUE               = 32
-	LEQLParserCOUNT                = 33
-	LEQLParserBYTES                = 34
-	LEQLParserPCTL                 = 35
-	LEQLParserSUM                  = 36
-	LEQLParserMIN                  = 37
-	LEQLParserMAX                  = 38
-	LEQLParserSD                   = 39
-	LEQLParserASCENDING            = 40
-	LEQLParserDESCENDING           = 41
-	LEQLParserASC                  = 42
-	LEQLParserDESC                 = 43
-	LEQLParserSTRICT_NEQ           = 44
-	LEQLParserREGEX_NEQ            = 45
-	LEQLParserNEQ                  = 46
-	LEQLParserREGEX_EQ             = 47
-	LEQLParserGTE                  = 48
-	LEQLParserLTE                  = 49
-	LEQLParserSTRICT_EQ            = 50
-	LEQLParserEQ                   = 51
-	LEQLParserGT                   = 52
-	LEQLParserLT                   = 53
-	LEQLParserBANG                 = 54
-	LEQLParserLPAREN               = 55
-	LEQLParserRPAREN               = 56
-	LEQLParserLBRACKET             = 57
-	LEQLParserRBRACKET             = 58
-	LEQLParserCOMMA                = 59
-	LEQLParserCOLON                = 60
-	LEQLParserDOT                  = 61
-	LEQLParserSTAR                 = 62
-	LEQLParserHASH                 = 63
-	LEQLParserIP_CIDR              = 64
-	LEQLParserREGEX                = 65
-	LEQLParserTRIPLE_SINGLE_STRING = 66
-	LEQLParserTRIPLE_DOUBLE_STRING = 67
-	LEQLParserDOUBLE_STRING        = 68
-	LEQLParserSINGLE_STRING        = 69
-	LEQLParserNUMBER               = 70
-	LEQLParserTIME_UNIT            = 71
-	LEQLParserVARIABLE             = 72
-	LEQLParserIDENTIFIER           = 73
-	LEQLParserWS                   = 74
+	LEQLParserIENDS_WITH_ANY_OP    = 20
+	LEQLParserENDS_WITH_ANY_OP     = 21
+	LEQLParserISTARTS_WITH_OP      = 22
+	LEQLParserSTARTS_WITH_OP       = 23
+	LEQLParserIENDS_WITH_OP        = 24
+	LEQLParserENDS_WITH_OP         = 25
+	LEQLParserICONTAINS_OP         = 26
+	LEQLParserCONTAINS_OP          = 27
+	LEQLParserIIN_OP               = 28
+	LEQLParserIN_OP                = 29
+	LEQLParserNOCASE               = 30
+	LEQLParserIP_FUNC              = 31
+	LEQLParserALL_FUNC             = 32
+	LEQLParserSTANDARDDEVIATION    = 33
+	LEQLParserPERCENTILE           = 34
+	LEQLParserAVERAGE              = 35
+	LEQLParserUNIQUE               = 36
+	LEQLParserCOUNT                = 37
+	LEQLParserBYTES                = 38
+	LEQLParserPCTL                 = 39
+	LEQLParserSUM                  = 40
+	LEQLParserMIN                  = 41
+	LEQLParserMAX                  = 42
+	LEQLParserSD                   = 43
+	LEQLParserASCENDING            = 44
+	LEQLParserDESCENDING           = 45
+	LEQLParserASC                  = 46
+	LEQLParserDESC                 = 47
+	LEQLParserSTRICT_NEQ           = 48
+	LEQLParserREGEX_NEQ            = 49
+	LEQLParserNEQ                  = 50
+	LEQLParserREGEX_EQ             = 51
+	LEQLParserGTE                  = 52
+	LEQLParserLTE                  = 53
+	LEQLParserSTRICT_EQ            = 54
+	LEQLParserEQ                   = 55
+	LEQLParserGT                   = 56
+	LEQLParserLT                   = 57
+	LEQLParserBANG                 = 58
+	LEQLParserLPAREN               = 59
+	LEQLParserRPAREN               = 60
+	LEQLParserLBRACKET             = 61
+	LEQLParserRBRACKET             = 62
+	LEQLParserCOMMA                = 63
+	LEQLParserCOLON                = 64
+	LEQLParserDOT                  = 65
+	LEQLParserSTAR                 = 66
+	LEQLParserHASH                 = 67
+	LEQLParserIP_CIDR              = 68
+	LEQLParserREGEX                = 69
+	LEQLParserTRIPLE_SINGLE_STRING = 70
+	LEQLParserTRIPLE_DOUBLE_STRING = 71
+	LEQLParserDOUBLE_STRING        = 72
+	LEQLParserSINGLE_STRING        = 73
+	LEQLParserNUMBER               = 74
+	LEQLParserTIME_UNIT            = 75
+	LEQLParserVARIABLE             = 76
+	LEQLParserIDENTIFIER           = 77
+	LEQLParserWS                   = 78
 )
 
 // LEQLParser rules.
@@ -5948,7 +5953,7 @@ func (p *LEQLParser) FieldName() (localctx IFieldNameContext) {
 		p.SetState(288)
 		_la = p.GetTokenStream().LA(1)
 
-		if !(((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1056964609536) != 0) || ((int64((_la-68)) & ^0x3f) == 0 && ((int64(1)<<(_la-68))&39) != 0)) {
+		if !(((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&16911433729536) != 0) || ((int64((_la-72)) & ^0x3f) == 0 && ((int64(1)<<(_la-72))&39) != 0)) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -6094,7 +6099,7 @@ func (p *LEQLParser) ComparisonOp() (localctx IComparisonOpContext) {
 		p.SetState(290)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17820884462993408) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&285134151407894528) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -6243,6 +6248,8 @@ type IStringOpContext interface {
 	ICONTAINS_OP() antlr.TerminalNode
 	STARTS_WITH_OP() antlr.TerminalNode
 	ISTARTS_WITH_OP() antlr.TerminalNode
+	ENDS_WITH_OP() antlr.TerminalNode
+	IENDS_WITH_OP() antlr.TerminalNode
 
 	// IsStringOpContext differentiates from other interfaces.
 	IsStringOpContext()
@@ -6296,6 +6303,14 @@ func (s *StringOpContext) ISTARTS_WITH_OP() antlr.TerminalNode {
 	return s.GetToken(LEQLParserISTARTS_WITH_OP, 0)
 }
 
+func (s *StringOpContext) ENDS_WITH_OP() antlr.TerminalNode {
+	return s.GetToken(LEQLParserENDS_WITH_OP, 0)
+}
+
+func (s *StringOpContext) IENDS_WITH_OP() antlr.TerminalNode {
+	return s.GetToken(LEQLParserIENDS_WITH_OP, 0)
+}
+
 func (s *StringOpContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -6336,7 +6351,7 @@ func (p *LEQLParser) StringOp() (localctx IStringOpContext) {
 		p.SetState(294)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&15728640) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&264241152) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -6487,6 +6502,8 @@ type IListStringOpContext interface {
 	ICONTAINS_ALL_OP() antlr.TerminalNode
 	STARTS_WITH_ANY_OP() antlr.TerminalNode
 	ISTARTS_WITH_ANY_OP() antlr.TerminalNode
+	ENDS_WITH_ANY_OP() antlr.TerminalNode
+	IENDS_WITH_ANY_OP() antlr.TerminalNode
 
 	// IsListStringOpContext differentiates from other interfaces.
 	IsListStringOpContext()
@@ -6548,6 +6565,14 @@ func (s *ListStringOpContext) ISTARTS_WITH_ANY_OP() antlr.TerminalNode {
 	return s.GetToken(LEQLParserISTARTS_WITH_ANY_OP, 0)
 }
 
+func (s *ListStringOpContext) ENDS_WITH_ANY_OP() antlr.TerminalNode {
+	return s.GetToken(LEQLParserENDS_WITH_ANY_OP, 0)
+}
+
+func (s *ListStringOpContext) IENDS_WITH_ANY_OP() antlr.TerminalNode {
+	return s.GetToken(LEQLParserIENDS_WITH_ANY_OP, 0)
+}
+
 func (s *ListStringOpContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -6588,7 +6613,7 @@ func (p *LEQLParser) ListStringOp() (localctx IListStringOpContext) {
 		p.SetState(298)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1032192) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&4177920) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -6744,7 +6769,7 @@ func (p *LEQLParser) Value() (localctx IValueContext) {
 		p.SetState(300)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64((_la-64)) & ^0x3f) == 0 && ((int64(1)<<(_la-64))&1023) != 0) {
+		if !((int64((_la-68)) & ^0x3f) == 0 && ((int64(1)<<(_la-68))&1023) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -8622,7 +8647,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 		p.SetState(369)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&1063541276672) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17016660426752) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -9340,7 +9365,7 @@ func (p *LEQLParser) SortDirection() (localctx ISortDirectionContext) {
 		p.SetState(399)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&16492674416640) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&263882790666240) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)

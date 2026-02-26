@@ -1013,6 +1013,10 @@ func extractStringOp(ctx IStringOpContext) string {
 		return "startswith"
 	case "istarts-with":
 		return "istartswith"
+	case "ends-with":
+		return "endswith"
+	case "iends-with":
+		return "iendswith"
 	default:
 		return strings.ReplaceAll(text, "-", "")
 	}
@@ -1046,6 +1050,10 @@ func extractListStringOp(ctx IListStringOpContext) string {
 		return "startswith_any"
 	case "istarts-with-any":
 		return "istartswith_any"
+	case "ends-with-any":
+		return "endswith_any"
+	case "iends-with-any":
+		return "iendswith_any"
 	default:
 		return strings.ReplaceAll(text, "-", "_")
 	}

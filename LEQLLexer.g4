@@ -25,8 +25,12 @@ CONTAINS_ALL_OP       : [Cc][Oo][Nn][Tt][Aa][Ii][Nn][Ss] '-' [Aa][Ll][Ll] ;
 CONTAINS_ANY_OP       : [Cc][Oo][Nn][Tt][Aa][Ii][Nn][Ss] '-' [Aa][Nn][Yy] ;
 ISTARTS_WITH_ANY_OP   : [Ii][Ss][Tt][Aa][Rr][Tt][Ss] '-' [Ww][Ii][Tt][Hh] '-' [Aa][Nn][Yy] ;
 STARTS_WITH_ANY_OP    : [Ss][Tt][Aa][Rr][Tt][Ss] '-' [Ww][Ii][Tt][Hh] '-' [Aa][Nn][Yy] ;
+IENDS_WITH_ANY_OP     : [Ii][Ee][Nn][Dd][Ss] '-' [Ww][Ii][Tt][Hh] '-' [Aa][Nn][Yy] ;
+ENDS_WITH_ANY_OP      : [Ee][Nn][Dd][Ss] '-' [Ww][Ii][Tt][Hh] '-' [Aa][Nn][Yy] ;
 ISTARTS_WITH_OP       : [Ii][Ss][Tt][Aa][Rr][Tt][Ss] '-' [Ww][Ii][Tt][Hh] ;
 STARTS_WITH_OP        : [Ss][Tt][Aa][Rr][Tt][Ss] '-' [Ww][Ii][Tt][Hh] ;
+IENDS_WITH_OP         : [Ii][Ee][Nn][Dd][Ss] '-' [Ww][Ii][Tt][Hh] ;
+ENDS_WITH_OP          : [Ee][Nn][Dd][Ss] '-' [Ww][Ii][Tt][Hh] ;
 ICONTAINS_OP          : [Ii][Cc][Oo][Nn][Tt][Aa][Ii][Nn][Ss] ;
 CONTAINS_OP           : [Cc][Oo][Nn][Tt][Aa][Ii][Nn][Ss] ;
 
