@@ -20,18 +20,18 @@ type Condition struct {
 	Negated      bool     `json:"negated"`
 	PipeStage    int      `json:"pipe_stage"`
 	LogicalOp    string   `json:"logical_op"`             // "AND" or "OR" connecting to previous condition
-	Alternatives []string `json:"alternatives,omitempty"`  // For OR conditions on same field
-	IsComputed   bool     `json:"is_computed,omitempty"`   // True if field was created by a computed expression
-	SourceField  string   `json:"source_field,omitempty"`  // Original field before transformation (for computed fields)
+	Alternatives []string `json:"alternatives,omitempty"` // For OR conditions on same field
+	IsComputed   bool     `json:"is_computed,omitempty"`  // True if field was created by a computed expression
+	SourceField  string   `json:"source_field,omitempty"` // Original field before transformation (for computed fields)
 }
 
 // ParseResult contains all conditions extracted from the query
 type ParseResult struct {
 	Conditions     []Condition       `json:"conditions"`
-	GroupByFields  []string          `json:"group_by_fields,omitempty"`  // Fields from groupby clause
-	ComputedFields map[string]string `json:"computed_fields,omitempty"`  // Map of computed field name -> source field
-	Commands       []string          `json:"commands,omitempty"`         // List of commands used in the query (where, groupby, calculate, etc.)
-	Joins          []JoinInfo        `json:"joins,omitempty"`            // Extracted join info (LEQL has no joins; kept for API parity)
+	GroupByFields  []string          `json:"group_by_fields,omitempty"` // Fields from groupby clause
+	ComputedFields map[string]string `json:"computed_fields,omitempty"` // Map of computed field name -> source field
+	Commands       []string          `json:"commands,omitempty"`        // List of commands used in the query (where, groupby, calculate, etc.)
+	Joins          []JoinInfo        `json:"joins,omitempty"`           // Extracted join info (LEQL has no joins; kept for API parity)
 	Errors         []string          `json:"errors,omitempty"`
 }
 
@@ -61,12 +61,12 @@ type JoinInfo struct {
 // conditionExtractor walks the parse tree using the visitor pattern to extract conditions.
 type conditionExtractor struct {
 	*BaseLEQLParserVisitor
-	conditions     []Condition
-	groupByFields  []string
-	commands       []string
-	errors         []string
+	conditions       []Condition
+	groupByFields    []string
+	commands         []string
+	errors           []string
 	currentLogicalOp string
-	negated        bool
+	negated          bool
 }
 
 // errorListener collects parse errors
@@ -381,7 +381,7 @@ func (e *conditionExtractor) visitOrExpr(ctx *OrExprContext) {
 
 func (e *conditionExtractor) visitNotExpr(ctx *NotExprContext) {
 	prevNegated := e.negated
-	e.negated = true
+	e.negated = !e.negated
 	if ctx.Expression() != nil {
 		e.visit(ctx.Expression().(antlr.ParseTree))
 	}
@@ -498,11 +498,12 @@ func (e *conditionExtractor) visitNegatedRegexMatchCondition(ctx *NegatedRegexMa
 	op := ctx.RegexMatchOp().GetText()
 	val := extractValue(ctx.Value())
 
-	e.negated = true
+	prevNegated := e.negated
+	e.negated = !e.negated
 	for _, f := range fields {
 		e.addCondition(f, op, val)
 	}
-	e.negated = false
+	e.negated = prevNegated
 }
 
 func (e *conditionExtractor) visitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) {
@@ -513,11 +514,12 @@ func (e *conditionExtractor) visitPostfixNegatedRegexMatchCondition(ctx *Postfix
 	op := ctx.RegexMatchOp().GetText()
 	val := extractValue(ctx.Value())
 
-	e.negated = true
+	prevNegated := e.negated
+	e.negated = !e.negated
 	for _, f := range fields {
 		e.addCondition(f, op, val)
 	}
-	e.negated = false
+	e.negated = prevNegated
 }
 
 func (e *conditionExtractor) visitStringCondition(ctx *StringConditionContext) {
@@ -605,7 +607,7 @@ func (e *conditionExtractor) visitNegatedComparisonCondition(ctx *NegatedCompari
 			Field:     f,
 			Operator:  op,
 			Value:     val,
-			Negated:   true,
+			Negated:   !e.negated,
 			LogicalOp: logOp,
 		})
 	}
@@ -629,7 +631,7 @@ func (e *conditionExtractor) visitNegatedStringCondition(ctx *NegatedStringCondi
 			Field:     f,
 			Operator:  op,
 			Value:     val,
-			Negated:   true,
+			Negated:   !e.negated,
 			LogicalOp: logOp,
 		})
 	}
@@ -649,7 +651,7 @@ func (e *conditionExtractor) visitNegatedSetCondition(ctx *NegatedSetConditionCo
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
-			Negated:      true,
+			Negated:      !e.negated,
 			LogicalOp:    e.currentLogicalOp,
 			Alternatives: alternatives,
 		})
@@ -670,7 +672,7 @@ func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStr
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
-			Negated:      true,
+			Negated:      !e.negated,
 			LogicalOp:    e.currentLogicalOp,
 			Alternatives: alternatives,
 		})
@@ -697,7 +699,7 @@ func (e *conditionExtractor) visitPostfixNegatedComparisonCondition(ctx *Postfix
 			Field:     f,
 			Operator:  op,
 			Value:     val,
-			Negated:   true,
+			Negated:   !e.negated,
 			LogicalOp: logOp,
 		})
 	}
@@ -721,7 +723,7 @@ func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNega
 			Field:     f,
 			Operator:  op,
 			Value:     val,
-			Negated:   true,
+			Negated:   !e.negated,
 			LogicalOp: logOp,
 		})
 	}
@@ -741,7 +743,7 @@ func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegated
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
-			Negated:      true,
+			Negated:      !e.negated,
 			LogicalOp:    e.currentLogicalOp,
 			Alternatives: alternatives,
 		})
@@ -762,7 +764,7 @@ func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *Postfix
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
-			Negated:      true,
+			Negated:      !e.negated,
 			LogicalOp:    e.currentLogicalOp,
 			Alternatives: alternatives,
 		})
@@ -1197,7 +1199,7 @@ func DeduplicateConditions(conditions []Condition) []Condition {
 	result := make([]Condition, 0, len(conditions))
 
 	for _, cond := range conditions {
-		key := strings.ToLower(cond.Field) + "|" + cond.Operator + "|" + cond.Value
+		key := conditionDedupKey(cond)
 		if !seen[key] {
 			seen[key] = true
 			result = append(result, cond)
@@ -1205,6 +1207,23 @@ func DeduplicateConditions(conditions []Condition) []Condition {
 	}
 
 	return result
+}
+
+func conditionDedupKey(cond Condition) string {
+	return strings.ToLower(cond.Field) + "|" +
+		cond.Operator + "|" +
+		cond.Value + "|" +
+		boolKey(cond.Negated) + "|" +
+		boolKey(cond.IsComputed) + "|" +
+		strings.ToLower(cond.SourceField) + "|" +
+		strings.Join(cond.Alternatives, "\x00")
+}
+
+func boolKey(value bool) string {
+	if value {
+		return "1"
+	}
+	return "0"
 }
 
 // IsStatisticalQuery returns true if the query contains a calculate clause.

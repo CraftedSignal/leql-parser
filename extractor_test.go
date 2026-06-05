@@ -377,6 +377,20 @@ func TestExtractConditions_Negation(t *testing.T) {
 				{Field: "key", Operator: "!=", Value: "value", LogicalOp: "AND"},
 			},
 		},
+		{
+			name:  "double NOT cancels",
+			query: `where(NOT NOT key!=value)`,
+			expected: []Condition{
+				{Field: "key", Operator: "!=", Value: "value", LogicalOp: "AND"},
+			},
+		},
+		{
+			name:  "NOT of postfix NOT IN cancels",
+			query: `where(NOT key NOT IN ["aaa", "bbb"])`,
+			expected: []Condition{
+				{Field: "key", Operator: "in", Value: "aaa, bbb", LogicalOp: "AND"},
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -596,6 +610,18 @@ func TestDeduplicateConditions(t *testing.T) {
 	result := DeduplicateConditions(conditions)
 	if len(result) != 2 {
 		t.Errorf("Expected 2 conditions after dedup, got %d: %+v", len(result), result)
+	}
+}
+
+func TestDeduplicateConditionsPreservesNegatedVariant(t *testing.T) {
+	conditions := []Condition{
+		{Field: "status", Operator: "=", Value: "200"},
+		{Field: "status", Operator: "=", Value: "200", Negated: true},
+	}
+
+	result := DeduplicateConditions(conditions)
+	if len(result) != 2 {
+		t.Fatalf("Expected positive and negated variants to survive dedup, got %+v", result)
 	}
 }
 
