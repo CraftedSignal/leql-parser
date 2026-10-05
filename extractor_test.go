@@ -639,6 +639,42 @@ func TestClassifyFieldProvenance(t *testing.T) {
 	}
 }
 
+func TestExtractConditions_CalculateComputedFields(t *testing.T) {
+	tests := []struct {
+		name     string
+		query    string
+		expected string
+	}{
+		{
+			name:     "count",
+			query:    `where(status=200) groupby(user) calculate(count)`,
+			expected: "count()",
+		},
+		{
+			name:     "sum",
+			query:    `where(status=200) groupby(user) calculate(sum:bytes)`,
+			expected: "sum(bytes)",
+		},
+		{
+			name:     "unique",
+			query:    `where(status=200) groupby(user) calculate(unique:source_address)`,
+			expected: "distinct_count(source_address)",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := ExtractConditions(tt.query)
+			if len(result.Errors) > 0 {
+				t.Fatalf("unexpected parse errors: %v", result.Errors)
+			}
+			if got := result.ComputedFields["calculate"]; got != tt.expected {
+				t.Fatalf("expected calculate=%q, got %q in %+v", tt.expected, got, result.ComputedFields)
+			}
+		})
+	}
+}
+
 // --- 15. HasUnmappedComputedFields ---
 
 func TestHasUnmappedComputedFields(t *testing.T) {
@@ -757,4 +793,18 @@ func TestRegexNotMatchOperator(t *testing.T) {
 	assertConditions(t, result, []Condition{
 		{Field: "process.name", Operator: "!~", Value: "safe"},
 	})
+}
+
+func TestExtractPlainNotEqualsIsCaseSensitive(t *testing.T) {
+	result := ExtractConditions(`where(User != "SYSTEM")`)
+	if len(result.Conditions) != 1 {
+		t.Fatalf("expected one condition, got %#v errors %v", result.Conditions, result.Errors)
+	}
+	condition := result.Conditions[0]
+	if condition.Operator != "!=" {
+		t.Fatalf("expected != operator, got %#v", condition)
+	}
+	if condition.CaseInsensitive {
+		t.Fatalf("plain != should not be case-insensitive: %#v", condition)
+	}
 }
