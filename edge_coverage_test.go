@@ -2,6 +2,7 @@ package leql
 
 import (
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -346,6 +347,35 @@ func TestExtractorRecoveryAndTimeoutEdges(t *testing.T) {
 	if result == nil || len(result.Errors) == 0 || !strings.Contains(result.Errors[0], "parser timeout") {
 		t.Fatalf("expected timeout recovery error, got %#v", result)
 	}
+}
+
+func TestTimedOutExtractionDoesNotReadLaterHookValues(t *testing.T) {
+	oldHook := extractHook
+	oldMaxParseTime := MaxParseTime
+	defer func() {
+		extractHook = oldHook
+		MaxParseTime = oldMaxParseTime
+	}()
+
+	MaxParseTime = time.Nanosecond
+	release := make(chan struct{})
+	var workers sync.WaitGroup
+
+	const attempts = 32
+	for range attempts {
+		workers.Add(1)
+		extractHook = func(string) {
+			defer workers.Done()
+			<-release
+		}
+		result := ExtractConditions(`where(status=200)`)
+		if result == nil || len(result.Errors) == 0 || !strings.Contains(result.Errors[0], "parser timeout") {
+			t.Fatalf("expected timeout recovery error, got %#v", result)
+		}
+	}
+
+	close(release)
+	workers.Wait()
 }
 
 func TestHelperGuardEdges(t *testing.T) {

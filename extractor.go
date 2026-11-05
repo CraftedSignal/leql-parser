@@ -108,9 +108,10 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 // ExtractConditions parses a LEQL query and extracts all field conditions.
 // This is the main entry point for the LEQL parser.
 func ExtractConditions(query string) *ParseResult {
+	hook := extractHook
 	ch := make(chan *ParseResult, 1)
 	go func() {
-		ch <- extractConditionsInternal(query)
+		ch <- extractConditionsInternal(query, hook)
 	}()
 
 	select {
@@ -125,7 +126,7 @@ func ExtractConditions(query string) *ParseResult {
 	}
 }
 
-func extractConditionsInternal(query string) (result *ParseResult) {
+func extractConditionsInternal(query string, hook func(string)) (result *ParseResult) {
 	defer func() {
 		if r := recover(); r != nil {
 			result = &ParseResult{
@@ -136,8 +137,8 @@ func extractConditionsInternal(query string) (result *ParseResult) {
 		}
 	}()
 
-	if extractHook != nil {
-		extractHook(query)
+	if hook != nil {
+		hook(query)
 	}
 
 	input := antlr.NewInputStream(query)
