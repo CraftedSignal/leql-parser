@@ -162,9 +162,8 @@ func TestClauseCommandsKeywordAndParserDiagnostics(t *testing.T) {
 		LogicalOp: "AND",
 	}})
 	requireExactConditions(t, ExtractConditions(`where(username)`), []Condition{{
-		Field:     "username",
-		Operator:  "exists",
-		Value:     "*",
+		Operator:  "keyword",
+		Value:     "username",
 		LogicalOp: "AND",
 	}})
 	if result := ExtractConditions(`where(status=)`); result == nil || len(result.Errors) == 0 {

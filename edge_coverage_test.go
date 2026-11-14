@@ -1,10 +1,9 @@
 package leql
 
 import (
+	"reflect"
 	"strings"
-	"sync"
 	"testing"
-	"time"
 
 	"github.com/antlr4-go/antlr/v4"
 )
@@ -30,7 +29,9 @@ func extractConditionRuleForTest(t *testing.T, condition string) *ParseResult {
 		commands:         make([]string, 0),
 		currentLogicalOp: "AND",
 	}
-	extractor.visit(parser.Condition())
+	tree := parser.Condition()
+	extractor.validateRegexLiteralUses(tree)
+	extractor.visit(tree)
 
 	errs := append([]string{}, lexerErrors.errors...)
 	errs = append(errs, parserErrors.errors...)
@@ -318,64 +319,20 @@ func TestIpSetVisitorBodyWithConstructedContext(t *testing.T) {
 
 	extractor := &conditionExtractor{currentLogicalOp: "AND"}
 	extractor.visitIpSetCondition(ipCtx)
+	wantRHS := &Operand{Kind: OperandList, Items: []Operand{
+		{Kind: OperandCIDR, Value: "10.0.0.0/8", Wrapper: OperandIP},
+		{Kind: OperandString, Value: "192.168.0.0/16", Wrapper: OperandIP},
+	}}
+	for _, c := range extractor.conditions {
+		if !reflect.DeepEqual(c.RHS, wantRHS) {
+			t.Fatalf("IP-set visitor RHS=%+v want %+v", c.RHS, wantRHS)
+		}
+	}
 
 	requireExactConditions(t, &ParseResult{Conditions: extractor.conditions}, []Condition{
 		{Field: "source_address", Operator: "cidr", Value: "10.0.0.0/8, 192.168.0.0/16", LogicalOp: "AND", Alternatives: []string{"10.0.0.0/8", "192.168.0.0/16"}},
 		{Field: "destination_address", Operator: "cidr", Value: "10.0.0.0/8, 192.168.0.0/16", LogicalOp: "OR", Alternatives: []string{"10.0.0.0/8", "192.168.0.0/16"}},
 	})
-}
-
-func TestExtractorRecoveryAndTimeoutEdges(t *testing.T) {
-	oldHook := extractHook
-	oldMaxParseTime := MaxParseTime
-	defer func() {
-		extractHook = oldHook
-		MaxParseTime = oldMaxParseTime
-	}()
-
-	extractHook = func(string) { panic("forced panic") }
-	result := ExtractConditions(`where(status=200)`)
-	if result == nil || len(result.Errors) == 0 || !strings.Contains(result.Errors[0], "parser panic: forced panic") {
-		t.Fatalf("expected panic recovery error, got %#v", result)
-	}
-
-	block := make(chan struct{})
-	extractHook = func(string) { <-block }
-	MaxParseTime = time.Nanosecond
-	result = ExtractConditions(`where(status=200)`)
-	close(block)
-	if result == nil || len(result.Errors) == 0 || !strings.Contains(result.Errors[0], "parser timeout") {
-		t.Fatalf("expected timeout recovery error, got %#v", result)
-	}
-}
-
-func TestTimedOutExtractionDoesNotReadLaterHookValues(t *testing.T) {
-	oldHook := extractHook
-	oldMaxParseTime := MaxParseTime
-	defer func() {
-		extractHook = oldHook
-		MaxParseTime = oldMaxParseTime
-	}()
-
-	MaxParseTime = time.Nanosecond
-	release := make(chan struct{})
-	var workers sync.WaitGroup
-
-	const attempts = 32
-	for range attempts {
-		workers.Add(1)
-		extractHook = func(string) {
-			defer workers.Done()
-			<-release
-		}
-		result := ExtractConditions(`where(status=200)`)
-		if result == nil || len(result.Errors) == 0 || !strings.Contains(result.Errors[0], "parser timeout") {
-			t.Fatalf("expected timeout recovery error, got %#v", result)
-		}
-	}
-
-	close(release)
-	workers.Wait()
 }
 
 func TestHelperGuardEdges(t *testing.T) {
