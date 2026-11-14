@@ -30,3 +30,9 @@ that require hard isolation still need an external process boundary and resource
 limits. Unexpected programming panics retain the public failure-only contract: they
 return an error (or nil for the legacy classifier), without partial parse results
 or a portable fallback retry.
+
+The optional [known-field API](README.md#scoped-known-field-parsing) uses the same
+work/output budget through name processing, extraction and semantic conversion.
+Before copying names it checks the supplied count against the output budget and
+their cumulative byte count against the input-byte limit. Names consume output
+items; no global schema or parser callback is installed.

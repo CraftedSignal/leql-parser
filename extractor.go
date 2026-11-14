@@ -87,7 +87,8 @@ type JoinInfo struct {
 
 // conditionExtractor walks the parse tree using the visitor pattern to extract conditions.
 type conditionExtractor struct {
-	budget *parseBudget
+	budget      *parseBudget
+	knownFields map[string]struct{}
 	*BaseLEQLParserVisitor
 	conditions       []Condition
 	expression       *ConditionExpression
@@ -139,7 +140,11 @@ func ExtractConditionsContext(ctx context.Context, query string) *ParseResult {
 	return extractConditionsContext(ctx, query, defaultParseLimits())
 }
 
-func extractConditionsContext(ctx context.Context, query string, limits parseLimits) (result *ParseResult) {
+func extractConditionsContext(ctx context.Context, query string, limits parseLimits) *ParseResult {
+	return extractConditionsContextWithOptions(ctx, query, limits, Options{})
+}
+
+func extractConditionsContextWithOptions(ctx context.Context, query string, limits parseLimits, options Options) (result *ParseResult) {
 	defer func() {
 		if value := recover(); value != nil {
 			result = &ParseResult{Conditions: []Condition{}, Commands: []string{}, Errors: []string{parseFailure(value).Error()}}
@@ -147,11 +152,12 @@ func extractConditionsContext(ctx context.Context, query string, limits parseLim
 	}()
 	budget, cancel := newParseBudget(ctx, limits)
 	defer cancel()
-	return extractConditionsInternal(query, budget)
+	return extractConditionsInternalWithOptions(query, budget, options)
 }
 
-func extractConditionsInternal(query string, budget *parseBudget) (result *ParseResult) {
+func extractConditionsInternalWithOptions(query string, budget *parseBudget, options Options) (result *ParseResult) {
 	budget.input(query)
+	knownFields := knownFieldSet(options, budget)
 	preflight(query, budget, false, nil)
 	normalizedQuery := query
 	lexerErrors := &errorListener{budget: budget}
@@ -169,6 +175,7 @@ func extractConditionsInternal(query string, budget *parseBudget) (result *Parse
 	// Walk the tree using visitor to extract conditions
 	extractor := &conditionExtractor{
 		budget:           budget,
+		knownFields:      knownFields,
 		conditions:       make([]Condition, 0),
 		groupByFields:    make([]string, 0),
 		computedFields:   make(map[string]string),
@@ -470,6 +477,9 @@ func (e *conditionExtractor) visitAndExpr(ctx *AndExprContext) {
 
 func (e *conditionExtractor) visitImplicitAndExpr(ctx *ImplicitAndExprContext) {
 	exprs := ctx.AllExpression()
+	if _, ok := e.knownFieldRegexExpression(exprs); ok {
+		return
+	}
 	if len(exprs) >= 1 {
 		e.visit(exprs[0].(antlr.ParseTree))
 	}
@@ -508,7 +518,11 @@ func (e *conditionExtractor) buildExpression(tree antlr.ParseTree) *ConditionExp
 	case *AndExprContext:
 		return e.buildBinaryExpression(ctx.AllExpression(), BooleanAnd)
 	case *ImplicitAndExprContext:
-		return e.buildBinaryExpression(ctx.AllExpression(), BooleanAnd)
+		exprs := ctx.AllExpression()
+		if expression, ok := e.knownFieldRegexExpression(exprs); ok {
+			return expression
+		}
+		return e.buildBinaryExpression(exprs, BooleanAnd)
 	case *OrExprContext:
 		return e.buildBinaryExpression(ctx.AllExpression(), BooleanOr)
 	case *NotExprContext:
@@ -890,9 +904,13 @@ func (e *conditionExtractor) visitFieldExistsCondition(ctx *FieldExistsCondition
 	if ctx.IDENTIFIER() == nil {
 		return
 	}
-	// The generated context name is retained for API compatibility. A bare
-	// identifier is a keyword search, just like a quoted keyword.
-	e.addCondition("", "keyword", ctx.IDENTIFIER().GetText())
+	name := ctx.IDENTIFIER().GetText()
+	if e.isKnownField(name) {
+		e.addCondition(name, "exists", "")
+		return
+	}
+	// Without explicit schema knowledge a bare identifier remains a keyword.
+	e.addCondition("", "keyword", name)
 }
 
 func (e *conditionExtractor) visitNumberKeywordCondition(ctx *NumberKeywordConditionContext) {

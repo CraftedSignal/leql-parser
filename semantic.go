@@ -48,7 +48,11 @@ func AnalyzeQueryContext(ctx context.Context, query string) *SemanticQuery {
 	return analyzeQueryContext(ctx, query, defaultParseLimits())
 }
 
-func analyzeQueryContext(ctx context.Context, query string, limits parseLimits) (result *SemanticQuery) {
+func analyzeQueryContext(ctx context.Context, query string, limits parseLimits) *SemanticQuery {
+	return analyzeQueryContextWithOptions(ctx, query, limits, Options{})
+}
+
+func analyzeQueryContextWithOptions(ctx context.Context, query string, limits parseLimits, options Options) (result *SemanticQuery) {
 	defer func() {
 		if value := recover(); value != nil {
 			result = &SemanticQuery{Errors: []string{parseFailure(value).Error()}}
@@ -56,7 +60,7 @@ func analyzeQueryContext(ctx context.Context, query string, limits parseLimits) 
 	}()
 	budget, cancel := newParseBudget(ctx, limits)
 	defer cancel()
-	result = semanticFromExtraction(extractConditionsInternal(query, budget), budget)
+	result = semanticFromExtraction(extractConditionsInternalWithOptions(query, budget, options), budget)
 	budget.check()
 	return result
 }
