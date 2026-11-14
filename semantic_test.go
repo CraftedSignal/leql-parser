@@ -78,7 +78,7 @@ func TestSemanticInternalExtractionClonesAndPreservesJoinParity(t *testing.T) {
 		Errors: []string{"warning"},
 	}
 
-	semantic := semanticFromExtraction(result)
+	semantic := semanticFromExtraction(result, nil)
 	if semantic == nil {
 		t.Fatal("expected semantic query")
 	}
@@ -109,10 +109,10 @@ func TestSemanticInternalExtractionClonesAndPreservesJoinParity(t *testing.T) {
 }
 
 func TestSemanticInternalExtractionEdges(t *testing.T) {
-	if got := semanticFromExtraction(nil); got != nil {
+	if got := semanticFromExtraction(nil, nil); got != nil {
 		t.Fatalf("nil parse result converted to %+v", got)
 	}
-	empty := semanticFromExtraction(&ParseResult{})
+	empty := semanticFromExtraction(&ParseResult{}, nil)
 	if empty == nil {
 		t.Fatal("expected empty semantic query")
 	}
@@ -121,28 +121,28 @@ func TestSemanticInternalExtractionEdges(t *testing.T) {
 	}
 
 	conditions := []Condition{{Field: "a"}, {Field: "b", LogicalOp: "OR"}}
-	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanCondition, ConditionIndex: -1}, conditions); got != nil {
+	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanCondition, ConditionIndex: -1}, conditions, nil); got != nil {
 		t.Fatalf("negative condition index converted to %#v", got)
 	}
-	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanCondition, ConditionIndex: 2}, conditions); got != nil {
+	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanCondition, ConditionIndex: 2}, conditions, nil); got != nil {
 		t.Fatalf("out-of-range condition index converted to %#v", got)
 	}
-	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: "unknown"}, conditions); got != nil {
+	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: "unknown"}, conditions, nil); got != nil {
 		t.Fatalf("unknown operator converted to %#v", got)
 	}
-	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanAnd}, conditions); got != nil {
+	if got := semanticExpressionFromParseExpression(&ConditionExpression{Operator: BooleanAnd}, conditions, nil); got != nil {
 		t.Fatalf("empty AND converted to %#v", got)
 	}
 	if got := semanticExpressionFromParseExpression(&ConditionExpression{
 		Operator: BooleanAnd,
 		Children: []*ConditionExpression{{Operator: BooleanCondition, ConditionIndex: 0}, {Operator: BooleanCondition, ConditionIndex: 99}},
-	}, conditions); got != nil {
+	}, conditions, nil); got != nil {
 		t.Fatalf("invalid child expression converted to %#v", got)
 	}
 
 	left := &SemanticExpression{Operator: BooleanAnd, Children: []*SemanticExpression{{Operator: BooleanCondition, Condition: &conditions[0]}}}
 	right := &SemanticExpression{Operator: BooleanAnd, Children: []*SemanticExpression{{Operator: BooleanCondition, Condition: &conditions[1]}}}
-	combined := combineSemanticExpressions(BooleanAnd, left, right)
+	combined := combineSemanticExpressions(BooleanAnd, left, right, nil)
 	if combined == nil || len(combined.Children) != 2 {
 		t.Fatalf("same-operator combine did not flatten children: %#v", combined)
 	}
@@ -150,14 +150,14 @@ func TestSemanticInternalExtractionEdges(t *testing.T) {
 		{Field: "first"},
 		{Field: "second"},
 		{Field: "third", LogicalOp: "OR"},
-	})
+	}, nil)
 	if fromLogicalOps == nil || fromLogicalOps.Operator != BooleanOr || len(fromLogicalOps.Children) != 2 {
 		t.Fatalf("logical-op expression not rebuilt correctly: %#v", fromLogicalOps)
 	}
-	if got := combineSemanticExpressions(BooleanAnd, nil, right); got != right {
+	if got := combineSemanticExpressions(BooleanAnd, nil, right, nil); got != right {
 		t.Fatalf("nil left combine = %#v", got)
 	}
-	if got := combineSemanticExpressions(BooleanAnd, left, nil); got != left {
+	if got := combineSemanticExpressions(BooleanAnd, left, nil, nil); got != left {
 		t.Fatalf("nil right combine = %#v", got)
 	}
 }

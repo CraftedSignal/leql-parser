@@ -1,20 +1,16 @@
 package leql
 
 import (
-	"fmt"
+	"context"
 	"strings"
 	"time"
 
 	"github.com/antlr4-go/antlr/v4"
 )
 
-// MaxParseTime is the maximum time allowed for parsing a single query.
-// Queries that exceed this are returned with an error.
+// MaxParseTime caps cooperative parsing checks. ANTLR may continue inside a
+// prediction between checks; this is not a hard wall-clock or memory bound.
 var MaxParseTime = 5 * time.Second
-
-// extractHook, when non-nil, is invoked at the start of extraction.
-// It exists so tests can deterministically exercise panic and timeout guards.
-var extractHook func(string)
 
 // Condition represents a field condition extracted from a LEQL query
 type Condition struct {
@@ -84,6 +80,7 @@ type JoinInfo struct {
 
 // conditionExtractor walks the parse tree using the visitor pattern to extract conditions.
 type conditionExtractor struct {
+	budget *parseBudget
 	*BaseLEQLParserVisitor
 	conditions       []Condition
 	expression       *ConditionExpression
@@ -99,10 +96,20 @@ type conditionExtractor struct {
 type errorListener struct {
 	*antlr.DefaultErrorListener
 	errors []string
+	budget *parseBudget
 }
 
 //go:noinline
 func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol interface{}, line, column int, msg string, e antlr.RecognitionException) {
+	if l.budget != nil {
+		l.budget.step()
+		if len(l.errors) >= 32 {
+			l.budget.reject("syntax error count")
+		}
+		if len(msg) > 1024 {
+			msg = msg[:1024]
+		}
+	}
 	l.errors = append(l.errors, msg)
 }
 
@@ -113,53 +120,37 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 // literals in equality/inequality conditions use =~/!~ and retain RegexFlags;
 // quoted values remain scalar strings.
 func ExtractConditions(query string) *ParseResult {
-	hook := extractHook
-	ch := make(chan *ParseResult, 1)
-	go func() {
-		ch <- extractConditionsInternal(query, hook)
-	}()
-
-	select {
-	case result := <-ch:
-		return result
-	case <-time.After(MaxParseTime):
-		return &ParseResult{
-			Conditions: []Condition{},
-			Commands:   []string{},
-			Errors:     []string{fmt.Sprintf("parser timeout: query took longer than %s to parse", MaxParseTime)},
-		}
-	}
+	return ExtractConditionsContext(context.Background(), query)
 }
 
-func extractConditionsInternal(query string, hook func(string)) (result *ParseResult) {
+// ExtractConditionsContext applies caller cancellation and MaxParseTime at
+// cooperative boundaries. No parsing goroutine outlives this call.
+func ExtractConditionsContext(ctx context.Context, query string) *ParseResult {
+	return extractConditionsContext(ctx, query, defaultParseLimits())
+}
+
+func extractConditionsContext(ctx context.Context, query string, limits parseLimits) (result *ParseResult) {
 	defer func() {
-		if r := recover(); r != nil {
-			result = &ParseResult{
-				Conditions: []Condition{},
-				Commands:   []string{},
-				Errors:     []string{fmt.Sprintf("parser panic: %v", r)},
-			}
+		if value := recover(); value != nil {
+			result = &ParseResult{Conditions: []Condition{}, Commands: []string{}, Errors: []string{parseFailure(value).Error()}}
 		}
 	}()
+	budget, cancel := newParseBudget(ctx, limits)
+	defer cancel()
+	return extractConditionsInternal(query, budget)
+}
 
-	if hook != nil {
-		hook(query)
-	}
-
-	input := antlr.NewInputStream(query)
-	lexer := NewLEQLLexer(input)
-
-	// Remove default error listener and add our own
-	lexer.RemoveErrorListeners()
-	lexerErrors := &errorListener{}
-	lexer.AddErrorListener(lexerErrors)
-
-	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-	parser := NewLEQLParser(stream)
+func extractConditionsInternal(query string, budget *parseBudget) (result *ParseResult) {
+	budget.input(query)
+	preflight(query, budget, false, nil)
+	normalizedQuery := query
+	lexerErrors := &errorListener{budget: budget}
+	stream := preflight(normalizedQuery, budget, true, lexerErrors)
+	parser := NewLEQLParser(&budgetTokenStream{CommonTokenStream: stream, budget: budget})
 
 	// Remove default error listener and add our own
 	parser.RemoveErrorListeners()
-	parserErrors := &errorListener{}
+	parserErrors := &errorListener{budget: budget}
 	parser.AddErrorListener(parserErrors)
 
 	// Parse the query
@@ -167,6 +158,7 @@ func extractConditionsInternal(query string, hook func(string)) (result *ParseRe
 
 	// Walk the tree using visitor to extract conditions
 	extractor := &conditionExtractor{
+		budget:           budget,
 		conditions:       make([]Condition, 0),
 		groupByFields:    make([]string, 0),
 		computedFields:   make(map[string]string),
@@ -175,10 +167,15 @@ func extractConditionsInternal(query string, hook func(string)) (result *ParseRe
 	}
 	extractor.validateRegexLiteralUses(tree)
 	extractor.visit(tree)
+	budget.check()
+	extractor.checkOutput()
 
 	// Combine errors
 	allErrors := append(lexerErrors.errors, parserErrors.errors...)
 	allErrors = append(allErrors, extractor.errors...)
+
+	budget.outputSize(len(extractor.conditions))
+	budget.check()
 
 	return &ParseResult{
 		Conditions:     extractor.conditions,
@@ -193,6 +190,8 @@ func extractConditionsInternal(query string, hook func(string)) (result *ParseRe
 
 // visit dispatches to the appropriate visitor method based on the node type.
 func (e *conditionExtractor) visit(tree antlr.ParseTree) {
+	e.budget.step()
+	e.checkOutput()
 	if tree == nil {
 		return
 	}
@@ -673,7 +672,7 @@ func (e *conditionExtractor) visitSingleQuotedKeyword(ctx *SingleQuotedKeywordCo
 func (e *conditionExtractor) visitRegexPattern(ctx *RegexPatternContext) {
 	text := ctx.REGEX().GetText()
 	flags := regexLiteralFlags(text)
-	e.conditions = append(e.conditions, Condition{
+	e.appendCondition(Condition{
 		Operator:        "regex",
 		Value:           stripRegexSlashes(text),
 		RegexFlags:      flags,
@@ -727,7 +726,7 @@ func (e *conditionExtractor) visitStringCondition(ctx *StringConditionContext) {
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:           f,
 			Operator:        op,
 			Value:           val,
@@ -757,7 +756,7 @@ func (e *conditionExtractor) visitSetCondition(ctx *SetConditionContext) {
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -782,7 +781,7 @@ func (e *conditionExtractor) visitListStringCondition(ctx *ListStringConditionCo
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -814,7 +813,7 @@ func (e *conditionExtractor) visitNegatedStringCondition(ctx *NegatedStringCondi
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:     f,
 			Operator:  op,
 			Value:     val,
@@ -838,7 +837,7 @@ func (e *conditionExtractor) visitNegatedSetCondition(ctx *NegatedSetConditionCo
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -863,7 +862,7 @@ func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStr
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -897,7 +896,7 @@ func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNega
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:     f,
 			Operator:  op,
 			Value:     val,
@@ -921,7 +920,7 @@ func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegated
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -946,7 +945,7 @@ func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *Postfix
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -977,7 +976,7 @@ func (e *conditionExtractor) visitNocaseCondition(ctx *NocaseConditionContext) {
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:           f,
 			Operator:        op,
 			Value:           val,
@@ -1003,7 +1002,7 @@ func (e *conditionExtractor) visitIpCondition(ctx *IpConditionContext) {
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:     f,
 			Operator:  "cidr",
 			Value:     val,
@@ -1026,7 +1025,7 @@ func (e *conditionExtractor) visitIpSetCondition(ctx *IpSetConditionContext) {
 		if i > 0 {
 			logOp = "OR"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     "cidr",
 			Value:        strings.Join(alternatives, ", "),
@@ -1058,7 +1057,7 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 		if i > 0 {
 			logOp = "AND"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:        f,
 			Operator:     op,
 			Value:        strings.Join(alternatives, ", "),
@@ -1086,7 +1085,7 @@ func (e *conditionExtractor) visitAllFieldsNocaseCondition(ctx *AllFieldsNocaseC
 		if i > 0 {
 			logOp = "AND"
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:           f,
 			Operator:        op,
 			Value:           val,
@@ -1123,7 +1122,7 @@ func (e *conditionExtractor) visitVariableCondition(ctx *VariableConditionContex
 
 // addCondition appends a new condition using current extractor state.
 func (e *conditionExtractor) addCondition(field, operator, value string) {
-	e.conditions = append(e.conditions, Condition{
+	e.appendCondition(Condition{
 		Field:     field,
 		Operator:  operator,
 		Value:     value,
@@ -1148,11 +1147,12 @@ func (e *conditionExtractor) addFieldValueConditions(fields []string, operator s
 	}
 	val := extractValue(value)
 	for i, field := range fields {
+		e.budget.step()
 		logicalOp := e.currentLogicalOp
 		if i > 0 {
 			logicalOp = fieldLogicalOp
 		}
-		e.conditions = append(e.conditions, Condition{
+		e.appendCondition(Condition{
 			Field:           field,
 			Operator:        operator,
 			Value:           val,
@@ -1171,6 +1171,7 @@ func (e *conditionExtractor) addFieldValueConditions(fields []string, operator s
 // operators have no documented regex semantics. Keep best-effort extraction,
 // but never silently turn these patterns and flags into scalar comparisons.
 func (e *conditionExtractor) validateRegexLiteralUses(tree antlr.Tree) {
+	e.budget.step()
 	if literal, ok := tree.(*ValueContext); ok && literal.REGEX() != nil {
 		supported := false
 		switch parent := literal.GetParent().(type) {
@@ -1191,6 +1192,7 @@ func (e *conditionExtractor) validateRegexLiteralUses(tree antlr.Tree) {
 			}
 		}
 		if !supported {
+			e.budget.reserveOutput(1)
 			e.errors = append(e.errors, "regex literal is unsupported with this operator or value wrapper: "+literal.GetText())
 		}
 	}
