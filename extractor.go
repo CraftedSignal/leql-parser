@@ -14,6 +14,9 @@ var MaxParseTime = 5 * time.Second
 
 // Condition represents a field condition extracted from a LEQL query
 type Condition struct {
+	// Loose records that this condition originated inside a WHERE with the
+	// trailing loose modifier. It does not define evaluation for every operator.
+	Loose           bool     `json:"loose,omitempty"`
 	Field           string   `json:"field"`
 	Operator        string   `json:"operator"`
 	Value           string   `json:"value"`
@@ -46,6 +49,8 @@ type ConditionExpression struct {
 
 // ParseResult contains all conditions extracted from the query
 type ParseResult struct {
+	// Loose preserves the trailing WHERE modifier; FROM conditions remain strict.
+	Loose          bool                 `json:"loose,omitempty"`
 	Conditions     []Condition          `json:"conditions"`
 	Expression     *ConditionExpression `json:"expression,omitempty"`
 	GroupByFields  []string             `json:"group_by_fields,omitempty"` // Fields from groupby clause
@@ -90,6 +95,7 @@ type conditionExtractor struct {
 	errors           []string
 	currentLogicalOp string
 	negated          bool
+	loose            bool
 }
 
 // errorListener collects parse errors
@@ -119,6 +125,8 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 // "keyword"), correcting the earlier field-existence interpretation. Regex
 // literals in equality/inequality conditions use =~/!~ and retain RegexFlags;
 // quoted values remain scalar strings.
+// Loose preserves WHERE mode as query and condition metadata. Consumers must
+// honor that metadata when evaluating supported loose-mode operations.
 func ExtractConditions(query string) *ParseResult {
 	return ExtractConditionsContext(context.Background(), query)
 }
@@ -178,6 +186,7 @@ func extractConditionsInternal(query string, budget *parseBudget) (result *Parse
 	budget.check()
 
 	return &ParseResult{
+		Loose:          extractor.loose,
 		Conditions:     extractor.conditions,
 		Expression:     extractor.expression,
 		GroupByFields:  extractor.groupByFields,
@@ -339,8 +348,14 @@ func (e *conditionExtractor) visitFromClause(ctx *FromClauseContext) {
 // visitWhereClause handles the where(...) clause.
 func (e *conditionExtractor) visitWhereClause(ctx *WhereClauseContext) {
 	e.commands = append(e.commands, "where")
+	e.loose = ctx.LOOSE() != nil
+	start := len(e.conditions)
 	if ctx.Expression() != nil {
 		e.mergeClauseExpression(e.buildExpression(ctx.Expression().(antlr.ParseTree)))
+	}
+	for i := start; i < len(e.conditions); i++ {
+		e.budget.step()
+		e.conditions[i].Loose = e.loose
 	}
 }
 
@@ -1473,7 +1488,8 @@ func ClassifyFieldProvenance(_ *ParseResult, _ string) FieldProvenance {
 	return ProvenanceMain
 }
 
-// DeduplicateConditions removes duplicate conditions based on Field+Operator+Value.
+// DeduplicateConditions removes duplicate predicates while preserving matching
+// metadata, including strict versus loose WHERE provenance.
 func DeduplicateConditions(conditions []Condition) []Condition {
 	if len(conditions) == 0 {
 		return conditions
@@ -1498,6 +1514,7 @@ func conditionDedupKey(cond Condition) string {
 		cond.Operator + "|" +
 		cond.Value + "|" +
 		boolKey(cond.Negated) + "|" +
+		boolKey(cond.Loose) + "|" +
 		boolKey(cond.CaseInsensitive) + "|" +
 		cond.RegexFlags + "|" +
 		boolKey(cond.IsComputed) + "|" +

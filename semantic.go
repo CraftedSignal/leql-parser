@@ -4,6 +4,9 @@ import "context"
 
 // SemanticQuery is the parser-owned semantic view of an LEQL query.
 type SemanticQuery struct {
+	// Loose preserves the trailing WHERE modifier, with scoped provenance on
+	// Conditions. It does not imply universal operator normalization.
+	Loose          bool                `json:"loose,omitempty"`
 	Conditions     []Condition         `json:"conditions,omitempty"`
 	Expression     *SemanticExpression `json:"expression,omitempty"`
 	GroupByFields  []string            `json:"group_by_fields,omitempty"`
@@ -33,7 +36,8 @@ type SemanticJoin struct {
 	ExposedFields []string       `json:"exposed_fields,omitempty"`
 }
 
-// AnalyzeQuery parses an LEQL query and returns the parser-owned semantic model.
+// AnalyzeQuery parses an LEQL query and returns the parser-owned semantic model,
+// preserving loose WHERE mode for consumers to interpret alongside operators.
 func AnalyzeQuery(query string) *SemanticQuery {
 	return AnalyzeQueryContext(context.Background(), query)
 }
@@ -66,6 +70,7 @@ func semanticFromExtraction(result *ParseResult, budget *parseBudget) *SemanticQ
 	}
 	budget.reserveOutput(1)
 	semantic := &SemanticQuery{
+		Loose:          result.Loose,
 		Conditions:     cloneSemanticConditions(result.Conditions, budget),
 		GroupByFields:  cloneSemanticStrings(result.GroupByFields, budget),
 		ComputedFields: cloneSemanticStringMap(result.ComputedFields, budget),
