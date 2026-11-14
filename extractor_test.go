@@ -445,14 +445,14 @@ func TestExtractConditions_Regex(t *testing.T) {
 			name:  "regex keyword search with flags",
 			query: `where(/error/i)`,
 			expected: []Condition{
-				{Field: "", Operator: "regex", Value: "error", LogicalOp: "AND"},
+				{Field: "", Operator: "regex", Value: "error", CaseInsensitive: true, RegexFlags: "i", LogicalOp: "AND"},
 			},
 		},
 		{
 			name:  "field regex comparison",
 			query: `where(field=/pattern/)`,
 			expected: []Condition{
-				{Field: "field", Operator: "=", Value: "pattern", LogicalOp: "AND"},
+				{Field: "field", Operator: "=~", Value: "pattern", LogicalOp: "AND"},
 			},
 		},
 	}

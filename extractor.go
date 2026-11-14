@@ -23,6 +23,7 @@ type Condition struct {
 	Value           string   `json:"value"`
 	Negated         bool     `json:"negated"`
 	CaseInsensitive bool     `json:"case_insensitive,omitempty"`
+	RegexFlags      string   `json:"regex_flags,omitempty"` // Accepted regex flags, preserving spelling and order
 	PipeStage       int      `json:"pipe_stage"`
 	LogicalOp       string   `json:"logical_op"`             // "AND" or "OR" connecting to previous condition
 	Alternatives    []string `json:"alternatives,omitempty"` // For OR conditions on same field
@@ -107,6 +108,10 @@ func (l *errorListener) SyntaxError(recognizer antlr.Recognizer, offendingSymbol
 
 // ExtractConditions parses a LEQL query and extracts all field conditions.
 // This is the main entry point for the LEQL parser.
+// Bare words such as where(run) are keyword searches (Field "", Operator
+// "keyword"), correcting the earlier field-existence interpretation. Regex
+// literals in equality/inequality conditions use =~/!~ and retain RegexFlags;
+// quoted values remain scalar strings.
 func ExtractConditions(query string) *ParseResult {
 	hook := extractHook
 	ch := make(chan *ParseResult, 1)
@@ -168,6 +173,7 @@ func extractConditionsInternal(query string, hook func(string)) (result *ParseRe
 		commands:         make([]string, 0),
 		currentLogicalOp: "AND",
 	}
+	extractor.validateRegexLiteralUses(tree)
 	extractor.visit(tree)
 
 	// Combine errors
@@ -666,8 +672,16 @@ func (e *conditionExtractor) visitSingleQuotedKeyword(ctx *SingleQuotedKeywordCo
 
 func (e *conditionExtractor) visitRegexPattern(ctx *RegexPatternContext) {
 	text := ctx.REGEX().GetText()
-	pattern := stripRegexSlashes(text)
-	e.addCondition("", "regex", pattern)
+	flags := regexLiteralFlags(text)
+	e.conditions = append(e.conditions, Condition{
+		Operator:        "regex",
+		Value:           stripRegexSlashes(text),
+		RegexFlags:      flags,
+		CaseInsensitive: strings.Contains(flags, "i"),
+		Negated:         e.negated,
+		LogicalOp:       e.currentLogicalOp,
+	})
+	e.currentLogicalOp = "AND"
 }
 
 // --- Condition visitors ---
@@ -676,120 +690,28 @@ func (e *conditionExtractor) visitComparisonCondition(ctx *ComparisonConditionCo
 	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := extractComparisonOp(ctx.ComparisonOp())
-	val := extractValue(ctx.Value())
-
-	if len(fields) == 1 {
-		e.addCondition(fields[0], op, val)
-	} else {
-		// Multiple fields in fieldList = separate conditions with LogicalOp "OR"
-		for i, f := range fields {
-			logOp := e.currentLogicalOp
-			if i > 0 {
-				logOp = "OR"
-			}
-			e.conditions = append(e.conditions, Condition{
-				Field:     f,
-				Operator:  op,
-				Value:     val,
-				Negated:   e.negated,
-				LogicalOp: logOp,
-			})
-		}
-		// Reset logical op for next condition
-		e.currentLogicalOp = "AND"
-	}
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitRegexMatchCondition(ctx *RegexMatchConditionContext) {
 	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := ctx.RegexMatchOp().GetText()
-	caseInsensitive := regexValueHasCaseInsensitiveFlag(ctx.Value().GetText())
-	val := extractValue(ctx.Value())
-
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "OR"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:           f,
-			Operator:        op,
-			Value:           val,
-			Negated:         e.negated,
-			CaseInsensitive: caseInsensitive,
-			LogicalOp:       logOp,
-		})
-	}
-	if len(fields) > 0 {
-		e.currentLogicalOp = "AND"
-	}
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), ctx.RegexMatchOp().GetText(), ctx.Value(), e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitNegatedRegexMatchCondition(ctx *NegatedRegexMatchConditionContext) {
 	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := ctx.RegexMatchOp().GetText()
-	caseInsensitive := regexValueHasCaseInsensitiveFlag(ctx.Value().GetText())
-	val := extractValue(ctx.Value())
-
-	prevNegated := e.negated
-	e.negated = !e.negated
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "OR"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:           f,
-			Operator:        op,
-			Value:           val,
-			Negated:         e.negated,
-			CaseInsensitive: caseInsensitive,
-			LogicalOp:       logOp,
-		})
-	}
-	if len(fields) > 0 {
-		e.currentLogicalOp = "AND"
-	}
-	e.negated = prevNegated
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), ctx.RegexMatchOp().GetText(), ctx.Value(), !e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitPostfixNegatedRegexMatchCondition(ctx *PostfixNegatedRegexMatchConditionContext) {
 	if ctx.FieldList() == nil || ctx.RegexMatchOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := ctx.RegexMatchOp().GetText()
-	caseInsensitive := regexValueHasCaseInsensitiveFlag(ctx.Value().GetText())
-	val := extractValue(ctx.Value())
-
-	prevNegated := e.negated
-	e.negated = !e.negated
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "OR"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:           f,
-			Operator:        op,
-			Value:           val,
-			Negated:         e.negated,
-			CaseInsensitive: caseInsensitive,
-			LogicalOp:       logOp,
-		})
-	}
-	if len(fields) > 0 {
-		e.currentLogicalOp = "AND"
-	}
-	e.negated = prevNegated
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), ctx.RegexMatchOp().GetText(), ctx.Value(), !e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitStringCondition(ctx *StringConditionContext) {
@@ -876,24 +798,7 @@ func (e *conditionExtractor) visitNegatedComparisonCondition(ctx *NegatedCompari
 	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := extractComparisonOp(ctx.ComparisonOp())
-	val := extractValue(ctx.Value())
-
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "OR"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:     f,
-			Operator:  op,
-			Value:     val,
-			Negated:   !e.negated,
-			LogicalOp: logOp,
-		})
-	}
-	e.currentLogicalOp = "AND"
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), !e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitNegatedStringCondition(ctx *NegatedStringConditionContext) {
@@ -976,24 +881,7 @@ func (e *conditionExtractor) visitPostfixNegatedComparisonCondition(ctx *Postfix
 	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractFieldNames(ctx.FieldList())
-	op := extractComparisonOp(ctx.ComparisonOp())
-	val := extractValue(ctx.Value())
-
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "OR"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:     f,
-			Operator:  op,
-			Value:     val,
-			Negated:   !e.negated,
-			LogicalOp: logOp,
-		})
-	}
-	e.currentLogicalOp = "AND"
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), !e.negated, "OR")
 }
 
 func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) {
@@ -1154,24 +1042,7 @@ func (e *conditionExtractor) visitAllFieldsComparisonCondition(ctx *AllFieldsCom
 	if ctx.AllFieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
 		return
 	}
-	fields := extractAllFieldNames(ctx.AllFieldList())
-	op := extractComparisonOp(ctx.ComparisonOp())
-	val := extractValue(ctx.Value())
-
-	for i, f := range fields {
-		logOp := e.currentLogicalOp
-		if i > 0 {
-			logOp = "AND"
-		}
-		e.conditions = append(e.conditions, Condition{
-			Field:     f,
-			Operator:  op,
-			Value:     val,
-			Negated:   e.negated,
-			LogicalOp: logOp,
-		})
-	}
-	e.currentLogicalOp = "AND"
+	e.addFieldValueConditions(extractAllFieldNames(ctx.AllFieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), e.negated, "AND")
 }
 
 func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditionContext) {
@@ -1231,8 +1102,9 @@ func (e *conditionExtractor) visitFieldExistsCondition(ctx *FieldExistsCondition
 	if ctx.IDENTIFIER() == nil {
 		return
 	}
-	field := ctx.IDENTIFIER().GetText()
-	e.addCondition(field, "exists", "*")
+	// The generated context name is retained for API compatibility. A bare
+	// identifier is a keyword search, just like a quoted keyword.
+	e.addCondition("", "keyword", ctx.IDENTIFIER().GetText())
 }
 
 func (e *conditionExtractor) visitNumberKeywordCondition(ctx *NumberKeywordConditionContext) {
@@ -1259,6 +1131,72 @@ func (e *conditionExtractor) addCondition(field, operator, value string) {
 		LogicalOp: e.currentLogicalOp,
 	})
 	e.currentLogicalOp = "AND"
+}
+
+// addFieldValueConditions keeps regex literal classification consistent across
+// equality, strict equality, explicit regex operators, and their NOT variants.
+func (e *conditionExtractor) addFieldValueConditions(fields []string, operator string, value IValueContext, negated bool, fieldLogicalOp string) {
+	flags := ""
+	if literal, ok := value.(*ValueContext); ok && literal.REGEX() != nil {
+		flags = regexLiteralFlags(literal.REGEX().GetText())
+		switch operator {
+		case "=", "==":
+			operator = "=~"
+		case "!=", "!==":
+			operator = "!~"
+		}
+	}
+	val := extractValue(value)
+	for i, field := range fields {
+		logicalOp := e.currentLogicalOp
+		if i > 0 {
+			logicalOp = fieldLogicalOp
+		}
+		e.conditions = append(e.conditions, Condition{
+			Field:           field,
+			Operator:        operator,
+			Value:           val,
+			Negated:         negated,
+			RegexFlags:      flags,
+			CaseInsensitive: strings.Contains(flags, "i"),
+			LogicalOp:       logicalOp,
+		})
+	}
+	if len(fields) > 0 {
+		e.currentLogicalOp = "AND"
+	}
+}
+
+// validateRegexLiteralUses diagnoses grammar-accepted regex operands whose
+// operators have no documented regex semantics. Keep best-effort extraction,
+// but never silently turn these patterns and flags into scalar comparisons.
+func (e *conditionExtractor) validateRegexLiteralUses(tree antlr.Tree) {
+	if literal, ok := tree.(*ValueContext); ok && literal.REGEX() != nil {
+		supported := false
+		switch parent := literal.GetParent().(type) {
+		case interface{ RegexMatchOp() IRegexMatchOpContext }:
+			supported = true
+		case interface{ ComparisonOp() IComparisonOpContext }:
+			// Only these conditions classify equality literals as regexes.
+			// Other comparisons, such as HAVING, do not extract them.
+			switch parent.(type) {
+			case *ComparisonConditionContext, *NegatedComparisonConditionContext,
+				*PostfixNegatedComparisonConditionContext, *AllFieldsComparisonConditionContext:
+				if op := parent.ComparisonOp(); op != nil {
+					switch op.GetText() {
+					case "=", "==", "!=", "!==":
+						supported = true
+					}
+				}
+			}
+		}
+		if !supported {
+			e.errors = append(e.errors, "regex literal is unsupported with this operator or value wrapper: "+literal.GetText())
+		}
+	}
+	for _, child := range tree.GetChildren() {
+		e.validateRegexLiteralUses(child)
+	}
 }
 
 // --- Field and value extraction helpers ---
@@ -1506,15 +1444,19 @@ func stripRegexSlashes(s string) string {
 	return s[1:lastSlash]
 }
 
-func regexValueHasCaseInsensitiveFlag(s string) bool {
+func regexLiteralFlags(s string) string {
 	if len(s) < 2 || s[0] != '/' {
-		return false
+		return ""
 	}
 	lastSlash := strings.LastIndex(s, "/")
-	if lastSlash <= 0 || lastSlash+1 >= len(s) {
-		return false
+	if lastSlash <= 0 {
+		return ""
 	}
-	return strings.Contains(strings.ToLower(s[lastSlash+1:]), "i")
+	return s[lastSlash+1:]
+}
+
+func regexValueHasCaseInsensitiveFlag(s string) bool {
+	return strings.Contains(regexLiteralFlags(s), "i")
 }
 
 func leqlOperatorIsCaseInsensitive(op string) bool {
@@ -1554,6 +1496,8 @@ func conditionDedupKey(cond Condition) string {
 		cond.Operator + "|" +
 		cond.Value + "|" +
 		boolKey(cond.Negated) + "|" +
+		boolKey(cond.CaseInsensitive) + "|" +
+		cond.RegexFlags + "|" +
 		boolKey(cond.IsComputed) + "|" +
 		strings.ToLower(cond.SourceField) + "|" +
 		strings.Join(cond.Alternatives, "\x00")
