@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/antlr4-go/antlr/v4"
 )
 
 func TestExtractContextRejectsCanceledRequest(t *testing.T) {
@@ -86,5 +88,63 @@ func TestAnalyzeSharesBudgetWithSemanticConversion(t *testing.T) {
 	result := analyzeQueryContext(context.Background(), query, limits)
 	if len(result.Conditions) != 0 || result.Expression != nil || len(result.Errors) != 1 || !strings.Contains(result.Errors[0], "output items") {
 		t.Fatalf("semantic conversion must share the exhausted budget without partial output: %+v", result)
+	}
+}
+
+// These small helper fixtures cover the upstream literal-semantic paths before
+// their allocations, independently of the public boundary's final size check.
+func TestLiteralFieldHelperReservesOutputBeforeAppend(t *testing.T) {
+	limits := defaultParseLimits()
+	limits.maxOutputItems = 1
+	budget, cancel := newParseBudget(context.Background(), limits)
+	defer cancel()
+	extractor := &conditionExtractor{budget: budget, currentLogicalOp: "AND"}
+	defer func() {
+		value := recover()
+		abort, ok := value.(budgetAbort)
+		if !ok || !strings.Contains(abort.err.Error(), "output items") {
+			t.Fatalf("expected output rejection before append, got %v", value)
+		}
+		if len(extractor.conditions) != 1 {
+			t.Fatalf("over-budget condition appended: %+v", extractor.conditions)
+		}
+	}()
+	extractor.addFieldValueConditions([]string{"x", "y"}, "=", nil, false, "OR")
+}
+
+func TestRegexLiteralValidationSharesWorkAndCancellation(t *testing.T) {
+	tree := NewLEQLParser(antlr.NewCommonTokenStream(NewLEQLLexer(antlr.NewInputStream(`where(x > /ok/i)`)), antlr.TokenDefaultChannel)).Query()
+	for _, name := range []string{"work", "cancel", "output"} {
+		t.Run(name, func(t *testing.T) {
+			limits := defaultParseLimits()
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			want := ""
+			switch name {
+			case "work":
+				limits.maxWork = 0
+				want = "work budget"
+			case "cancel":
+				cancel()
+				want = "context canceled"
+			case "output":
+				limits.maxOutputItems = 0
+				want = "output items"
+			}
+			budget, stop := newParseBudget(ctx, limits)
+			defer stop()
+			extractor := &conditionExtractor{budget: budget}
+			defer func() {
+				value := recover()
+				abort, ok := value.(budgetAbort)
+				if !ok || !strings.Contains(abort.err.Error(), want) {
+					t.Fatalf("expected %s rejection, got %v", want, value)
+				}
+				if len(extractor.errors) != 0 {
+					t.Fatalf("over-budget diagnostic appended: %+v", extractor.errors)
+				}
+			}()
+			extractor.validateRegexLiteralUses(tree)
+		})
 	}
 }
