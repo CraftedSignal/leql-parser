@@ -96,19 +96,19 @@ func TestLooseBooleanTopologyAndConditions(t *testing.T) {
 		topology   string
 	}{
 		{`where(user=admin, loose)`, []Condition{
-			{Loose: true, Field: "user", Operator: "=", Value: "admin", LogicalOp: "AND"},
+			{Loose: true, Field: "user", Operator: "=", Value: "admin", RHS: &Operand{Kind: OperandString, Value: "admin"}, LogicalOp: "AND"},
 		}, `{"operator":"condition","condition_index":0}`},
 		{`where(user,actor=Admin, loose)`, []Condition{
-			{Loose: true, Field: "user", Operator: "=", Value: "Admin", LogicalOp: "AND"},
-			{Loose: true, Field: "actor", Operator: "=", Value: "Admin", LogicalOp: "OR"},
+			{Loose: true, Field: "user", Operator: "=", Value: "Admin", RHS: &Operand{Kind: OperandString, Value: "Admin"}, LogicalOp: "AND"},
+			{Loose: true, Field: "actor", Operator: "=", Value: "Admin", RHS: &Operand{Kind: OperandString, Value: "Admin"}, LogicalOp: "OR"},
 		}, `{"operator":"or","condition_index":0,"children":[{"operator":"condition","condition_index":0},{"operator":"condition","condition_index":1}]}`},
 		{`where(all(user,actor)=Admin, loose)`, []Condition{
-			{Loose: true, Field: "user", Operator: "=", Value: "Admin", LogicalOp: "AND"},
-			{Loose: true, Field: "actor", Operator: "=", Value: "Admin", LogicalOp: "AND"},
+			{Loose: true, Field: "user", Operator: "=", Value: "Admin", RHS: &Operand{Kind: OperandString, Value: "Admin"}, LogicalOp: "AND"},
+			{Loose: true, Field: "actor", Operator: "=", Value: "Admin", RHS: &Operand{Kind: OperandString, Value: "Admin"}, LogicalOp: "AND"},
 		}, `{"operator":"and","condition_index":0,"children":[{"operator":"condition","condition_index":0},{"operator":"condition","condition_index":1}]}`},
 		{`where(NOT (user=Admin OR actor=Root), loose)`, []Condition{
-			{Loose: true, Field: "user", Operator: "=", Value: "Admin", Negated: true, LogicalOp: "AND"},
-			{Loose: true, Field: "actor", Operator: "=", Value: "Root", Negated: true, LogicalOp: "OR"},
+			{Loose: true, Field: "user", Operator: "=", Value: "Admin", RHS: &Operand{Kind: OperandString, Value: "Admin"}, Negated: true, LogicalOp: "AND"},
+			{Loose: true, Field: "actor", Operator: "=", Value: "Root", RHS: &Operand{Kind: OperandString, Value: "Root"}, Negated: true, LogicalOp: "OR"},
 		}, `{"operator":"and","condition_index":0,"children":[{"operator":"condition","condition_index":0},{"operator":"condition","condition_index":1}]}`},
 	}
 	for _, tt := range tests {

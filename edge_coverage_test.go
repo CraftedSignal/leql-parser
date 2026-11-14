@@ -1,6 +1,7 @@
 package leql
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 
@@ -28,7 +29,9 @@ func extractConditionRuleForTest(t *testing.T, condition string) *ParseResult {
 		commands:         make([]string, 0),
 		currentLogicalOp: "AND",
 	}
-	extractor.visit(parser.Condition())
+	tree := parser.Condition()
+	extractor.validateRegexLiteralUses(tree)
+	extractor.visit(tree)
 
 	errs := append([]string{}, lexerErrors.errors...)
 	errs = append(errs, parserErrors.errors...)
@@ -316,6 +319,15 @@ func TestIpSetVisitorBodyWithConstructedContext(t *testing.T) {
 
 	extractor := &conditionExtractor{currentLogicalOp: "AND"}
 	extractor.visitIpSetCondition(ipCtx)
+	wantRHS := &Operand{Kind: OperandList, Items: []Operand{
+		{Kind: OperandCIDR, Value: "10.0.0.0/8", Wrapper: OperandIP},
+		{Kind: OperandString, Value: "192.168.0.0/16", Wrapper: OperandIP},
+	}}
+	for _, c := range extractor.conditions {
+		if !reflect.DeepEqual(c.RHS, wantRHS) {
+			t.Fatalf("IP-set visitor RHS=%+v want %+v", c.RHS, wantRHS)
+		}
+	}
 
 	requireExactConditions(t, &ParseResult{Conditions: extractor.conditions}, []Condition{
 		{Field: "source_address", Operator: "cidr", Value: "10.0.0.0/8, 192.168.0.0/16", LogicalOp: "AND", Alternatives: []string{"10.0.0.0/8", "192.168.0.0/16"}},

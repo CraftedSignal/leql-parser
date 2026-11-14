@@ -203,6 +203,7 @@ func cloneSemanticConditions(conditions []Condition, budget *parseBudget) []Cond
 	for i, condition := range conditions {
 		budget.step()
 		out[i] = condition
+		out[i].RHS = cloneOperand(condition.RHS, budget)
 		out[i].Alternatives = cloneSemanticStrings(condition.Alternatives, budget)
 	}
 	return out

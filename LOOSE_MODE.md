@@ -7,9 +7,10 @@ that WHERE scope also has `Loose: true`, including conditions expanded from
 multi-field predicates and nested expressions. FROM conditions keep `Loose: false`.
 Deduplication retains strict and loose variants of the same predicate.
 
-The JSON property is `"loose": true`; false values are omitted, preserving strict
-query JSON. These fields are additive for JSON consumers and keyed Go struct
-literals. External unkeyed literals may need updating.
+The JSON property is `"loose": true`; false values are omitted. The Loose fields
+are additive for JSON consumers and keyed Go struct literals. External unkeyed
+literals may need updating. Typed RHS metadata separately adds JSON properties
+to strict-query field predicates as described below.
 
 The condition flag records scope provenance. Operators, values, alternatives,
 regex flags, case sensitivity flags, negation, and boolean grouping retain their
@@ -24,6 +25,9 @@ implementing universal executable loose semantics. The documentation does not
 establish how loose affects every numeric, regex, list, wrapper, or explicit
 string operator. Those predicates receive provenance without operator lowering.
 
-Quoted numeric operand typing and the representation/validation of key-comparison
-operands are separate concerns. Existing representations of those operands are
-unchanged. Consumers that discard `Loose` still lose the user's matching intent.
+Typed RHS metadata distinguishes quoted numeric strings from numbers and records
+key-reference roles, alongside the legacy Value/Alternatives text projections.
+Consumers that discard `Loose` still lose the user's matching intent.
+
+Typed RHS syntax and key-reference roles are preserved alongside Loose metadata.
+See [typed operands](TYPED_OPERANDS.md) for the API and downstream adoption work.

@@ -11,7 +11,11 @@ tokens distinguish syntax delimiters from delimiters inside literals and
 comments. The complete bounded token list is checked before parsing begins.
 Cooperative work is limited to 1,000,000 checks, and guarded condition/semantic
 output growth is limited to 4,096 charged items. Intermediate semantic clones
-also consume that output budget. Syntax diagnostics are capped at 32 per
+also consume that output budget. Typed RHS roots, temporary typed list items,
+per-condition operand copies, and semantic operand copies are charged before
+allocation against the same cumulative budget. Defaults are unchanged; queries
+near the previous output ceiling may now reach it sooner. See
+[typed operands](TYPED_OPERANDS.md) for the additive API and migration contract. Syntax diagnostics are capped at 32 per
 listener, with each message truncated to 1,024 bytes.
 
 Parsing runs synchronously: a returned cancellation or limit error leaves no

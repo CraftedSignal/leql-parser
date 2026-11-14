@@ -80,7 +80,7 @@ func TestAnalyzeContextRejectsCanceledRequest(t *testing.T) {
 
 func TestAnalyzeSharesBudgetWithSemanticConversion(t *testing.T) {
 	limits := defaultParseLimits()
-	limits.maxOutputItems = 1
+	limits.maxOutputItems = 3 // temporary operand, owning clone, and condition
 	query := "where(x=1)"
 	if result := extractConditionsContext(context.Background(), query, limits); len(result.Errors) != 0 || len(result.Conditions) != 1 {
 		t.Fatalf("extraction must fit this budget: %+v", result)
@@ -95,7 +95,7 @@ func TestAnalyzeSharesBudgetWithSemanticConversion(t *testing.T) {
 // their allocations, independently of the public boundary's final size check.
 func TestLiteralFieldHelperReservesOutputBeforeAppend(t *testing.T) {
 	limits := defaultParseLimits()
-	limits.maxOutputItems = 1
+	limits.maxOutputItems = 3 // one temporary operand, one clone, one condition
 	budget, cancel := newParseBudget(context.Background(), limits)
 	defer cancel()
 	extractor := &conditionExtractor{budget: budget, currentLogicalOp: "AND"}
