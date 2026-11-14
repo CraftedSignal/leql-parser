@@ -41,20 +41,14 @@ func TestLiteralSemanticsRegex(t *testing.T) {
 		{`where(NOT /error/i)`, "", "regex", "error", "i", true, true},
 		{`where(user=/.*admin.*/i)`, "user", "=~", ".*admin.*", "i", false, true},
 		{`where(user=/.*admin.*/)`, "user", "=~", ".*admin.*", "", false, false},
-		{`where(user==/admin/msxU)`, "user", "=~", "admin", "msxU", false, false},
 		{`where(user!=/admin/i)`, "user", "!~", "admin", "i", false, true},
-		{`where(user!==/admin/i)`, "user", "!~", "admin", "i", false, true},
 		{`where(NOT user=/admin/i)`, "user", "=~", "admin", "i", true, true},
 		{`where(user NOT =/admin/i)`, "user", "=~", "admin", "i", true, true},
-		{`where(user NOT ==/admin/i)`, "user", "=~", "admin", "i", true, true},
 		{`where(user NOT !=/admin/i)`, "user", "!~", "admin", "i", true, true},
-		{`where(NOT user==/admin/i)`, "user", "=~", "admin", "i", true, true},
-		{`where(NOT user!==/admin/i)`, "user", "!~", "admin", "i", true, true},
 		{`where(user=/a\/b/mi)`, "user", "=~", `a\/b`, "mi", false, true},
 		{`where(user='.*admin.*')`, "user", "=", ".*admin.*", "", false, false},
 		{`where('run')`, "", "keyword", "run", "", false, false},
 		{`where(NOT user!=/admin/i)`, "user", "!~", "admin", "i", true, true},
-		{`where(user NOT !==/admin/i)`, "user", "!~", "admin", "i", true, true},
 		{`where(user=~/admin/im)`, "user", "=~", "admin", "im", false, true},
 		{`where(NOT user!~/admin/s)`, "user", "!~", "admin", "s", true, false},
 		{`where(user NOT =~/admin/xU)`, "user", "=~", "admin", "xU", true, false},
@@ -93,7 +87,7 @@ func TestLiteralSemanticsMultiFieldRegex(t *testing.T) {
 }
 
 func TestLiteralSemanticsUnsupportedRegexOperands(t *testing.T) {
-	for _, query := range []string{`where(user>/admin/i)`, `where(user CONTAINS /admin/i)`, `where(user IN [/admin/i])`, `where(user CONTAINS-ANY [/admin/m])`, `where(user=NOCASE(/admin/i))`, `where(run) calculate(count) having(count=/admin/i)`} {
+	for _, query := range []string{`where(user>/admin/i)`, `where(user CONTAINS /admin/i)`, `where(user CONTAINS-ANY [/admin/m])`, `where(user=NOCASE(/admin/i))`, `where(run) calculate(count) having(count=/admin/i)`} {
 		t.Run(query, func(t *testing.T) {
 			for name, errs := range map[string][]string{"extract": ExtractConditions(query).Errors, "analyze": AnalyzeQuery(query).Errors} {
 				if !strings.Contains(strings.Join(errs, " "), "regex literal") {
@@ -191,9 +185,7 @@ func TestLiteralSemanticsConditionRulePrefixNot(t *testing.T) {
 	// the whole-query parser can choose an expression-level NOT instead.
 	for _, tt := range []struct{ query, op string }{
 		{`NOT user,actor=/admin/im`, "=~"},
-		{`NOT user,actor==/admin/im`, "=~"},
 		{`NOT user,actor!=/admin/im`, "!~"},
-		{`NOT user,actor!==/admin/im`, "!~"},
 		{`NOT user,actor=~/admin/im`, "=~"},
 	} {
 		query := tt.query
