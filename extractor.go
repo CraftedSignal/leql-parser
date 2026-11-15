@@ -859,10 +859,20 @@ func (e *conditionExtractor) visitIpCondition(ctx *IpConditionContext) {
 	e.budget.reserveOutput(1)
 	operand := ipOperand(ctx.IpValue(), e.budget)
 	rhs := &operand
-	if !isKeyComparison(operator) {
+	negated := e.negated
+	switch operator {
+	case "=":
 		operator = "cidr"
+	case "!=":
+		operator = "cidr"
+		negated = !negated
+	default:
+		if !isKeyComparison(operator) {
+			e.budget.reserveOutput(1)
+			e.errors = append(e.errors, "unsupported IP comparison operator: "+operator)
+		}
 	}
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, negated, "OR", false, "")
 }
 
 func (e *conditionExtractor) visitIpSetCondition(ctx *IpSetConditionContext) {
