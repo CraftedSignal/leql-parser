@@ -756,11 +756,8 @@ func (e *conditionExtractor) visitSetCondition(ctx *SetConditionContext) {
 	if ctx.FieldList() == nil || ctx.SetOp() == nil || ctx.ValueList() == nil {
 		return
 	}
-	operator := extractSetOp(ctx.SetOp())
+	operator := cidrSetOperator(extractSetOp(ctx.SetOp()), ctx.ValueList())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	if operator == "in" && valueListItemsAllIP(ctx.ValueList()) {
-		operator = "cidr"
-	}
 	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
@@ -792,7 +789,7 @@ func (e *conditionExtractor) visitNegatedSetCondition(ctx *NegatedSetConditionCo
 	if ctx.FieldList() == nil || ctx.SetOp() == nil || ctx.ValueList() == nil {
 		return
 	}
-	operator := extractSetOp(ctx.SetOp())
+	operator := cidrSetOperator(extractSetOp(ctx.SetOp()), ctx.ValueList())
 	rhs := listOperand(ctx.ValueList(), e.budget)
 	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
@@ -827,7 +824,7 @@ func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegated
 	if ctx.FieldList() == nil || ctx.SetOp() == nil || ctx.ValueList() == nil {
 		return
 	}
-	operator := extractSetOp(ctx.SetOp())
+	operator := cidrSetOperator(extractSetOp(ctx.SetOp()), ctx.ValueList())
 	rhs := listOperand(ctx.ValueList(), e.budget)
 	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
@@ -895,7 +892,7 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 	if ctx.AllFieldList() == nil || ctx.SetOp() == nil || ctx.ValueList() == nil {
 		return
 	}
-	operator := extractSetOp(ctx.SetOp())
+	operator := cidrSetOperator(extractSetOp(ctx.SetOp()), ctx.ValueList())
 	rhs := listOperand(ctx.ValueList(), e.budget)
 	e.addOperandConditions(extractAllFieldNames(ctx.AllFieldList()), operator, rhs, e.negated, "AND", leqlOperatorIsCaseInsensitive(operator), "")
 }
@@ -1111,6 +1108,14 @@ func extractSetOp(ctx ISetOpContext) string {
 		return ""
 	}
 	return strings.ToLower(ctx.GetText())
+}
+
+// cidrSetOperator turns IN over a list of only IP() items into a CIDR match.
+func cidrSetOperator(operator string, list IValueListContext) string {
+	if operator == "in" && valueListItemsAllIP(list) {
+		return "cidr"
+	}
+	return operator
 }
 
 // extractListStringOp returns the operator name from a listStringOp context.
