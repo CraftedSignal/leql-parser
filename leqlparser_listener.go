@@ -67,6 +67,9 @@ type LEQLParserListener interface {
 	// EnterListStringCondition is called when entering the listStringCondition production.
 	EnterListStringCondition(c *ListStringConditionContext)
 
+	// EnterNotEqualListCondition is called when entering the notEqualListCondition production.
+	EnterNotEqualListCondition(c *NotEqualListConditionContext)
+
 	// EnterNegatedComparisonCondition is called when entering the negatedComparisonCondition production.
 	EnterNegatedComparisonCondition(c *NegatedComparisonConditionContext)
 
@@ -270,6 +273,9 @@ type LEQLParserListener interface {
 
 	// ExitListStringCondition is called when exiting the listStringCondition production.
 	ExitListStringCondition(c *ListStringConditionContext)
+
+	// ExitNotEqualListCondition is called when exiting the notEqualListCondition production.
+	ExitNotEqualListCondition(c *NotEqualListConditionContext)
 
 	// ExitNegatedComparisonCondition is called when exiting the negatedComparisonCondition production.
 	ExitNegatedComparisonCondition(c *NegatedComparisonConditionContext)

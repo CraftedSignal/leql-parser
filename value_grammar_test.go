@@ -55,3 +55,33 @@ func TestBareIPv4ValueStaysWhole(t *testing.T) {
 		t.Fatalf("expression=%s", got)
 	}
 }
+
+// Rapid7 ("Exclude results with comparison operators"): "You must use ! before
+// these operators to exclude data from your results", e.g. key != ["aaa", "bbb"].
+// The list exclusion extracts what the equivalent IN form extracts.
+func TestNotEqualsListExcludesEveryValue(t *testing.T) {
+	r := ExtractConditions(`where(key != ["aaa", "bbb"])`)
+	if len(r.Errors) != 0 || len(r.Conditions) != 1 {
+		t.Fatalf("conditions=%+v errors=%q", r.Conditions, r.Errors)
+	}
+	if c := r.Conditions[0]; c.Field != "key" || c.Operator != "in" || !c.Negated || c.Value != "aaa, bbb" || !reflect.DeepEqual(c.Alternatives, []string{"aaa", "bbb"}) {
+		t.Fatalf("got %+v", c)
+	}
+	for _, tt := range []struct{ query, same string }{
+		{`where(key != ["aaa", "bbb"])`, `where(key NOT IN ["aaa", "bbb"])`},
+		{`where(key1, key2 != ["aaa", "bbb"])`, `where(key1, key2 NOT IN ["aaa", "bbb"])`},
+		{`where(NOT key != [aaa, 42])`, `where(key IN [aaa, 42])`},
+		{`where(user=admin AND key != [aaa] OR x=1)`, `where(user=admin AND key NOT IN [aaa] OR x=1)`},
+		{`where(source_ip != [IP(10.0.0.0/8), IP(192.168.0.0/16)])`, `where(NOT source_ip IN [IP(10.0.0.0/8), IP(192.168.0.0/16)])`},
+	} {
+		t.Run(tt.query, func(t *testing.T) {
+			got, want := ExtractConditions(tt.query), ExtractConditions(tt.same)
+			if len(got.Errors) != 0 || len(got.Conditions) == 0 || !reflect.DeepEqual(got, want) {
+				t.Fatalf("got %+v\nwant %+v", got, want)
+			}
+			if got, want := AnalyzeQuery(tt.query), AnalyzeQuery(tt.same); !reflect.DeepEqual(got, want) {
+				t.Fatalf("semantic got %+v\nwant %+v", got, want)
+			}
+		})
+	}
+}

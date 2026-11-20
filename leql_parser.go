@@ -65,7 +65,7 @@ func leqlparserParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 78, 419, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 78, 423, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
@@ -88,167 +88,169 @@ func leqlparserParserInit() {
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
 		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
-		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7, 261, 8, 7, 1, 8, 1, 8,
-		3, 8, 265, 8, 8, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10, 5, 10, 272, 8, 10, 10,
-		10, 12, 10, 275, 9, 10, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 5, 11, 282,
-		8, 11, 10, 11, 12, 11, 285, 9, 11, 1, 11, 1, 11, 1, 12, 1, 12, 1, 13, 1,
-		13, 1, 14, 1, 14, 1, 15, 1, 15, 1, 16, 1, 16, 1, 17, 1, 17, 1, 18, 1, 18,
-		1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 20, 1, 20, 1, 20, 1, 20, 3, 20, 312,
-		8, 20, 1, 20, 1, 20, 1, 21, 1, 21, 1, 21, 1, 21, 5, 21, 320, 8, 21, 10,
-		21, 12, 21, 323, 9, 21, 1, 21, 1, 21, 1, 22, 1, 22, 3, 22, 329, 8, 22,
-		1, 23, 1, 23, 1, 23, 1, 23, 1, 23, 5, 23, 336, 8, 23, 10, 23, 12, 23, 339,
-		9, 23, 1, 23, 1, 23, 1, 24, 1, 24, 1, 24, 1, 24, 1, 24, 1, 25, 1, 25, 1,
-		25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 3, 25, 356, 8, 25, 1, 26, 1, 26,
-		1, 26, 1, 26, 1, 26, 1, 27, 1, 27, 1, 27, 3, 27, 366, 8, 27, 1, 28, 1,
-		28, 1, 29, 1, 29, 1, 29, 1, 29, 1, 30, 1, 30, 1, 30, 1, 30, 1, 30, 1, 30,
-		3, 30, 380, 8, 30, 1, 31, 1, 31, 1, 31, 1, 31, 1, 31, 5, 31, 387, 8, 31,
-		10, 31, 12, 31, 390, 9, 31, 1, 31, 1, 31, 1, 32, 1, 32, 1, 32, 1, 32, 3,
-		32, 398, 8, 32, 1, 33, 1, 33, 1, 34, 1, 34, 1, 34, 1, 34, 1, 34, 5, 34,
-		407, 8, 34, 10, 34, 12, 34, 410, 9, 34, 1, 34, 1, 34, 1, 35, 1, 35, 1,
-		35, 1, 35, 1, 35, 1, 35, 0, 1, 12, 36, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18,
-		20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54,
-		56, 58, 60, 62, 64, 66, 68, 70, 0, 12, 6, 0, 9, 10, 31, 32, 37, 38, 40,
-		43, 72, 74, 77, 77, 3, 0, 48, 48, 50, 50, 52, 57, 2, 0, 49, 49, 51, 51,
-		1, 0, 22, 27, 1, 0, 28, 29, 1, 0, 14, 21, 1, 0, 68, 77, 1, 0, 37, 38, 3,
-		0, 33, 33, 35, 38, 40, 43, 2, 0, 34, 34, 39, 39, 1, 0, 44, 47, 1, 0, 74,
-		75, 440, 0, 73, 1, 0, 0, 0, 2, 101, 1, 0, 0, 0, 4, 106, 1, 0, 0, 0, 6,
-		111, 1, 0, 0, 0, 8, 119, 1, 0, 0, 0, 10, 124, 1, 0, 0, 0, 12, 148, 1, 0,
-		0, 0, 14, 260, 1, 0, 0, 0, 16, 264, 1, 0, 0, 0, 18, 266, 1, 0, 0, 0, 20,
-		268, 1, 0, 0, 0, 22, 276, 1, 0, 0, 0, 24, 288, 1, 0, 0, 0, 26, 290, 1,
-		0, 0, 0, 28, 292, 1, 0, 0, 0, 30, 294, 1, 0, 0, 0, 32, 296, 1, 0, 0, 0,
-		34, 298, 1, 0, 0, 0, 36, 300, 1, 0, 0, 0, 38, 302, 1, 0, 0, 0, 40, 307,
-		1, 0, 0, 0, 42, 315, 1, 0, 0, 0, 44, 328, 1, 0, 0, 0, 46, 330, 1, 0, 0,
-		0, 48, 342, 1, 0, 0, 0, 50, 355, 1, 0, 0, 0, 52, 357, 1, 0, 0, 0, 54, 365,
-		1, 0, 0, 0, 56, 367, 1, 0, 0, 0, 58, 369, 1, 0, 0, 0, 60, 373, 1, 0, 0,
-		0, 62, 381, 1, 0, 0, 0, 64, 393, 1, 0, 0, 0, 66, 399, 1, 0, 0, 0, 68, 401,
-		1, 0, 0, 0, 70, 413, 1, 0, 0, 0, 72, 74, 3, 2, 1, 0, 73, 72, 1, 0, 0, 0,
-		73, 74, 1, 0, 0, 0, 74, 76, 1, 0, 0, 0, 75, 77, 3, 4, 2, 0, 76, 75, 1,
-		0, 0, 0, 76, 77, 1, 0, 0, 0, 77, 79, 1, 0, 0, 0, 78, 80, 3, 10, 5, 0, 79,
-		78, 1, 0, 0, 0, 79, 80, 1, 0, 0, 0, 80, 82, 1, 0, 0, 0, 81, 83, 3, 46,
-		23, 0, 82, 81, 1, 0, 0, 0, 82, 83, 1, 0, 0, 0, 83, 85, 1, 0, 0, 0, 84,
-		86, 3, 52, 26, 0, 85, 84, 1, 0, 0, 0, 85, 86, 1, 0, 0, 0, 86, 88, 1, 0,
-		0, 0, 87, 89, 3, 48, 24, 0, 88, 87, 1, 0, 0, 0, 88, 89, 1, 0, 0, 0, 89,
-		91, 1, 0, 0, 0, 90, 92, 3, 62, 31, 0, 91, 90, 1, 0, 0, 0, 91, 92, 1, 0,
-		0, 0, 92, 94, 1, 0, 0, 0, 93, 95, 3, 68, 34, 0, 94, 93, 1, 0, 0, 0, 94,
-		95, 1, 0, 0, 0, 95, 97, 1, 0, 0, 0, 96, 98, 3, 70, 35, 0, 97, 96, 1, 0,
-		0, 0, 97, 98, 1, 0, 0, 0, 98, 99, 1, 0, 0, 0, 99, 100, 5, 0, 0, 1, 100,
-		1, 1, 0, 0, 0, 101, 102, 5, 9, 0, 0, 102, 103, 5, 59, 0, 0, 103, 104, 3,
-		12, 6, 0, 104, 105, 5, 60, 0, 0, 105, 3, 1, 0, 0, 0, 106, 107, 5, 1, 0,
-		0, 107, 108, 5, 59, 0, 0, 108, 109, 3, 6, 3, 0, 109, 110, 5, 60, 0, 0,
-		110, 5, 1, 0, 0, 0, 111, 116, 3, 8, 4, 0, 112, 113, 5, 63, 0, 0, 113, 115,
-		3, 8, 4, 0, 114, 112, 1, 0, 0, 0, 115, 118, 1, 0, 0, 0, 116, 114, 1, 0,
-		0, 0, 116, 117, 1, 0, 0, 0, 117, 7, 1, 0, 0, 0, 118, 116, 1, 0, 0, 0, 119,
-		122, 3, 24, 12, 0, 120, 121, 5, 77, 0, 0, 121, 123, 5, 77, 0, 0, 122, 120,
-		1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 9, 1, 0, 0, 0, 124, 125, 5, 2, 0,
-		0, 125, 126, 5, 59, 0, 0, 126, 129, 3, 12, 6, 0, 127, 128, 5, 63, 0, 0,
-		128, 130, 5, 10, 0, 0, 129, 127, 1, 0, 0, 0, 129, 130, 1, 0, 0, 0, 130,
-		131, 1, 0, 0, 0, 131, 132, 5, 60, 0, 0, 132, 11, 1, 0, 0, 0, 133, 134,
-		6, 6, -1, 0, 134, 135, 5, 59, 0, 0, 135, 136, 3, 12, 6, 0, 136, 137, 5,
-		60, 0, 0, 137, 149, 1, 0, 0, 0, 138, 139, 5, 2, 0, 0, 139, 140, 5, 59,
-		0, 0, 140, 141, 3, 12, 6, 0, 141, 142, 5, 60, 0, 0, 142, 149, 1, 0, 0,
-		0, 143, 144, 5, 13, 0, 0, 144, 149, 3, 12, 6, 7, 145, 149, 3, 14, 7, 0,
-		146, 149, 3, 16, 8, 0, 147, 149, 3, 18, 9, 0, 148, 133, 1, 0, 0, 0, 148,
-		138, 1, 0, 0, 0, 148, 143, 1, 0, 0, 0, 148, 145, 1, 0, 0, 0, 148, 146,
-		1, 0, 0, 0, 148, 147, 1, 0, 0, 0, 149, 160, 1, 0, 0, 0, 150, 151, 10, 6,
-		0, 0, 151, 152, 5, 11, 0, 0, 152, 159, 3, 12, 6, 7, 153, 154, 10, 5, 0,
-		0, 154, 159, 3, 12, 6, 6, 155, 156, 10, 4, 0, 0, 156, 157, 5, 12, 0, 0,
-		157, 159, 3, 12, 6, 5, 158, 150, 1, 0, 0, 0, 158, 153, 1, 0, 0, 0, 158,
-		155, 1, 0, 0, 0, 159, 162, 1, 0, 0, 0, 160, 158, 1, 0, 0, 0, 160, 161,
-		1, 0, 0, 0, 161, 13, 1, 0, 0, 0, 162, 160, 1, 0, 0, 0, 163, 164, 3, 20,
-		10, 0, 164, 165, 3, 26, 13, 0, 165, 166, 3, 36, 18, 0, 166, 261, 1, 0,
-		0, 0, 167, 168, 3, 20, 10, 0, 168, 169, 3, 28, 14, 0, 169, 170, 3, 36,
-		18, 0, 170, 261, 1, 0, 0, 0, 171, 172, 3, 20, 10, 0, 172, 173, 3, 30, 15,
-		0, 173, 174, 3, 36, 18, 0, 174, 261, 1, 0, 0, 0, 175, 176, 3, 20, 10, 0,
-		176, 177, 3, 32, 16, 0, 177, 178, 3, 42, 21, 0, 178, 261, 1, 0, 0, 0, 179,
-		180, 3, 20, 10, 0, 180, 181, 3, 34, 17, 0, 181, 182, 3, 42, 21, 0, 182,
-		261, 1, 0, 0, 0, 183, 184, 5, 13, 0, 0, 184, 185, 3, 20, 10, 0, 185, 186,
-		3, 26, 13, 0, 186, 187, 3, 36, 18, 0, 187, 261, 1, 0, 0, 0, 188, 189, 5,
-		13, 0, 0, 189, 190, 3, 20, 10, 0, 190, 191, 3, 28, 14, 0, 191, 192, 3,
-		36, 18, 0, 192, 261, 1, 0, 0, 0, 193, 194, 5, 13, 0, 0, 194, 195, 3, 20,
-		10, 0, 195, 196, 3, 30, 15, 0, 196, 197, 3, 36, 18, 0, 197, 261, 1, 0,
-		0, 0, 198, 199, 5, 13, 0, 0, 199, 200, 3, 20, 10, 0, 200, 201, 3, 32, 16,
-		0, 201, 202, 3, 42, 21, 0, 202, 261, 1, 0, 0, 0, 203, 204, 5, 13, 0, 0,
-		204, 205, 3, 20, 10, 0, 205, 206, 3, 34, 17, 0, 206, 207, 3, 42, 21, 0,
-		207, 261, 1, 0, 0, 0, 208, 209, 3, 20, 10, 0, 209, 210, 5, 13, 0, 0, 210,
-		211, 3, 26, 13, 0, 211, 212, 3, 36, 18, 0, 212, 261, 1, 0, 0, 0, 213, 214,
-		3, 20, 10, 0, 214, 215, 5, 13, 0, 0, 215, 216, 3, 28, 14, 0, 216, 217,
-		3, 36, 18, 0, 217, 261, 1, 0, 0, 0, 218, 219, 3, 20, 10, 0, 219, 220, 5,
-		13, 0, 0, 220, 221, 3, 30, 15, 0, 221, 222, 3, 36, 18, 0, 222, 261, 1,
-		0, 0, 0, 223, 224, 3, 20, 10, 0, 224, 225, 5, 13, 0, 0, 225, 226, 3, 32,
-		16, 0, 226, 227, 3, 42, 21, 0, 227, 261, 1, 0, 0, 0, 228, 229, 3, 20, 10,
-		0, 229, 230, 5, 13, 0, 0, 230, 231, 3, 34, 17, 0, 231, 232, 3, 42, 21,
-		0, 232, 261, 1, 0, 0, 0, 233, 234, 3, 20, 10, 0, 234, 235, 3, 26, 13, 0,
-		235, 236, 3, 38, 19, 0, 236, 261, 1, 0, 0, 0, 237, 238, 3, 20, 10, 0, 238,
-		239, 3, 26, 13, 0, 239, 240, 3, 40, 20, 0, 240, 261, 1, 0, 0, 0, 241, 242,
-		3, 20, 10, 0, 242, 243, 3, 32, 16, 0, 243, 244, 3, 42, 21, 0, 244, 261,
-		1, 0, 0, 0, 245, 246, 3, 22, 11, 0, 246, 247, 3, 26, 13, 0, 247, 248, 3,
-		36, 18, 0, 248, 261, 1, 0, 0, 0, 249, 250, 3, 22, 11, 0, 250, 251, 3, 32,
-		16, 0, 251, 252, 3, 42, 21, 0, 252, 261, 1, 0, 0, 0, 253, 254, 3, 22, 11,
-		0, 254, 255, 3, 26, 13, 0, 255, 256, 3, 38, 19, 0, 256, 261, 1, 0, 0, 0,
-		257, 261, 5, 77, 0, 0, 258, 261, 5, 74, 0, 0, 259, 261, 5, 76, 0, 0, 260,
-		163, 1, 0, 0, 0, 260, 167, 1, 0, 0, 0, 260, 171, 1, 0, 0, 0, 260, 175,
-		1, 0, 0, 0, 260, 179, 1, 0, 0, 0, 260, 183, 1, 0, 0, 0, 260, 188, 1, 0,
-		0, 0, 260, 193, 1, 0, 0, 0, 260, 198, 1, 0, 0, 0, 260, 203, 1, 0, 0, 0,
-		260, 208, 1, 0, 0, 0, 260, 213, 1, 0, 0, 0, 260, 218, 1, 0, 0, 0, 260,
-		223, 1, 0, 0, 0, 260, 228, 1, 0, 0, 0, 260, 233, 1, 0, 0, 0, 260, 237,
-		1, 0, 0, 0, 260, 241, 1, 0, 0, 0, 260, 245, 1, 0, 0, 0, 260, 249, 1, 0,
-		0, 0, 260, 253, 1, 0, 0, 0, 260, 257, 1, 0, 0, 0, 260, 258, 1, 0, 0, 0,
-		260, 259, 1, 0, 0, 0, 261, 15, 1, 0, 0, 0, 262, 265, 5, 72, 0, 0, 263,
-		265, 5, 73, 0, 0, 264, 262, 1, 0, 0, 0, 264, 263, 1, 0, 0, 0, 265, 17,
-		1, 0, 0, 0, 266, 267, 5, 69, 0, 0, 267, 19, 1, 0, 0, 0, 268, 273, 3, 24,
-		12, 0, 269, 270, 5, 63, 0, 0, 270, 272, 3, 24, 12, 0, 271, 269, 1, 0, 0,
-		0, 272, 275, 1, 0, 0, 0, 273, 271, 1, 0, 0, 0, 273, 274, 1, 0, 0, 0, 274,
-		21, 1, 0, 0, 0, 275, 273, 1, 0, 0, 0, 276, 277, 5, 32, 0, 0, 277, 278,
-		5, 59, 0, 0, 278, 283, 3, 24, 12, 0, 279, 280, 5, 63, 0, 0, 280, 282, 3,
-		24, 12, 0, 281, 279, 1, 0, 0, 0, 282, 285, 1, 0, 0, 0, 283, 281, 1, 0,
-		0, 0, 283, 284, 1, 0, 0, 0, 284, 286, 1, 0, 0, 0, 285, 283, 1, 0, 0, 0,
-		286, 287, 5, 60, 0, 0, 287, 23, 1, 0, 0, 0, 288, 289, 7, 0, 0, 0, 289,
-		25, 1, 0, 0, 0, 290, 291, 7, 1, 0, 0, 291, 27, 1, 0, 0, 0, 292, 293, 7,
-		2, 0, 0, 293, 29, 1, 0, 0, 0, 294, 295, 7, 3, 0, 0, 295, 31, 1, 0, 0, 0,
-		296, 297, 7, 4, 0, 0, 297, 33, 1, 0, 0, 0, 298, 299, 7, 5, 0, 0, 299, 35,
-		1, 0, 0, 0, 300, 301, 7, 6, 0, 0, 301, 37, 1, 0, 0, 0, 302, 303, 5, 30,
-		0, 0, 303, 304, 5, 59, 0, 0, 304, 305, 3, 36, 18, 0, 305, 306, 5, 60, 0,
-		0, 306, 39, 1, 0, 0, 0, 307, 308, 5, 31, 0, 0, 308, 311, 5, 59, 0, 0, 309,
-		312, 5, 68, 0, 0, 310, 312, 3, 36, 18, 0, 311, 309, 1, 0, 0, 0, 311, 310,
-		1, 0, 0, 0, 312, 313, 1, 0, 0, 0, 313, 314, 5, 60, 0, 0, 314, 41, 1, 0,
-		0, 0, 315, 316, 5, 61, 0, 0, 316, 321, 3, 44, 22, 0, 317, 318, 5, 63, 0,
-		0, 318, 320, 3, 44, 22, 0, 319, 317, 1, 0, 0, 0, 320, 323, 1, 0, 0, 0,
-		321, 319, 1, 0, 0, 0, 321, 322, 1, 0, 0, 0, 322, 324, 1, 0, 0, 0, 323,
-		321, 1, 0, 0, 0, 324, 325, 5, 62, 0, 0, 325, 43, 1, 0, 0, 0, 326, 329,
-		3, 40, 20, 0, 327, 329, 3, 36, 18, 0, 328, 326, 1, 0, 0, 0, 328, 327, 1,
-		0, 0, 0, 329, 45, 1, 0, 0, 0, 330, 331, 5, 3, 0, 0, 331, 332, 5, 59, 0,
-		0, 332, 337, 3, 24, 12, 0, 333, 334, 5, 63, 0, 0, 334, 336, 3, 24, 12,
-		0, 335, 333, 1, 0, 0, 0, 336, 339, 1, 0, 0, 0, 337, 335, 1, 0, 0, 0, 337,
-		338, 1, 0, 0, 0, 338, 340, 1, 0, 0, 0, 339, 337, 1, 0, 0, 0, 340, 341,
-		5, 60, 0, 0, 341, 47, 1, 0, 0, 0, 342, 343, 5, 4, 0, 0, 343, 344, 5, 59,
-		0, 0, 344, 345, 3, 50, 25, 0, 345, 346, 5, 60, 0, 0, 346, 49, 1, 0, 0,
-		0, 347, 348, 3, 56, 28, 0, 348, 349, 3, 26, 13, 0, 349, 350, 3, 36, 18,
-		0, 350, 356, 1, 0, 0, 0, 351, 352, 3, 58, 29, 0, 352, 353, 3, 26, 13, 0,
-		353, 354, 3, 36, 18, 0, 354, 356, 1, 0, 0, 0, 355, 347, 1, 0, 0, 0, 355,
-		351, 1, 0, 0, 0, 356, 51, 1, 0, 0, 0, 357, 358, 5, 5, 0, 0, 358, 359, 5,
-		59, 0, 0, 359, 360, 3, 54, 27, 0, 360, 361, 5, 60, 0, 0, 361, 53, 1, 0,
-		0, 0, 362, 366, 3, 56, 28, 0, 363, 366, 3, 58, 29, 0, 364, 366, 3, 60,
-		30, 0, 365, 362, 1, 0, 0, 0, 365, 363, 1, 0, 0, 0, 365, 364, 1, 0, 0, 0,
-		366, 55, 1, 0, 0, 0, 367, 368, 7, 7, 0, 0, 368, 57, 1, 0, 0, 0, 369, 370,
-		7, 8, 0, 0, 370, 371, 5, 64, 0, 0, 371, 372, 3, 24, 12, 0, 372, 59, 1,
-		0, 0, 0, 373, 374, 7, 9, 0, 0, 374, 375, 5, 59, 0, 0, 375, 376, 5, 74,
-		0, 0, 376, 379, 5, 60, 0, 0, 377, 378, 5, 64, 0, 0, 378, 380, 3, 24, 12,
-		0, 379, 377, 1, 0, 0, 0, 379, 380, 1, 0, 0, 0, 380, 61, 1, 0, 0, 0, 381,
-		382, 5, 6, 0, 0, 382, 383, 5, 59, 0, 0, 383, 388, 3, 64, 32, 0, 384, 385,
-		5, 63, 0, 0, 385, 387, 3, 64, 32, 0, 386, 384, 1, 0, 0, 0, 387, 390, 1,
-		0, 0, 0, 388, 386, 1, 0, 0, 0, 388, 389, 1, 0, 0, 0, 389, 391, 1, 0, 0,
-		0, 390, 388, 1, 0, 0, 0, 391, 392, 5, 60, 0, 0, 392, 63, 1, 0, 0, 0, 393,
-		397, 3, 66, 33, 0, 394, 395, 5, 67, 0, 0, 395, 398, 5, 77, 0, 0, 396, 398,
-		5, 77, 0, 0, 397, 394, 1, 0, 0, 0, 397, 396, 1, 0, 0, 0, 397, 398, 1, 0,
-		0, 0, 398, 65, 1, 0, 0, 0, 399, 400, 7, 10, 0, 0, 400, 67, 1, 0, 0, 0,
-		401, 402, 5, 7, 0, 0, 402, 403, 5, 59, 0, 0, 403, 408, 5, 74, 0, 0, 404,
-		405, 5, 63, 0, 0, 405, 407, 5, 74, 0, 0, 406, 404, 1, 0, 0, 0, 407, 410,
-		1, 0, 0, 0, 408, 406, 1, 0, 0, 0, 408, 409, 1, 0, 0, 0, 409, 411, 1, 0,
-		0, 0, 410, 408, 1, 0, 0, 0, 411, 412, 5, 60, 0, 0, 412, 69, 1, 0, 0, 0,
-		413, 414, 5, 8, 0, 0, 414, 415, 5, 59, 0, 0, 415, 416, 7, 11, 0, 0, 416,
-		417, 5, 60, 0, 0, 417, 71, 1, 0, 0, 0, 29, 73, 76, 79, 82, 85, 88, 91,
-		94, 97, 116, 122, 129, 148, 158, 160, 260, 264, 273, 283, 311, 321, 328,
-		337, 355, 365, 379, 388, 397, 408,
+		1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7,
+		265, 8, 7, 1, 8, 1, 8, 3, 8, 269, 8, 8, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10,
+		5, 10, 276, 8, 10, 10, 10, 12, 10, 279, 9, 10, 1, 11, 1, 11, 1, 11, 1,
+		11, 1, 11, 5, 11, 286, 8, 11, 10, 11, 12, 11, 289, 9, 11, 1, 11, 1, 11,
+		1, 12, 1, 12, 1, 13, 1, 13, 1, 14, 1, 14, 1, 15, 1, 15, 1, 16, 1, 16, 1,
+		17, 1, 17, 1, 18, 1, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 20, 1, 20,
+		1, 20, 1, 20, 3, 20, 316, 8, 20, 1, 20, 1, 20, 1, 21, 1, 21, 1, 21, 1,
+		21, 5, 21, 324, 8, 21, 10, 21, 12, 21, 327, 9, 21, 1, 21, 1, 21, 1, 22,
+		1, 22, 3, 22, 333, 8, 22, 1, 23, 1, 23, 1, 23, 1, 23, 1, 23, 5, 23, 340,
+		8, 23, 10, 23, 12, 23, 343, 9, 23, 1, 23, 1, 23, 1, 24, 1, 24, 1, 24, 1,
+		24, 1, 24, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 1, 25, 3, 25,
+		360, 8, 25, 1, 26, 1, 26, 1, 26, 1, 26, 1, 26, 1, 27, 1, 27, 1, 27, 3,
+		27, 370, 8, 27, 1, 28, 1, 28, 1, 29, 1, 29, 1, 29, 1, 29, 1, 30, 1, 30,
+		1, 30, 1, 30, 1, 30, 1, 30, 3, 30, 384, 8, 30, 1, 31, 1, 31, 1, 31, 1,
+		31, 1, 31, 5, 31, 391, 8, 31, 10, 31, 12, 31, 394, 9, 31, 1, 31, 1, 31,
+		1, 32, 1, 32, 1, 32, 1, 32, 3, 32, 402, 8, 32, 1, 33, 1, 33, 1, 34, 1,
+		34, 1, 34, 1, 34, 1, 34, 5, 34, 411, 8, 34, 10, 34, 12, 34, 414, 9, 34,
+		1, 34, 1, 34, 1, 35, 1, 35, 1, 35, 1, 35, 1, 35, 1, 35, 0, 1, 12, 36, 0,
+		2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38,
+		40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 0, 12,
+		6, 0, 9, 10, 31, 32, 37, 38, 40, 43, 72, 74, 77, 77, 3, 0, 48, 48, 50,
+		50, 52, 57, 2, 0, 49, 49, 51, 51, 1, 0, 22, 27, 1, 0, 28, 29, 1, 0, 14,
+		21, 1, 0, 68, 77, 1, 0, 37, 38, 3, 0, 33, 33, 35, 38, 40, 43, 2, 0, 34,
+		34, 39, 39, 1, 0, 44, 47, 1, 0, 74, 75, 445, 0, 73, 1, 0, 0, 0, 2, 101,
+		1, 0, 0, 0, 4, 106, 1, 0, 0, 0, 6, 111, 1, 0, 0, 0, 8, 119, 1, 0, 0, 0,
+		10, 124, 1, 0, 0, 0, 12, 148, 1, 0, 0, 0, 14, 264, 1, 0, 0, 0, 16, 268,
+		1, 0, 0, 0, 18, 270, 1, 0, 0, 0, 20, 272, 1, 0, 0, 0, 22, 280, 1, 0, 0,
+		0, 24, 292, 1, 0, 0, 0, 26, 294, 1, 0, 0, 0, 28, 296, 1, 0, 0, 0, 30, 298,
+		1, 0, 0, 0, 32, 300, 1, 0, 0, 0, 34, 302, 1, 0, 0, 0, 36, 304, 1, 0, 0,
+		0, 38, 306, 1, 0, 0, 0, 40, 311, 1, 0, 0, 0, 42, 319, 1, 0, 0, 0, 44, 332,
+		1, 0, 0, 0, 46, 334, 1, 0, 0, 0, 48, 346, 1, 0, 0, 0, 50, 359, 1, 0, 0,
+		0, 52, 361, 1, 0, 0, 0, 54, 369, 1, 0, 0, 0, 56, 371, 1, 0, 0, 0, 58, 373,
+		1, 0, 0, 0, 60, 377, 1, 0, 0, 0, 62, 385, 1, 0, 0, 0, 64, 397, 1, 0, 0,
+		0, 66, 403, 1, 0, 0, 0, 68, 405, 1, 0, 0, 0, 70, 417, 1, 0, 0, 0, 72, 74,
+		3, 2, 1, 0, 73, 72, 1, 0, 0, 0, 73, 74, 1, 0, 0, 0, 74, 76, 1, 0, 0, 0,
+		75, 77, 3, 4, 2, 0, 76, 75, 1, 0, 0, 0, 76, 77, 1, 0, 0, 0, 77, 79, 1,
+		0, 0, 0, 78, 80, 3, 10, 5, 0, 79, 78, 1, 0, 0, 0, 79, 80, 1, 0, 0, 0, 80,
+		82, 1, 0, 0, 0, 81, 83, 3, 46, 23, 0, 82, 81, 1, 0, 0, 0, 82, 83, 1, 0,
+		0, 0, 83, 85, 1, 0, 0, 0, 84, 86, 3, 52, 26, 0, 85, 84, 1, 0, 0, 0, 85,
+		86, 1, 0, 0, 0, 86, 88, 1, 0, 0, 0, 87, 89, 3, 48, 24, 0, 88, 87, 1, 0,
+		0, 0, 88, 89, 1, 0, 0, 0, 89, 91, 1, 0, 0, 0, 90, 92, 3, 62, 31, 0, 91,
+		90, 1, 0, 0, 0, 91, 92, 1, 0, 0, 0, 92, 94, 1, 0, 0, 0, 93, 95, 3, 68,
+		34, 0, 94, 93, 1, 0, 0, 0, 94, 95, 1, 0, 0, 0, 95, 97, 1, 0, 0, 0, 96,
+		98, 3, 70, 35, 0, 97, 96, 1, 0, 0, 0, 97, 98, 1, 0, 0, 0, 98, 99, 1, 0,
+		0, 0, 99, 100, 5, 0, 0, 1, 100, 1, 1, 0, 0, 0, 101, 102, 5, 9, 0, 0, 102,
+		103, 5, 59, 0, 0, 103, 104, 3, 12, 6, 0, 104, 105, 5, 60, 0, 0, 105, 3,
+		1, 0, 0, 0, 106, 107, 5, 1, 0, 0, 107, 108, 5, 59, 0, 0, 108, 109, 3, 6,
+		3, 0, 109, 110, 5, 60, 0, 0, 110, 5, 1, 0, 0, 0, 111, 116, 3, 8, 4, 0,
+		112, 113, 5, 63, 0, 0, 113, 115, 3, 8, 4, 0, 114, 112, 1, 0, 0, 0, 115,
+		118, 1, 0, 0, 0, 116, 114, 1, 0, 0, 0, 116, 117, 1, 0, 0, 0, 117, 7, 1,
+		0, 0, 0, 118, 116, 1, 0, 0, 0, 119, 122, 3, 24, 12, 0, 120, 121, 5, 77,
+		0, 0, 121, 123, 5, 77, 0, 0, 122, 120, 1, 0, 0, 0, 122, 123, 1, 0, 0, 0,
+		123, 9, 1, 0, 0, 0, 124, 125, 5, 2, 0, 0, 125, 126, 5, 59, 0, 0, 126, 129,
+		3, 12, 6, 0, 127, 128, 5, 63, 0, 0, 128, 130, 5, 10, 0, 0, 129, 127, 1,
+		0, 0, 0, 129, 130, 1, 0, 0, 0, 130, 131, 1, 0, 0, 0, 131, 132, 5, 60, 0,
+		0, 132, 11, 1, 0, 0, 0, 133, 134, 6, 6, -1, 0, 134, 135, 5, 59, 0, 0, 135,
+		136, 3, 12, 6, 0, 136, 137, 5, 60, 0, 0, 137, 149, 1, 0, 0, 0, 138, 139,
+		5, 2, 0, 0, 139, 140, 5, 59, 0, 0, 140, 141, 3, 12, 6, 0, 141, 142, 5,
+		60, 0, 0, 142, 149, 1, 0, 0, 0, 143, 144, 5, 13, 0, 0, 144, 149, 3, 12,
+		6, 7, 145, 149, 3, 14, 7, 0, 146, 149, 3, 16, 8, 0, 147, 149, 3, 18, 9,
+		0, 148, 133, 1, 0, 0, 0, 148, 138, 1, 0, 0, 0, 148, 143, 1, 0, 0, 0, 148,
+		145, 1, 0, 0, 0, 148, 146, 1, 0, 0, 0, 148, 147, 1, 0, 0, 0, 149, 160,
+		1, 0, 0, 0, 150, 151, 10, 6, 0, 0, 151, 152, 5, 11, 0, 0, 152, 159, 3,
+		12, 6, 7, 153, 154, 10, 5, 0, 0, 154, 159, 3, 12, 6, 6, 155, 156, 10, 4,
+		0, 0, 156, 157, 5, 12, 0, 0, 157, 159, 3, 12, 6, 5, 158, 150, 1, 0, 0,
+		0, 158, 153, 1, 0, 0, 0, 158, 155, 1, 0, 0, 0, 159, 162, 1, 0, 0, 0, 160,
+		158, 1, 0, 0, 0, 160, 161, 1, 0, 0, 0, 161, 13, 1, 0, 0, 0, 162, 160, 1,
+		0, 0, 0, 163, 164, 3, 20, 10, 0, 164, 165, 3, 26, 13, 0, 165, 166, 3, 36,
+		18, 0, 166, 265, 1, 0, 0, 0, 167, 168, 3, 20, 10, 0, 168, 169, 3, 28, 14,
+		0, 169, 170, 3, 36, 18, 0, 170, 265, 1, 0, 0, 0, 171, 172, 3, 20, 10, 0,
+		172, 173, 3, 30, 15, 0, 173, 174, 3, 36, 18, 0, 174, 265, 1, 0, 0, 0, 175,
+		176, 3, 20, 10, 0, 176, 177, 3, 32, 16, 0, 177, 178, 3, 42, 21, 0, 178,
+		265, 1, 0, 0, 0, 179, 180, 3, 20, 10, 0, 180, 181, 3, 34, 17, 0, 181, 182,
+		3, 42, 21, 0, 182, 265, 1, 0, 0, 0, 183, 184, 3, 20, 10, 0, 184, 185, 5,
+		50, 0, 0, 185, 186, 3, 42, 21, 0, 186, 265, 1, 0, 0, 0, 187, 188, 5, 13,
+		0, 0, 188, 189, 3, 20, 10, 0, 189, 190, 3, 26, 13, 0, 190, 191, 3, 36,
+		18, 0, 191, 265, 1, 0, 0, 0, 192, 193, 5, 13, 0, 0, 193, 194, 3, 20, 10,
+		0, 194, 195, 3, 28, 14, 0, 195, 196, 3, 36, 18, 0, 196, 265, 1, 0, 0, 0,
+		197, 198, 5, 13, 0, 0, 198, 199, 3, 20, 10, 0, 199, 200, 3, 30, 15, 0,
+		200, 201, 3, 36, 18, 0, 201, 265, 1, 0, 0, 0, 202, 203, 5, 13, 0, 0, 203,
+		204, 3, 20, 10, 0, 204, 205, 3, 32, 16, 0, 205, 206, 3, 42, 21, 0, 206,
+		265, 1, 0, 0, 0, 207, 208, 5, 13, 0, 0, 208, 209, 3, 20, 10, 0, 209, 210,
+		3, 34, 17, 0, 210, 211, 3, 42, 21, 0, 211, 265, 1, 0, 0, 0, 212, 213, 3,
+		20, 10, 0, 213, 214, 5, 13, 0, 0, 214, 215, 3, 26, 13, 0, 215, 216, 3,
+		36, 18, 0, 216, 265, 1, 0, 0, 0, 217, 218, 3, 20, 10, 0, 218, 219, 5, 13,
+		0, 0, 219, 220, 3, 28, 14, 0, 220, 221, 3, 36, 18, 0, 221, 265, 1, 0, 0,
+		0, 222, 223, 3, 20, 10, 0, 223, 224, 5, 13, 0, 0, 224, 225, 3, 30, 15,
+		0, 225, 226, 3, 36, 18, 0, 226, 265, 1, 0, 0, 0, 227, 228, 3, 20, 10, 0,
+		228, 229, 5, 13, 0, 0, 229, 230, 3, 32, 16, 0, 230, 231, 3, 42, 21, 0,
+		231, 265, 1, 0, 0, 0, 232, 233, 3, 20, 10, 0, 233, 234, 5, 13, 0, 0, 234,
+		235, 3, 34, 17, 0, 235, 236, 3, 42, 21, 0, 236, 265, 1, 0, 0, 0, 237, 238,
+		3, 20, 10, 0, 238, 239, 3, 26, 13, 0, 239, 240, 3, 38, 19, 0, 240, 265,
+		1, 0, 0, 0, 241, 242, 3, 20, 10, 0, 242, 243, 3, 26, 13, 0, 243, 244, 3,
+		40, 20, 0, 244, 265, 1, 0, 0, 0, 245, 246, 3, 20, 10, 0, 246, 247, 3, 32,
+		16, 0, 247, 248, 3, 42, 21, 0, 248, 265, 1, 0, 0, 0, 249, 250, 3, 22, 11,
+		0, 250, 251, 3, 26, 13, 0, 251, 252, 3, 36, 18, 0, 252, 265, 1, 0, 0, 0,
+		253, 254, 3, 22, 11, 0, 254, 255, 3, 32, 16, 0, 255, 256, 3, 42, 21, 0,
+		256, 265, 1, 0, 0, 0, 257, 258, 3, 22, 11, 0, 258, 259, 3, 26, 13, 0, 259,
+		260, 3, 38, 19, 0, 260, 265, 1, 0, 0, 0, 261, 265, 5, 77, 0, 0, 262, 265,
+		5, 74, 0, 0, 263, 265, 5, 76, 0, 0, 264, 163, 1, 0, 0, 0, 264, 167, 1,
+		0, 0, 0, 264, 171, 1, 0, 0, 0, 264, 175, 1, 0, 0, 0, 264, 179, 1, 0, 0,
+		0, 264, 183, 1, 0, 0, 0, 264, 187, 1, 0, 0, 0, 264, 192, 1, 0, 0, 0, 264,
+		197, 1, 0, 0, 0, 264, 202, 1, 0, 0, 0, 264, 207, 1, 0, 0, 0, 264, 212,
+		1, 0, 0, 0, 264, 217, 1, 0, 0, 0, 264, 222, 1, 0, 0, 0, 264, 227, 1, 0,
+		0, 0, 264, 232, 1, 0, 0, 0, 264, 237, 1, 0, 0, 0, 264, 241, 1, 0, 0, 0,
+		264, 245, 1, 0, 0, 0, 264, 249, 1, 0, 0, 0, 264, 253, 1, 0, 0, 0, 264,
+		257, 1, 0, 0, 0, 264, 261, 1, 0, 0, 0, 264, 262, 1, 0, 0, 0, 264, 263,
+		1, 0, 0, 0, 265, 15, 1, 0, 0, 0, 266, 269, 5, 72, 0, 0, 267, 269, 5, 73,
+		0, 0, 268, 266, 1, 0, 0, 0, 268, 267, 1, 0, 0, 0, 269, 17, 1, 0, 0, 0,
+		270, 271, 5, 69, 0, 0, 271, 19, 1, 0, 0, 0, 272, 277, 3, 24, 12, 0, 273,
+		274, 5, 63, 0, 0, 274, 276, 3, 24, 12, 0, 275, 273, 1, 0, 0, 0, 276, 279,
+		1, 0, 0, 0, 277, 275, 1, 0, 0, 0, 277, 278, 1, 0, 0, 0, 278, 21, 1, 0,
+		0, 0, 279, 277, 1, 0, 0, 0, 280, 281, 5, 32, 0, 0, 281, 282, 5, 59, 0,
+		0, 282, 287, 3, 24, 12, 0, 283, 284, 5, 63, 0, 0, 284, 286, 3, 24, 12,
+		0, 285, 283, 1, 0, 0, 0, 286, 289, 1, 0, 0, 0, 287, 285, 1, 0, 0, 0, 287,
+		288, 1, 0, 0, 0, 288, 290, 1, 0, 0, 0, 289, 287, 1, 0, 0, 0, 290, 291,
+		5, 60, 0, 0, 291, 23, 1, 0, 0, 0, 292, 293, 7, 0, 0, 0, 293, 25, 1, 0,
+		0, 0, 294, 295, 7, 1, 0, 0, 295, 27, 1, 0, 0, 0, 296, 297, 7, 2, 0, 0,
+		297, 29, 1, 0, 0, 0, 298, 299, 7, 3, 0, 0, 299, 31, 1, 0, 0, 0, 300, 301,
+		7, 4, 0, 0, 301, 33, 1, 0, 0, 0, 302, 303, 7, 5, 0, 0, 303, 35, 1, 0, 0,
+		0, 304, 305, 7, 6, 0, 0, 305, 37, 1, 0, 0, 0, 306, 307, 5, 30, 0, 0, 307,
+		308, 5, 59, 0, 0, 308, 309, 3, 36, 18, 0, 309, 310, 5, 60, 0, 0, 310, 39,
+		1, 0, 0, 0, 311, 312, 5, 31, 0, 0, 312, 315, 5, 59, 0, 0, 313, 316, 5,
+		68, 0, 0, 314, 316, 3, 36, 18, 0, 315, 313, 1, 0, 0, 0, 315, 314, 1, 0,
+		0, 0, 316, 317, 1, 0, 0, 0, 317, 318, 5, 60, 0, 0, 318, 41, 1, 0, 0, 0,
+		319, 320, 5, 61, 0, 0, 320, 325, 3, 44, 22, 0, 321, 322, 5, 63, 0, 0, 322,
+		324, 3, 44, 22, 0, 323, 321, 1, 0, 0, 0, 324, 327, 1, 0, 0, 0, 325, 323,
+		1, 0, 0, 0, 325, 326, 1, 0, 0, 0, 326, 328, 1, 0, 0, 0, 327, 325, 1, 0,
+		0, 0, 328, 329, 5, 62, 0, 0, 329, 43, 1, 0, 0, 0, 330, 333, 3, 40, 20,
+		0, 331, 333, 3, 36, 18, 0, 332, 330, 1, 0, 0, 0, 332, 331, 1, 0, 0, 0,
+		333, 45, 1, 0, 0, 0, 334, 335, 5, 3, 0, 0, 335, 336, 5, 59, 0, 0, 336,
+		341, 3, 24, 12, 0, 337, 338, 5, 63, 0, 0, 338, 340, 3, 24, 12, 0, 339,
+		337, 1, 0, 0, 0, 340, 343, 1, 0, 0, 0, 341, 339, 1, 0, 0, 0, 341, 342,
+		1, 0, 0, 0, 342, 344, 1, 0, 0, 0, 343, 341, 1, 0, 0, 0, 344, 345, 5, 60,
+		0, 0, 345, 47, 1, 0, 0, 0, 346, 347, 5, 4, 0, 0, 347, 348, 5, 59, 0, 0,
+		348, 349, 3, 50, 25, 0, 349, 350, 5, 60, 0, 0, 350, 49, 1, 0, 0, 0, 351,
+		352, 3, 56, 28, 0, 352, 353, 3, 26, 13, 0, 353, 354, 3, 36, 18, 0, 354,
+		360, 1, 0, 0, 0, 355, 356, 3, 58, 29, 0, 356, 357, 3, 26, 13, 0, 357, 358,
+		3, 36, 18, 0, 358, 360, 1, 0, 0, 0, 359, 351, 1, 0, 0, 0, 359, 355, 1,
+		0, 0, 0, 360, 51, 1, 0, 0, 0, 361, 362, 5, 5, 0, 0, 362, 363, 5, 59, 0,
+		0, 363, 364, 3, 54, 27, 0, 364, 365, 5, 60, 0, 0, 365, 53, 1, 0, 0, 0,
+		366, 370, 3, 56, 28, 0, 367, 370, 3, 58, 29, 0, 368, 370, 3, 60, 30, 0,
+		369, 366, 1, 0, 0, 0, 369, 367, 1, 0, 0, 0, 369, 368, 1, 0, 0, 0, 370,
+		55, 1, 0, 0, 0, 371, 372, 7, 7, 0, 0, 372, 57, 1, 0, 0, 0, 373, 374, 7,
+		8, 0, 0, 374, 375, 5, 64, 0, 0, 375, 376, 3, 24, 12, 0, 376, 59, 1, 0,
+		0, 0, 377, 378, 7, 9, 0, 0, 378, 379, 5, 59, 0, 0, 379, 380, 5, 74, 0,
+		0, 380, 383, 5, 60, 0, 0, 381, 382, 5, 64, 0, 0, 382, 384, 3, 24, 12, 0,
+		383, 381, 1, 0, 0, 0, 383, 384, 1, 0, 0, 0, 384, 61, 1, 0, 0, 0, 385, 386,
+		5, 6, 0, 0, 386, 387, 5, 59, 0, 0, 387, 392, 3, 64, 32, 0, 388, 389, 5,
+		63, 0, 0, 389, 391, 3, 64, 32, 0, 390, 388, 1, 0, 0, 0, 391, 394, 1, 0,
+		0, 0, 392, 390, 1, 0, 0, 0, 392, 393, 1, 0, 0, 0, 393, 395, 1, 0, 0, 0,
+		394, 392, 1, 0, 0, 0, 395, 396, 5, 60, 0, 0, 396, 63, 1, 0, 0, 0, 397,
+		401, 3, 66, 33, 0, 398, 399, 5, 67, 0, 0, 399, 402, 5, 77, 0, 0, 400, 402,
+		5, 77, 0, 0, 401, 398, 1, 0, 0, 0, 401, 400, 1, 0, 0, 0, 401, 402, 1, 0,
+		0, 0, 402, 65, 1, 0, 0, 0, 403, 404, 7, 10, 0, 0, 404, 67, 1, 0, 0, 0,
+		405, 406, 5, 7, 0, 0, 406, 407, 5, 59, 0, 0, 407, 412, 5, 74, 0, 0, 408,
+		409, 5, 63, 0, 0, 409, 411, 5, 74, 0, 0, 410, 408, 1, 0, 0, 0, 411, 414,
+		1, 0, 0, 0, 412, 410, 1, 0, 0, 0, 412, 413, 1, 0, 0, 0, 413, 415, 1, 0,
+		0, 0, 414, 412, 1, 0, 0, 0, 415, 416, 5, 60, 0, 0, 416, 69, 1, 0, 0, 0,
+		417, 418, 5, 8, 0, 0, 418, 419, 5, 59, 0, 0, 419, 420, 7, 11, 0, 0, 420,
+		421, 5, 60, 0, 0, 421, 71, 1, 0, 0, 0, 29, 73, 76, 79, 82, 85, 88, 91,
+		94, 97, 116, 122, 129, 148, 158, 160, 264, 268, 277, 287, 315, 325, 332,
+		341, 359, 369, 383, 392, 401, 412,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -2581,6 +2583,1114 @@ func (s *ConditionContext) ToStringTree(ruleNames []string, recog antlr.Recogniz
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
+type AllFieldsNocaseConditionContext struct {
+	ConditionContext
+}
+
+func NewAllFieldsNocaseConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsNocaseConditionContext {
+	var p = new(AllFieldsNocaseConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *AllFieldsNocaseConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *AllFieldsNocaseConditionContext) AllFieldList() IAllFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IAllFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IAllFieldListContext)
+}
+
+func (s *AllFieldsNocaseConditionContext) ComparisonOp() IComparisonOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IComparisonOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IComparisonOpContext)
+}
+
+func (s *AllFieldsNocaseConditionContext) NocaseValue() INocaseValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(INocaseValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INocaseValueContext)
+}
+
+func (s *AllFieldsNocaseConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterAllFieldsNocaseCondition(s)
+	}
+}
+
+func (s *AllFieldsNocaseConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitAllFieldsNocaseCondition(s)
+	}
+}
+
+func (s *AllFieldsNocaseConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitAllFieldsNocaseCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type VariableConditionContext struct {
+	ConditionContext
+}
+
+func NewVariableConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *VariableConditionContext {
+	var p = new(VariableConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *VariableConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *VariableConditionContext) VARIABLE() antlr.TerminalNode {
+	return s.GetToken(LEQLParserVARIABLE, 0)
+}
+
+func (s *VariableConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterVariableCondition(s)
+	}
+}
+
+func (s *VariableConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitVariableCondition(s)
+	}
+}
+
+func (s *VariableConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitVariableCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type AllFieldsSetConditionContext struct {
+	ConditionContext
+}
+
+func NewAllFieldsSetConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsSetConditionContext {
+	var p = new(AllFieldsSetConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *AllFieldsSetConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *AllFieldsSetConditionContext) AllFieldList() IAllFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IAllFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IAllFieldListContext)
+}
+
+func (s *AllFieldsSetConditionContext) SetOp() ISetOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ISetOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ISetOpContext)
+}
+
+func (s *AllFieldsSetConditionContext) ValueList() IValueListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueListContext)
+}
+
+func (s *AllFieldsSetConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterAllFieldsSetCondition(s)
+	}
+}
+
+func (s *AllFieldsSetConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitAllFieldsSetCondition(s)
+	}
+}
+
+func (s *AllFieldsSetConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitAllFieldsSetCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NegatedStringConditionContext struct {
+	ConditionContext
+}
+
+func NewNegatedStringConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedStringConditionContext {
+	var p = new(NegatedStringConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NegatedStringConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NegatedStringConditionContext) NOT() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNOT, 0)
+}
+
+func (s *NegatedStringConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NegatedStringConditionContext) StringOp() IStringOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IStringOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IStringOpContext)
+}
+
+func (s *NegatedStringConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *NegatedStringConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNegatedStringCondition(s)
+	}
+}
+
+func (s *NegatedStringConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNegatedStringCondition(s)
+	}
+}
+
+func (s *NegatedStringConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNegatedStringCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type RegexMatchConditionContext struct {
+	ConditionContext
+}
+
+func NewRegexMatchConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *RegexMatchConditionContext {
+	var p = new(RegexMatchConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *RegexMatchConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *RegexMatchConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *RegexMatchConditionContext) RegexMatchOp() IRegexMatchOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IRegexMatchOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IRegexMatchOpContext)
+}
+
+func (s *RegexMatchConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *RegexMatchConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterRegexMatchCondition(s)
+	}
+}
+
+func (s *RegexMatchConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitRegexMatchCondition(s)
+	}
+}
+
+func (s *RegexMatchConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitRegexMatchCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NocaseConditionContext struct {
+	ConditionContext
+}
+
+func NewNocaseConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NocaseConditionContext {
+	var p = new(NocaseConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NocaseConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NocaseConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NocaseConditionContext) ComparisonOp() IComparisonOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IComparisonOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IComparisonOpContext)
+}
+
+func (s *NocaseConditionContext) NocaseValue() INocaseValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(INocaseValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INocaseValueContext)
+}
+
+func (s *NocaseConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNocaseCondition(s)
+	}
+}
+
+func (s *NocaseConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNocaseCondition(s)
+	}
+}
+
+func (s *NocaseConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNocaseCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NegatedListStringConditionContext struct {
+	ConditionContext
+}
+
+func NewNegatedListStringConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedListStringConditionContext {
+	var p = new(NegatedListStringConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NegatedListStringConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NegatedListStringConditionContext) NOT() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNOT, 0)
+}
+
+func (s *NegatedListStringConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NegatedListStringConditionContext) ListStringOp() IListStringOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IListStringOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IListStringOpContext)
+}
+
+func (s *NegatedListStringConditionContext) ValueList() IValueListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueListContext)
+}
+
+func (s *NegatedListStringConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNegatedListStringCondition(s)
+	}
+}
+
+func (s *NegatedListStringConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNegatedListStringCondition(s)
+	}
+}
+
+func (s *NegatedListStringConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNegatedListStringCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NegatedComparisonConditionContext struct {
+	ConditionContext
+}
+
+func NewNegatedComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedComparisonConditionContext {
+	var p = new(NegatedComparisonConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NegatedComparisonConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NegatedComparisonConditionContext) NOT() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNOT, 0)
+}
+
+func (s *NegatedComparisonConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NegatedComparisonConditionContext) ComparisonOp() IComparisonOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IComparisonOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IComparisonOpContext)
+}
+
+func (s *NegatedComparisonConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *NegatedComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNegatedComparisonCondition(s)
+	}
+}
+
+func (s *NegatedComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNegatedComparisonCondition(s)
+	}
+}
+
+func (s *NegatedComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNegatedComparisonCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type AllFieldsComparisonConditionContext struct {
+	ConditionContext
+}
+
+func NewAllFieldsComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsComparisonConditionContext {
+	var p = new(AllFieldsComparisonConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *AllFieldsComparisonConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *AllFieldsComparisonConditionContext) AllFieldList() IAllFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IAllFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IAllFieldListContext)
+}
+
+func (s *AllFieldsComparisonConditionContext) ComparisonOp() IComparisonOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IComparisonOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IComparisonOpContext)
+}
+
+func (s *AllFieldsComparisonConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *AllFieldsComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterAllFieldsComparisonCondition(s)
+	}
+}
+
+func (s *AllFieldsComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitAllFieldsComparisonCondition(s)
+	}
+}
+
+func (s *AllFieldsComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitAllFieldsComparisonCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NegatedRegexMatchConditionContext struct {
+	ConditionContext
+}
+
+func NewNegatedRegexMatchConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedRegexMatchConditionContext {
+	var p = new(NegatedRegexMatchConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NegatedRegexMatchConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NegatedRegexMatchConditionContext) NOT() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNOT, 0)
+}
+
+func (s *NegatedRegexMatchConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NegatedRegexMatchConditionContext) RegexMatchOp() IRegexMatchOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IRegexMatchOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IRegexMatchOpContext)
+}
+
+func (s *NegatedRegexMatchConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *NegatedRegexMatchConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNegatedRegexMatchCondition(s)
+	}
+}
+
+func (s *NegatedRegexMatchConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNegatedRegexMatchCondition(s)
+	}
+}
+
+func (s *NegatedRegexMatchConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNegatedRegexMatchCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type NotEqualListConditionContext struct {
+	ConditionContext
+}
+
+func NewNotEqualListConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NotEqualListConditionContext {
+	var p = new(NotEqualListConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *NotEqualListConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NotEqualListConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *NotEqualListConditionContext) NEQ() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNEQ, 0)
+}
+
+func (s *NotEqualListConditionContext) ValueList() IValueListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueListContext)
+}
+
+func (s *NotEqualListConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterNotEqualListCondition(s)
+	}
+}
+
+func (s *NotEqualListConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitNotEqualListCondition(s)
+	}
+}
+
+func (s *NotEqualListConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitNotEqualListCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type PostfixNegatedSetConditionContext struct {
+	ConditionContext
+}
+
+func NewPostfixNegatedSetConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *PostfixNegatedSetConditionContext {
+	var p = new(PostfixNegatedSetConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *PostfixNegatedSetConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *PostfixNegatedSetConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *PostfixNegatedSetConditionContext) NOT() antlr.TerminalNode {
+	return s.GetToken(LEQLParserNOT, 0)
+}
+
+func (s *PostfixNegatedSetConditionContext) SetOp() ISetOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ISetOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ISetOpContext)
+}
+
+func (s *PostfixNegatedSetConditionContext) ValueList() IValueListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueListContext)
+}
+
+func (s *PostfixNegatedSetConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterPostfixNegatedSetCondition(s)
+	}
+}
+
+func (s *PostfixNegatedSetConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitPostfixNegatedSetCondition(s)
+	}
+}
+
+func (s *PostfixNegatedSetConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitPostfixNegatedSetCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type ComparisonConditionContext struct {
+	ConditionContext
+}
+
+func NewComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ComparisonConditionContext {
+	var p = new(ComparisonConditionContext)
+
+	InitEmptyConditionContext(&p.ConditionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ConditionContext))
+
+	return p
+}
+
+func (s *ComparisonConditionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ComparisonConditionContext) FieldList() IFieldListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IFieldListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IFieldListContext)
+}
+
+func (s *ComparisonConditionContext) ComparisonOp() IComparisonOpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IComparisonOpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IComparisonOpContext)
+}
+
+func (s *ComparisonConditionContext) Value() IValueContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IValueContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IValueContext)
+}
+
+func (s *ComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.EnterComparisonCondition(s)
+	}
+}
+
+func (s *ComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(LEQLParserListener); ok {
+		listenerT.ExitComparisonCondition(s)
+	}
+}
+
+func (s *ComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case LEQLParserVisitor:
+		return t.VisitComparisonCondition(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type IpSetConditionContext struct {
 	ConditionContext
 }
@@ -2853,94 +3963,6 @@ func (s *NegatedSetConditionContext) Accept(visitor antlr.ParseTreeVisitor) inte
 	}
 }
 
-type AllFieldsNocaseConditionContext struct {
-	ConditionContext
-}
-
-func NewAllFieldsNocaseConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsNocaseConditionContext {
-	var p = new(AllFieldsNocaseConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *AllFieldsNocaseConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *AllFieldsNocaseConditionContext) AllFieldList() IAllFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IAllFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IAllFieldListContext)
-}
-
-func (s *AllFieldsNocaseConditionContext) ComparisonOp() IComparisonOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IComparisonOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IComparisonOpContext)
-}
-
-func (s *AllFieldsNocaseConditionContext) NocaseValue() INocaseValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(INocaseValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INocaseValueContext)
-}
-
-func (s *AllFieldsNocaseConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterAllFieldsNocaseCondition(s)
-	}
-}
-
-func (s *AllFieldsNocaseConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitAllFieldsNocaseCondition(s)
-	}
-}
-
-func (s *AllFieldsNocaseConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitAllFieldsNocaseCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type FieldExistsConditionContext struct {
 	ConditionContext
 }
@@ -2979,138 +4001,6 @@ func (s *FieldExistsConditionContext) Accept(visitor antlr.ParseTreeVisitor) int
 	switch t := visitor.(type) {
 	case LEQLParserVisitor:
 		return t.VisitFieldExistsCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type VariableConditionContext struct {
-	ConditionContext
-}
-
-func NewVariableConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *VariableConditionContext {
-	var p = new(VariableConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *VariableConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *VariableConditionContext) VARIABLE() antlr.TerminalNode {
-	return s.GetToken(LEQLParserVARIABLE, 0)
-}
-
-func (s *VariableConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterVariableCondition(s)
-	}
-}
-
-func (s *VariableConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitVariableCondition(s)
-	}
-}
-
-func (s *VariableConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitVariableCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type AllFieldsSetConditionContext struct {
-	ConditionContext
-}
-
-func NewAllFieldsSetConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsSetConditionContext {
-	var p = new(AllFieldsSetConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *AllFieldsSetConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *AllFieldsSetConditionContext) AllFieldList() IAllFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IAllFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IAllFieldListContext)
-}
-
-func (s *AllFieldsSetConditionContext) SetOp() ISetOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(ISetOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ISetOpContext)
-}
-
-func (s *AllFieldsSetConditionContext) ValueList() IValueListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueListContext)
-}
-
-func (s *AllFieldsSetConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterAllFieldsSetCondition(s)
-	}
-}
-
-func (s *AllFieldsSetConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitAllFieldsSetCondition(s)
-	}
-}
-
-func (s *AllFieldsSetConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitAllFieldsSetCondition(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -3297,98 +4187,6 @@ func (s *ListStringConditionContext) Accept(visitor antlr.ParseTreeVisitor) inte
 	}
 }
 
-type NegatedStringConditionContext struct {
-	ConditionContext
-}
-
-func NewNegatedStringConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedStringConditionContext {
-	var p = new(NegatedStringConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *NegatedStringConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NegatedStringConditionContext) NOT() antlr.TerminalNode {
-	return s.GetToken(LEQLParserNOT, 0)
-}
-
-func (s *NegatedStringConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *NegatedStringConditionContext) StringOp() IStringOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IStringOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IStringOpContext)
-}
-
-func (s *NegatedStringConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *NegatedStringConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterNegatedStringCondition(s)
-	}
-}
-
-func (s *NegatedStringConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitNegatedStringCondition(s)
-	}
-}
-
-func (s *NegatedStringConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitNegatedStringCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type SetConditionContext struct {
 	ConditionContext
 }
@@ -3471,182 +4269,6 @@ func (s *SetConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{}
 	switch t := visitor.(type) {
 	case LEQLParserVisitor:
 		return t.VisitSetCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type RegexMatchConditionContext struct {
-	ConditionContext
-}
-
-func NewRegexMatchConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *RegexMatchConditionContext {
-	var p = new(RegexMatchConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *RegexMatchConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *RegexMatchConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *RegexMatchConditionContext) RegexMatchOp() IRegexMatchOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IRegexMatchOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IRegexMatchOpContext)
-}
-
-func (s *RegexMatchConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *RegexMatchConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterRegexMatchCondition(s)
-	}
-}
-
-func (s *RegexMatchConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitRegexMatchCondition(s)
-	}
-}
-
-func (s *RegexMatchConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitRegexMatchCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type NocaseConditionContext struct {
-	ConditionContext
-}
-
-func NewNocaseConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NocaseConditionContext {
-	var p = new(NocaseConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *NocaseConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NocaseConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *NocaseConditionContext) ComparisonOp() IComparisonOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IComparisonOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IComparisonOpContext)
-}
-
-func (s *NocaseConditionContext) NocaseValue() INocaseValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(INocaseValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INocaseValueContext)
-}
-
-func (s *NocaseConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterNocaseCondition(s)
-	}
-}
-
-func (s *NocaseConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitNocaseCondition(s)
-	}
-}
-
-func (s *NocaseConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitNocaseCondition(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -3745,190 +4367,6 @@ func (s *PostfixNegatedRegexMatchConditionContext) Accept(visitor antlr.ParseTre
 	}
 }
 
-type NegatedListStringConditionContext struct {
-	ConditionContext
-}
-
-func NewNegatedListStringConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedListStringConditionContext {
-	var p = new(NegatedListStringConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *NegatedListStringConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NegatedListStringConditionContext) NOT() antlr.TerminalNode {
-	return s.GetToken(LEQLParserNOT, 0)
-}
-
-func (s *NegatedListStringConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *NegatedListStringConditionContext) ListStringOp() IListStringOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IListStringOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IListStringOpContext)
-}
-
-func (s *NegatedListStringConditionContext) ValueList() IValueListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueListContext)
-}
-
-func (s *NegatedListStringConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterNegatedListStringCondition(s)
-	}
-}
-
-func (s *NegatedListStringConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitNegatedListStringCondition(s)
-	}
-}
-
-func (s *NegatedListStringConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitNegatedListStringCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type NegatedComparisonConditionContext struct {
-	ConditionContext
-}
-
-func NewNegatedComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedComparisonConditionContext {
-	var p = new(NegatedComparisonConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *NegatedComparisonConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NegatedComparisonConditionContext) NOT() antlr.TerminalNode {
-	return s.GetToken(LEQLParserNOT, 0)
-}
-
-func (s *NegatedComparisonConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *NegatedComparisonConditionContext) ComparisonOp() IComparisonOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IComparisonOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IComparisonOpContext)
-}
-
-func (s *NegatedComparisonConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *NegatedComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterNegatedComparisonCondition(s)
-	}
-}
-
-func (s *NegatedComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitNegatedComparisonCondition(s)
-	}
-}
-
-func (s *NegatedComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitNegatedComparisonCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type StringConditionContext struct {
 	ConditionContext
 }
@@ -4011,366 +4449,6 @@ func (s *StringConditionContext) Accept(visitor antlr.ParseTreeVisitor) interfac
 	switch t := visitor.(type) {
 	case LEQLParserVisitor:
 		return t.VisitStringCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type AllFieldsComparisonConditionContext struct {
-	ConditionContext
-}
-
-func NewAllFieldsComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AllFieldsComparisonConditionContext {
-	var p = new(AllFieldsComparisonConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *AllFieldsComparisonConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *AllFieldsComparisonConditionContext) AllFieldList() IAllFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IAllFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IAllFieldListContext)
-}
-
-func (s *AllFieldsComparisonConditionContext) ComparisonOp() IComparisonOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IComparisonOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IComparisonOpContext)
-}
-
-func (s *AllFieldsComparisonConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *AllFieldsComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterAllFieldsComparisonCondition(s)
-	}
-}
-
-func (s *AllFieldsComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitAllFieldsComparisonCondition(s)
-	}
-}
-
-func (s *AllFieldsComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitAllFieldsComparisonCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type NegatedRegexMatchConditionContext struct {
-	ConditionContext
-}
-
-func NewNegatedRegexMatchConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NegatedRegexMatchConditionContext {
-	var p = new(NegatedRegexMatchConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *NegatedRegexMatchConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NegatedRegexMatchConditionContext) NOT() antlr.TerminalNode {
-	return s.GetToken(LEQLParserNOT, 0)
-}
-
-func (s *NegatedRegexMatchConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *NegatedRegexMatchConditionContext) RegexMatchOp() IRegexMatchOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IRegexMatchOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IRegexMatchOpContext)
-}
-
-func (s *NegatedRegexMatchConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *NegatedRegexMatchConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterNegatedRegexMatchCondition(s)
-	}
-}
-
-func (s *NegatedRegexMatchConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitNegatedRegexMatchCondition(s)
-	}
-}
-
-func (s *NegatedRegexMatchConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitNegatedRegexMatchCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type PostfixNegatedSetConditionContext struct {
-	ConditionContext
-}
-
-func NewPostfixNegatedSetConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *PostfixNegatedSetConditionContext {
-	var p = new(PostfixNegatedSetConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *PostfixNegatedSetConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *PostfixNegatedSetConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *PostfixNegatedSetConditionContext) NOT() antlr.TerminalNode {
-	return s.GetToken(LEQLParserNOT, 0)
-}
-
-func (s *PostfixNegatedSetConditionContext) SetOp() ISetOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(ISetOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ISetOpContext)
-}
-
-func (s *PostfixNegatedSetConditionContext) ValueList() IValueListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueListContext)
-}
-
-func (s *PostfixNegatedSetConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterPostfixNegatedSetCondition(s)
-	}
-}
-
-func (s *PostfixNegatedSetConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitPostfixNegatedSetCondition(s)
-	}
-}
-
-func (s *PostfixNegatedSetConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitPostfixNegatedSetCondition(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type ComparisonConditionContext struct {
-	ConditionContext
-}
-
-func NewComparisonConditionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ComparisonConditionContext {
-	var p = new(ComparisonConditionContext)
-
-	InitEmptyConditionContext(&p.ConditionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ConditionContext))
-
-	return p
-}
-
-func (s *ComparisonConditionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ComparisonConditionContext) FieldList() IFieldListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFieldListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFieldListContext)
-}
-
-func (s *ComparisonConditionContext) ComparisonOp() IComparisonOpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IComparisonOpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IComparisonOpContext)
-}
-
-func (s *ComparisonConditionContext) Value() IValueContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IValueContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IValueContext)
-}
-
-func (s *ComparisonConditionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.EnterComparisonCondition(s)
-	}
-}
-
-func (s *ComparisonConditionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(LEQLParserListener); ok {
-		listenerT.ExitComparisonCondition(s)
-	}
-}
-
-func (s *ComparisonConditionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case LEQLParserVisitor:
-		return t.VisitComparisonCondition(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -4604,7 +4682,7 @@ func (s *PostfixNegatedListStringConditionContext) Accept(visitor antlr.ParseTre
 func (p *LEQLParser) Condition() (localctx IConditionContext) {
 	localctx = NewConditionContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 14, LEQLParserRULE_condition)
-	p.SetState(260)
+	p.SetState(264)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -4692,34 +4770,30 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		}
 
 	case 6:
-		localctx = NewNegatedComparisonConditionContext(p, localctx)
+		localctx = NewNotEqualListConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 6)
 		{
 			p.SetState(183)
-			p.Match(LEQLParserNOT)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
+			p.FieldList()
 		}
 		{
 			p.SetState(184)
-			p.FieldList()
+			p.Match(LEQLParserNEQ)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(185)
-			p.ComparisonOp()
-		}
-		{
-			p.SetState(186)
-			p.Value()
+			p.ValueList()
 		}
 
 	case 7:
-		localctx = NewNegatedRegexMatchConditionContext(p, localctx)
+		localctx = NewNegatedComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(188)
+			p.SetState(187)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4727,23 +4801,23 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(189)
+			p.SetState(188)
 			p.FieldList()
 		}
 		{
-			p.SetState(190)
-			p.RegexMatchOp()
+			p.SetState(189)
+			p.ComparisonOp()
 		}
 		{
-			p.SetState(191)
+			p.SetState(190)
 			p.Value()
 		}
 
 	case 8:
-		localctx = NewNegatedStringConditionContext(p, localctx)
+		localctx = NewNegatedRegexMatchConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(193)
+			p.SetState(192)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4751,47 +4825,47 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(194)
+			p.SetState(193)
 			p.FieldList()
 		}
 		{
-			p.SetState(195)
-			p.StringOp()
+			p.SetState(194)
+			p.RegexMatchOp()
 		}
 		{
-			p.SetState(196)
+			p.SetState(195)
 			p.Value()
 		}
 
 	case 9:
-		localctx = NewNegatedSetConditionContext(p, localctx)
+		localctx = NewNegatedStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 9)
 		{
-			p.SetState(198)
+			p.SetState(197)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
+		}
+		{
+			p.SetState(198)
+			p.FieldList()
 		}
 		{
 			p.SetState(199)
-			p.FieldList()
+			p.StringOp()
 		}
 		{
 			p.SetState(200)
-			p.SetOp()
-		}
-		{
-			p.SetState(201)
-			p.ValueList()
+			p.Value()
 		}
 
 	case 10:
-		localctx = NewNegatedListStringConditionContext(p, localctx)
+		localctx = NewNegatedSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 10)
 		{
-			p.SetState(203)
+			p.SetState(202)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4799,51 +4873,51 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(204)
+			p.SetState(203)
 			p.FieldList()
 		}
 		{
-			p.SetState(205)
-			p.ListStringOp()
+			p.SetState(204)
+			p.SetOp()
 		}
 		{
-			p.SetState(206)
+			p.SetState(205)
 			p.ValueList()
 		}
 
 	case 11:
-		localctx = NewPostfixNegatedComparisonConditionContext(p, localctx)
+		localctx = NewNegatedListStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 11)
+		{
+			p.SetState(207)
+			p.Match(LEQLParserNOT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
 		{
 			p.SetState(208)
 			p.FieldList()
 		}
 		{
 			p.SetState(209)
-			p.Match(LEQLParserNOT)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
+			p.ListStringOp()
 		}
 		{
 			p.SetState(210)
-			p.ComparisonOp()
-		}
-		{
-			p.SetState(211)
-			p.Value()
+			p.ValueList()
 		}
 
 	case 12:
-		localctx = NewPostfixNegatedRegexMatchConditionContext(p, localctx)
+		localctx = NewPostfixNegatedComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 12)
 		{
-			p.SetState(213)
+			p.SetState(212)
 			p.FieldList()
 		}
 		{
-			p.SetState(214)
+			p.SetState(213)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4851,23 +4925,23 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(215)
-			p.RegexMatchOp()
+			p.SetState(214)
+			p.ComparisonOp()
 		}
 		{
-			p.SetState(216)
+			p.SetState(215)
 			p.Value()
 		}
 
 	case 13:
-		localctx = NewPostfixNegatedStringConditionContext(p, localctx)
+		localctx = NewPostfixNegatedRegexMatchConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 13)
 		{
-			p.SetState(218)
+			p.SetState(217)
 			p.FieldList()
 		}
 		{
-			p.SetState(219)
+			p.SetState(218)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4875,47 +4949,47 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(220)
-			p.StringOp()
+			p.SetState(219)
+			p.RegexMatchOp()
 		}
 		{
-			p.SetState(221)
+			p.SetState(220)
 			p.Value()
 		}
 
 	case 14:
-		localctx = NewPostfixNegatedSetConditionContext(p, localctx)
+		localctx = NewPostfixNegatedStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 14)
 		{
-			p.SetState(223)
+			p.SetState(222)
 			p.FieldList()
+		}
+		{
+			p.SetState(223)
+			p.Match(LEQLParserNOT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(224)
-			p.Match(LEQLParserNOT)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
+			p.StringOp()
 		}
 		{
 			p.SetState(225)
-			p.SetOp()
-		}
-		{
-			p.SetState(226)
-			p.ValueList()
+			p.Value()
 		}
 
 	case 15:
-		localctx = NewPostfixNegatedListStringConditionContext(p, localctx)
+		localctx = NewPostfixNegatedSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 15)
 		{
-			p.SetState(228)
+			p.SetState(227)
 			p.FieldList()
 		}
 		{
-			p.SetState(229)
+			p.SetState(228)
 			p.Match(LEQLParserNOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -4923,32 +4997,40 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 		{
-			p.SetState(230)
-			p.ListStringOp()
+			p.SetState(229)
+			p.SetOp()
 		}
 		{
-			p.SetState(231)
+			p.SetState(230)
 			p.ValueList()
 		}
 
 	case 16:
-		localctx = NewNocaseConditionContext(p, localctx)
+		localctx = NewPostfixNegatedListStringConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 16)
 		{
-			p.SetState(233)
+			p.SetState(232)
 			p.FieldList()
 		}
 		{
+			p.SetState(233)
+			p.Match(LEQLParserNOT)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
 			p.SetState(234)
-			p.ComparisonOp()
+			p.ListStringOp()
 		}
 		{
 			p.SetState(235)
-			p.NocaseValue()
+			p.ValueList()
 		}
 
 	case 17:
-		localctx = NewIpConditionContext(p, localctx)
+		localctx = NewNocaseConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 17)
 		{
 			p.SetState(237)
@@ -4960,11 +5042,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		}
 		{
 			p.SetState(239)
-			p.IpValue()
+			p.NocaseValue()
 		}
 
 	case 18:
-		localctx = NewIpSetConditionContext(p, localctx)
+		localctx = NewIpConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 18)
 		{
 			p.SetState(241)
@@ -4972,31 +5054,31 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		}
 		{
 			p.SetState(242)
-			p.SetOp()
-		}
-		{
-			p.SetState(243)
-			p.ValueList()
-		}
-
-	case 19:
-		localctx = NewAllFieldsComparisonConditionContext(p, localctx)
-		p.EnterOuterAlt(localctx, 19)
-		{
-			p.SetState(245)
-			p.AllFieldList()
-		}
-		{
-			p.SetState(246)
 			p.ComparisonOp()
 		}
 		{
+			p.SetState(243)
+			p.IpValue()
+		}
+
+	case 19:
+		localctx = NewIpSetConditionContext(p, localctx)
+		p.EnterOuterAlt(localctx, 19)
+		{
+			p.SetState(245)
+			p.FieldList()
+		}
+		{
+			p.SetState(246)
+			p.SetOp()
+		}
+		{
 			p.SetState(247)
-			p.Value()
+			p.ValueList()
 		}
 
 	case 20:
-		localctx = NewAllFieldsSetConditionContext(p, localctx)
+		localctx = NewAllFieldsComparisonConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 20)
 		{
 			p.SetState(249)
@@ -5004,15 +5086,15 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		}
 		{
 			p.SetState(250)
-			p.SetOp()
+			p.ComparisonOp()
 		}
 		{
 			p.SetState(251)
-			p.ValueList()
+			p.Value()
 		}
 
 	case 21:
-		localctx = NewAllFieldsNocaseConditionContext(p, localctx)
+		localctx = NewAllFieldsSetConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 21)
 		{
 			p.SetState(253)
@@ -5020,18 +5102,34 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 		}
 		{
 			p.SetState(254)
-			p.ComparisonOp()
+			p.SetOp()
 		}
 		{
 			p.SetState(255)
-			p.NocaseValue()
+			p.ValueList()
 		}
 
 	case 22:
-		localctx = NewFieldExistsConditionContext(p, localctx)
+		localctx = NewAllFieldsNocaseConditionContext(p, localctx)
 		p.EnterOuterAlt(localctx, 22)
 		{
 			p.SetState(257)
+			p.AllFieldList()
+		}
+		{
+			p.SetState(258)
+			p.ComparisonOp()
+		}
+		{
+			p.SetState(259)
+			p.NocaseValue()
+		}
+
+	case 23:
+		localctx = NewFieldExistsConditionContext(p, localctx)
+		p.EnterOuterAlt(localctx, 23)
+		{
+			p.SetState(261)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5039,11 +5137,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 
-	case 23:
+	case 24:
 		localctx = NewNumberKeywordConditionContext(p, localctx)
-		p.EnterOuterAlt(localctx, 23)
+		p.EnterOuterAlt(localctx, 24)
 		{
-			p.SetState(258)
+			p.SetState(262)
 			p.Match(LEQLParserNUMBER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5051,11 +5149,11 @@ func (p *LEQLParser) Condition() (localctx IConditionContext) {
 			}
 		}
 
-	case 24:
+	case 25:
 		localctx = NewVariableConditionContext(p, localctx)
-		p.EnterOuterAlt(localctx, 24)
+		p.EnterOuterAlt(localctx, 25)
 		{
-			p.SetState(259)
+			p.SetState(263)
 			p.Match(LEQLParserVARIABLE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5225,7 +5323,7 @@ func (s *QuotedKeywordContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 	localctx = NewKeywordSearchContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 16, LEQLParserRULE_keywordSearch)
-	p.SetState(264)
+	p.SetState(268)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5236,7 +5334,7 @@ func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 		localctx = NewQuotedKeywordContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(262)
+			p.SetState(266)
 			p.Match(LEQLParserDOUBLE_STRING)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5248,7 +5346,7 @@ func (p *LEQLParser) KeywordSearch() (localctx IKeywordSearchContext) {
 		localctx = NewSingleQuotedKeywordContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(263)
+			p.SetState(267)
 			p.Match(LEQLParserSINGLE_STRING)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5378,7 +5476,7 @@ func (p *LEQLParser) RegexSearch() (localctx IRegexSearchContext) {
 	localctx = NewRegexPatternContext(p, localctx)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(266)
+		p.SetState(270)
 		p.Match(LEQLParserREGEX)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5534,10 +5632,10 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(268)
+		p.SetState(272)
 		p.FieldName()
 	}
-	p.SetState(273)
+	p.SetState(277)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5546,7 +5644,7 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(269)
+			p.SetState(273)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5554,11 +5652,11 @@ func (p *LEQLParser) FieldList() (localctx IFieldListContext) {
 			}
 		}
 		{
-			p.SetState(270)
+			p.SetState(274)
 			p.FieldName()
 		}
 
-		p.SetState(275)
+		p.SetState(279)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -5729,7 +5827,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(276)
+		p.SetState(280)
 		p.Match(LEQLParserALL_FUNC)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5737,7 +5835,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		}
 	}
 	{
-		p.SetState(277)
+		p.SetState(281)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5745,10 +5843,10 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		}
 	}
 	{
-		p.SetState(278)
+		p.SetState(282)
 		p.FieldName()
 	}
-	p.SetState(283)
+	p.SetState(287)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -5757,7 +5855,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(279)
+			p.SetState(283)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -5765,11 +5863,11 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 			}
 		}
 		{
-			p.SetState(280)
+			p.SetState(284)
 			p.FieldName()
 		}
 
-		p.SetState(285)
+		p.SetState(289)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -5777,7 +5875,7 @@ func (p *LEQLParser) AllFieldList() (localctx IAllFieldListContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(286)
+		p.SetState(290)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -5950,7 +6048,7 @@ func (p *LEQLParser) FieldName() (localctx IFieldNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(288)
+		p.SetState(292)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&16911433729536) != 0) || ((int64((_la-72)) & ^0x3f) == 0 && ((int64(1)<<(_la-72))&39) != 0)) {
@@ -6096,7 +6194,7 @@ func (p *LEQLParser) ComparisonOp() (localctx IComparisonOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(290)
+		p.SetState(294)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&285134151407894528) != 0) {
@@ -6212,7 +6310,7 @@ func (p *LEQLParser) RegexMatchOp() (localctx IRegexMatchOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(292)
+		p.SetState(296)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserREGEX_NEQ || _la == LEQLParserREGEX_EQ) {
@@ -6348,7 +6446,7 @@ func (p *LEQLParser) StringOp() (localctx IStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(294)
+		p.SetState(298)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&264241152) != 0) {
@@ -6464,7 +6562,7 @@ func (p *LEQLParser) SetOp() (localctx ISetOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(296)
+		p.SetState(300)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserIIN_OP || _la == LEQLParserIN_OP) {
@@ -6610,7 +6708,7 @@ func (p *LEQLParser) ListStringOp() (localctx IListStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(298)
+		p.SetState(302)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&4177920) != 0) {
@@ -6766,7 +6864,7 @@ func (p *LEQLParser) Value() (localctx IValueContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(300)
+		p.SetState(304)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64((_la-68)) & ^0x3f) == 0 && ((int64(1)<<(_la-68))&1023) != 0) {
@@ -6902,7 +7000,7 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 	p.EnterRule(localctx, 38, LEQLParserRULE_nocaseValue)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(302)
+		p.SetState(306)
 		p.Match(LEQLParserNOCASE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6910,7 +7008,7 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 		}
 	}
 	{
-		p.SetState(303)
+		p.SetState(307)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -6918,11 +7016,11 @@ func (p *LEQLParser) NocaseValue() (localctx INocaseValueContext) {
 		}
 	}
 	{
-		p.SetState(304)
+		p.SetState(308)
 		p.Value()
 	}
 	{
-		p.SetState(305)
+		p.SetState(309)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7060,7 +7158,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 	p.EnterRule(localctx, 40, LEQLParserRULE_ipValue)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(307)
+		p.SetState(311)
 		p.Match(LEQLParserIP_FUNC)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7068,14 +7166,14 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 		}
 	}
 	{
-		p.SetState(308)
+		p.SetState(312)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(311)
+	p.SetState(315)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7084,7 +7182,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 19, p.GetParserRuleContext()) {
 	case 1:
 		{
-			p.SetState(309)
+			p.SetState(313)
 			p.Match(LEQLParserIP_CIDR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -7094,7 +7192,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 
 	case 2:
 		{
-			p.SetState(310)
+			p.SetState(314)
 			p.Value()
 		}
 
@@ -7102,7 +7200,7 @@ func (p *LEQLParser) IpValue() (localctx IIpValueContext) {
 		goto errorExit
 	}
 	{
-		p.SetState(313)
+		p.SetState(317)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7268,7 +7366,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(315)
+		p.SetState(319)
 		p.Match(LEQLParserLBRACKET)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7276,10 +7374,10 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 		}
 	}
 	{
-		p.SetState(316)
+		p.SetState(320)
 		p.ValueListItem()
 	}
-	p.SetState(321)
+	p.SetState(325)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7288,7 +7386,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(317)
+			p.SetState(321)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -7296,11 +7394,11 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 			}
 		}
 		{
-			p.SetState(318)
+			p.SetState(322)
 			p.ValueListItem()
 		}
 
-		p.SetState(323)
+		p.SetState(327)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -7308,7 +7406,7 @@ func (p *LEQLParser) ValueList() (localctx IValueListContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(324)
+		p.SetState(328)
 		p.Match(LEQLParserRBRACKET)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7441,7 +7539,7 @@ func (s *ValueListItemContext) Accept(visitor antlr.ParseTreeVisitor) interface{
 func (p *LEQLParser) ValueListItem() (localctx IValueListItemContext) {
 	localctx = NewValueListItemContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 44, LEQLParserRULE_valueListItem)
-	p.SetState(328)
+	p.SetState(332)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7451,14 +7549,14 @@ func (p *LEQLParser) ValueListItem() (localctx IValueListItemContext) {
 	case LEQLParserIP_FUNC:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(326)
+			p.SetState(330)
 			p.IpValue()
 		}
 
 	case LEQLParserIP_CIDR, LEQLParserREGEX, LEQLParserTRIPLE_SINGLE_STRING, LEQLParserTRIPLE_DOUBLE_STRING, LEQLParserDOUBLE_STRING, LEQLParserSINGLE_STRING, LEQLParserNUMBER, LEQLParserTIME_UNIT, LEQLParserVARIABLE, LEQLParserIDENTIFIER:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(327)
+			p.SetState(331)
 			p.Value()
 		}
 
@@ -7630,7 +7728,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(330)
+		p.SetState(334)
 		p.Match(LEQLParserGROUPBY)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7638,7 +7736,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		}
 	}
 	{
-		p.SetState(331)
+		p.SetState(335)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7646,10 +7744,10 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		}
 	}
 	{
-		p.SetState(332)
+		p.SetState(336)
 		p.FieldName()
 	}
-	p.SetState(337)
+	p.SetState(341)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -7658,7 +7756,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(333)
+			p.SetState(337)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -7666,11 +7764,11 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 			}
 		}
 		{
-			p.SetState(334)
+			p.SetState(338)
 			p.FieldName()
 		}
 
-		p.SetState(339)
+		p.SetState(343)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -7678,7 +7776,7 @@ func (p *LEQLParser) GroupbyClause() (localctx IGroupbyClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(340)
+		p.SetState(344)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7811,7 +7909,7 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 	p.EnterRule(localctx, 48, LEQLParserRULE_havingClause)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(342)
+		p.SetState(346)
 		p.Match(LEQLParserHAVING)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7819,7 +7917,7 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 		}
 	}
 	{
-		p.SetState(343)
+		p.SetState(347)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7827,11 +7925,11 @@ func (p *LEQLParser) HavingClause() (localctx IHavingClauseContext) {
 		}
 	}
 	{
-		p.SetState(344)
+		p.SetState(348)
 		p.HavingCondition()
 	}
 	{
-		p.SetState(345)
+		p.SetState(349)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -7998,7 +8096,7 @@ func (s *HavingConditionContext) Accept(visitor antlr.ParseTreeVisitor) interfac
 func (p *LEQLParser) HavingCondition() (localctx IHavingConditionContext) {
 	localctx = NewHavingConditionContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 50, LEQLParserRULE_havingCondition)
-	p.SetState(355)
+	p.SetState(359)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8008,23 +8106,8 @@ func (p *LEQLParser) HavingCondition() (localctx IHavingConditionContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(347)
-			p.CalcFunction()
-		}
-		{
-			p.SetState(348)
-			p.ComparisonOp()
-		}
-		{
-			p.SetState(349)
-			p.Value()
-		}
-
-	case 2:
-		p.EnterOuterAlt(localctx, 2)
-		{
 			p.SetState(351)
-			p.CalcFunctionWithField()
+			p.CalcFunction()
 		}
 		{
 			p.SetState(352)
@@ -8032,6 +8115,21 @@ func (p *LEQLParser) HavingCondition() (localctx IHavingConditionContext) {
 		}
 		{
 			p.SetState(353)
+			p.Value()
+		}
+
+	case 2:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(355)
+			p.CalcFunctionWithField()
+		}
+		{
+			p.SetState(356)
+			p.ComparisonOp()
+		}
+		{
+			p.SetState(357)
 			p.Value()
 		}
 
@@ -8164,7 +8262,7 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 	p.EnterRule(localctx, 52, LEQLParserRULE_calculateClause)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(357)
+		p.SetState(361)
 		p.Match(LEQLParserCALCULATE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8172,7 +8270,7 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 		}
 	}
 	{
-		p.SetState(358)
+		p.SetState(362)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8180,11 +8278,11 @@ func (p *LEQLParser) CalculateClause() (localctx ICalculateClauseContext) {
 		}
 	}
 	{
-		p.SetState(359)
+		p.SetState(363)
 		p.CalcExpr()
 	}
 	{
-		p.SetState(360)
+		p.SetState(364)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8334,7 +8432,7 @@ func (s *CalcExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 func (p *LEQLParser) CalcExpr() (localctx ICalcExprContext) {
 	localctx = NewCalcExprContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 54, LEQLParserRULE_calcExpr)
-	p.SetState(365)
+	p.SetState(369)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8344,21 +8442,21 @@ func (p *LEQLParser) CalcExpr() (localctx ICalcExprContext) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(362)
+			p.SetState(366)
 			p.CalcFunction()
 		}
 
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(363)
+			p.SetState(367)
 			p.CalcFunctionWithField()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(364)
+			p.SetState(368)
 			p.PercentileFunction()
 		}
 
@@ -8471,7 +8569,7 @@ func (p *LEQLParser) CalcFunction() (localctx ICalcFunctionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(367)
+		p.SetState(371)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserCOUNT || _la == LEQLParserBYTES) {
@@ -8644,7 +8742,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(369)
+		p.SetState(373)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&17016660426752) != 0) {
@@ -8655,7 +8753,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 		}
 	}
 	{
-		p.SetState(370)
+		p.SetState(374)
 		p.Match(LEQLParserCOLON)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8663,7 +8761,7 @@ func (p *LEQLParser) CalcFunctionWithField() (localctx ICalcFunctionWithFieldCon
 		}
 	}
 	{
-		p.SetState(371)
+		p.SetState(375)
 		p.FieldName()
 	}
 
@@ -8809,7 +8907,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(373)
+		p.SetState(377)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserPERCENTILE || _la == LEQLParserPCTL) {
@@ -8820,7 +8918,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(374)
+		p.SetState(378)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8828,7 +8926,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(375)
+		p.SetState(379)
 		p.Match(LEQLParserNUMBER)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -8836,14 +8934,14 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 		}
 	}
 	{
-		p.SetState(376)
+		p.SetState(380)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(379)
+	p.SetState(383)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -8852,7 +8950,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 
 	if _la == LEQLParserCOLON {
 		{
-			p.SetState(377)
+			p.SetState(381)
 			p.Match(LEQLParserCOLON)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -8860,7 +8958,7 @@ func (p *LEQLParser) PercentileFunction() (localctx IPercentileFunctionContext) 
 			}
 		}
 		{
-			p.SetState(378)
+			p.SetState(382)
 			p.FieldName()
 		}
 
@@ -9029,7 +9127,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(381)
+		p.SetState(385)
 		p.Match(LEQLParserSORT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9037,7 +9135,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		}
 	}
 	{
-		p.SetState(382)
+		p.SetState(386)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9045,10 +9143,10 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		}
 	}
 	{
-		p.SetState(383)
+		p.SetState(387)
 		p.SortSpec()
 	}
-	p.SetState(388)
+	p.SetState(392)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -9057,7 +9155,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(384)
+			p.SetState(388)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9065,11 +9163,11 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 			}
 		}
 		{
-			p.SetState(385)
+			p.SetState(389)
 			p.SortSpec()
 		}
 
-		p.SetState(390)
+		p.SetState(394)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -9077,7 +9175,7 @@ func (p *LEQLParser) SortClause() (localctx ISortClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(391)
+		p.SetState(395)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9205,10 +9303,10 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 	p.EnterRule(localctx, 64, LEQLParserRULE_sortSpec)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(393)
+		p.SetState(397)
 		p.SortDirection()
 	}
-	p.SetState(397)
+	p.SetState(401)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -9216,7 +9314,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 	switch p.GetTokenStream().LA(1) {
 	case LEQLParserHASH:
 		{
-			p.SetState(394)
+			p.SetState(398)
 			p.Match(LEQLParserHASH)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9224,7 +9322,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 			}
 		}
 		{
-			p.SetState(395)
+			p.SetState(399)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9234,7 +9332,7 @@ func (p *LEQLParser) SortSpec() (localctx ISortSpecContext) {
 
 	case LEQLParserIDENTIFIER:
 		{
-			p.SetState(396)
+			p.SetState(400)
 			p.Match(LEQLParserIDENTIFIER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9362,7 +9460,7 @@ func (p *LEQLParser) SortDirection() (localctx ISortDirectionContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(399)
+		p.SetState(403)
 		_la = p.GetTokenStream().LA(1)
 
 		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&263882790666240) != 0) {
@@ -9503,7 +9601,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(401)
+		p.SetState(405)
 		p.Match(LEQLParserLIMIT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9511,7 +9609,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		}
 	}
 	{
-		p.SetState(402)
+		p.SetState(406)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9519,14 +9617,14 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		}
 	}
 	{
-		p.SetState(403)
+		p.SetState(407)
 		p.Match(LEQLParserNUMBER)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(408)
+	p.SetState(412)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -9535,7 +9633,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 
 	for _la == LEQLParserCOMMA {
 		{
-			p.SetState(404)
+			p.SetState(408)
 			p.Match(LEQLParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9543,7 +9641,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 			}
 		}
 		{
-			p.SetState(405)
+			p.SetState(409)
 			p.Match(LEQLParserNUMBER)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -9551,7 +9649,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 			}
 		}
 
-		p.SetState(410)
+		p.SetState(414)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -9559,7 +9657,7 @@ func (p *LEQLParser) LimitClause() (localctx ILimitClauseContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(411)
+		p.SetState(415)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9687,7 +9785,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(413)
+		p.SetState(417)
 		p.Match(LEQLParserTIMESLICE)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9695,7 +9793,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(414)
+		p.SetState(418)
 		p.Match(LEQLParserLPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -9703,7 +9801,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(415)
+		p.SetState(419)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == LEQLParserNUMBER || _la == LEQLParserTIME_UNIT) {
@@ -9714,7 +9812,7 @@ func (p *LEQLParser) TimesliceClause() (localctx ITimesliceClauseContext) {
 		}
 	}
 	{
-		p.SetState(416)
+		p.SetState(420)
 		p.Match(LEQLParserRPAREN)
 		if p.HasError() {
 			// Recognition error - abort rule

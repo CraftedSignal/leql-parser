@@ -53,6 +53,7 @@ condition
     | fieldList stringOp value                          # stringCondition
     | fieldList setOp valueList                         # setCondition
     | fieldList listStringOp valueList                  # listStringCondition
+    | fieldList NEQ valueList                           # notEqualListCondition
     | NOT fieldList comparisonOp value                  # negatedComparisonCondition
     | NOT fieldList regexMatchOp value                  # negatedRegexMatchCondition
     | NOT fieldList stringOp value                      # negatedStringCondition

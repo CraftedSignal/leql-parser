@@ -67,6 +67,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#listStringCondition.
 	VisitListStringCondition(ctx *ListStringConditionContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#notEqualListCondition.
+	VisitNotEqualListCondition(ctx *NotEqualListConditionContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#negatedComparisonCondition.
 	VisitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) interface{}
 

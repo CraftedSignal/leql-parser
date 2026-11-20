@@ -264,6 +264,8 @@ func (e *conditionExtractor) visit(tree antlr.ParseTree) {
 		e.visitSetCondition(ctx)
 	case *ListStringConditionContext:
 		e.visitListStringCondition(ctx)
+	case *NotEqualListConditionContext:
+		e.visitNotEqualListCondition(ctx)
 	case *NegatedComparisonConditionContext:
 		e.visitNegatedComparisonCondition(ctx)
 	case *NegatedRegexMatchConditionContext:
@@ -882,6 +884,20 @@ func (e *conditionExtractor) visitIpSetCondition(ctx *IpSetConditionContext) {
 	operator := "cidr"
 	rhs := listOperand(ctx.ValueList(), e.budget)
 	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", false, "")
+}
+
+// visitNotEqualListCondition handles Rapid7's key != ["aaa", "bbb"] exclusion,
+// which matches as NOT key IN ["aaa", "bbb"].
+func (e *conditionExtractor) visitNotEqualListCondition(ctx *NotEqualListConditionContext) {
+	if ctx.FieldList() == nil || ctx.ValueList() == nil {
+		return
+	}
+	operator := "in"
+	rhs := listOperand(ctx.ValueList(), e.budget)
+	if valueListItemsAllIP(ctx.ValueList()) {
+		operator = "cidr"
+	}
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", false, "")
 }
 
 func (e *conditionExtractor) visitAllFieldsComparisonCondition(ctx *AllFieldsComparisonConditionContext) {
