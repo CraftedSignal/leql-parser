@@ -785,7 +785,7 @@ func (e *conditionExtractor) visitNegatedStringCondition(ctx *NegatedStringCondi
 		return
 	}
 	operator := extractStringOp(ctx.StringOp())
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, valueOperand(ctx.Value(), operator, e.budget), !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, valueOperand(ctx.Value(), operator, e.budget), !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitNegatedSetCondition(ctx *NegatedSetConditionContext) {
@@ -820,7 +820,7 @@ func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNega
 		return
 	}
 	operator := extractStringOp(ctx.StringOp())
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, valueOperand(ctx.Value(), operator, e.budget), !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, valueOperand(ctx.Value(), operator, e.budget), !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegatedSetConditionContext) {
