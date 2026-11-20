@@ -761,7 +761,7 @@ func (e *conditionExtractor) visitSetCondition(ctx *SetConditionContext) {
 	if operator == "in" && valueListItemsAllIP(ctx.ValueList()) {
 		operator = "cidr"
 	}
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitListStringCondition(ctx *ListStringConditionContext) {
@@ -770,7 +770,7 @@ func (e *conditionExtractor) visitListStringCondition(ctx *ListStringConditionCo
 	}
 	operator := extractListStringOp(ctx.ListStringOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) {
@@ -794,7 +794,7 @@ func (e *conditionExtractor) visitNegatedSetCondition(ctx *NegatedSetConditionCo
 	}
 	operator := extractSetOp(ctx.SetOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStringConditionContext) {
@@ -803,7 +803,7 @@ func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStr
 	}
 	operator := extractListStringOp(ctx.ListStringOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 // Postfix negation: field NOT op value (e.g., field NOT IN [...])
@@ -829,7 +829,7 @@ func (e *conditionExtractor) visitPostfixNegatedSetCondition(ctx *PostfixNegated
 	}
 	operator := extractSetOp(ctx.SetOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *PostfixNegatedListStringConditionContext) {
@@ -838,7 +838,7 @@ func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *Postfix
 	}
 	operator := extractListStringOp(ctx.ListStringOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", false, "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, !e.negated, "OR", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitNocaseCondition(ctx *NocaseConditionContext) {
@@ -897,7 +897,7 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 	}
 	operator := extractSetOp(ctx.SetOp())
 	rhs := listOperand(ctx.ValueList(), e.budget)
-	e.addOperandConditions(extractAllFieldNames(ctx.AllFieldList()), operator, rhs, e.negated, "AND", false, "")
+	e.addOperandConditions(extractAllFieldNames(ctx.AllFieldList()), operator, rhs, e.negated, "AND", leqlOperatorIsCaseInsensitive(operator), "")
 }
 
 func (e *conditionExtractor) visitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) {
@@ -1298,8 +1298,11 @@ func regexValueHasCaseInsensitiveFlag(s string) bool {
 	return strings.Contains(regexLiteralFlags(s), "i")
 }
 
+// leqlOperatorIsCaseInsensitive reports the I-prefixed operators (ICONTAINS,
+// IIN, ICONTAINS-ANY, ...); IN starts with I but is case-sensitive.
 func leqlOperatorIsCaseInsensitive(op string) bool {
-	return strings.HasPrefix(strings.ToUpper(strings.TrimSpace(op)), "I")
+	op = strings.ToUpper(strings.TrimSpace(op))
+	return op != "IN" && strings.HasPrefix(op, "I")
 }
 
 // --- Exported utility functions ---

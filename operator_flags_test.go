@@ -21,3 +21,33 @@ func TestNegatedCaseInsensitiveStringOperatorsKeepFlag(t *testing.T) {
 		}
 	}
 }
+
+// Rapid7: IIN compares "text values ... in case-insensitive way", and the
+// I-prefixed list operators match "case-insensitively". IN, whose name also
+// starts with I, stays case-sensitive.
+func TestCaseInsensitiveListOperatorsSetFlag(t *testing.T) {
+	for _, op := range []string{"IIN", "ICONTAINS-ANY", "ICONTAINS-ALL", "ISTARTS-WITH-ANY", "IENDS-WITH-ANY", "IN", "CONTAINS-ANY", "CONTAINS-ALL", "STARTS-WITH-ANY", "ENDS-WITH-ANY"} {
+		want := op != "IN" && op[0] == 'I'
+		queries := []string{"where(a " + op + " [x, y])", "where(a,b " + op + " [x, y])", "where(a NOT " + op + " [x, y])", "where(NOT a " + op + " [x, y])"}
+		if op == "IIN" || op == "IN" {
+			queries = append(queries, "where(ALL(a,b) "+op+" [x, y])")
+		}
+		for _, query := range queries {
+			r := ExtractConditions(query)
+			if len(r.Errors) != 0 || len(r.Conditions) == 0 {
+				t.Errorf("%s: conditions=%+v errors=%q", query, r.Conditions, r.Errors)
+				continue
+			}
+			for _, c := range r.Conditions {
+				if c.CaseInsensitive != want {
+					t.Errorf("%s: %+v, want CaseInsensitive=%v", query, c, want)
+				}
+			}
+		}
+		// The condition rule's own prefix-NOT alternative.
+		r := extractConditionRuleForTest(t, "NOT a "+op+" [x, y]")
+		if len(r.Errors) != 0 || len(r.Conditions) != 1 || r.Conditions[0].CaseInsensitive != want {
+			t.Errorf("condition NOT a %s [x, y]: conditions=%+v errors=%q, want CaseInsensitive=%v", op, r.Conditions, r.Errors, want)
+		}
+	}
+}
