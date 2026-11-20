@@ -113,7 +113,9 @@ VARIABLE    : '${' (LETTER | DIGIT | '_')+ '}' ;
 
 // Identifiers: field names, including dotted paths (a.b.c) and wildcard (a.*)
 // Also allows hyphens in field names and # prefix for log set references
-IDENTIFIER  : (LETTER | '_' | '#') (LETTER | DIGIT | '_' | '-')* ('.' (LETTER | DIGIT | '_' | '-' | '*')+)* ;
+// A leading digit keeps bare values such as 10MB, 2023-01-01 and 192.168.1.1
+// whole; NUMBER, TIME_UNIT and IP_CIDR still win when they match the same text.
+IDENTIFIER  : (LETTER | DIGIT | '_' | '#') (LETTER | DIGIT | '_' | '-')* ('.' (LETTER | DIGIT | '_' | '-' | '*')+)* ;
 fragment LETTER : [a-zA-Z] ;
 
 // Whitespace
