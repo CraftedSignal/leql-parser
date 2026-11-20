@@ -85,3 +85,23 @@ func TestNotEqualsListExcludesEveryValue(t *testing.T) {
 		})
 	}
 }
+
+// Rapid7's example query "Group changes made to a certain group" compares an
+// unquoted value with a leading hyphen.
+func TestLeadingHyphenBareValuesStayWhole(t *testing.T) {
+	r := ExtractConditions(`where(action IN [MEMBER_ADDED_TO_SECURITY_GROUP, MEMBER_REMOVED_FROM_SECURITY_GROUP]AND group CONTAINS -job-admins)`)
+	if len(r.Errors) != 0 || len(r.Conditions) != 2 {
+		t.Fatalf("conditions=%+v errors=%q", r.Conditions, r.Errors)
+	}
+	if c := r.Conditions[1]; c.Field != "group" || c.Operator != "contains" || c.Value != "-job-admins" || !reflect.DeepEqual(c.RHS, &Operand{Kind: OperandString, Value: "-job-admins"}) {
+		t.Fatalf("got %+v rhs=%+v", c, c.RHS)
+	}
+	for _, tt := range []struct {
+		source string
+		kind   OperandKind
+	}{{"--no-sandbox", OperandString}, {"-5MB", OperandString}, {"-5", OperandNumber}, {"-1e-03", OperandNumber}} {
+		t.Run(tt.source, func(t *testing.T) {
+			requireTypedConditions(t, "where(n="+tt.source+")", []Operand{{Kind: tt.kind, Value: tt.source}}, "0")
+		})
+	}
+}

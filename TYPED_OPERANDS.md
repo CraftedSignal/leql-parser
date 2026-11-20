@@ -15,7 +15,7 @@ role. It does not assert an event's runtime value type. The kinds are `string`,
 | --- | --- |
 | `42`, `-1e-03`, `9007199254740993` | `number`, exact lexical text in `Value` |
 | `"42"`, `'42'`, bare `null`, `true`, `false` | `string`, existing extracted text |
-| `10MB`, `2023-01-01`, `192.168.1.1` | `string`, the whole bare word |
+| `10MB`, `2023-01-01`, `192.168.1.1`, `-job-admins` | `string`, the whole bare word |
 | `b` or `"b"` after `==` / `!==` | `field`, field name `b` |
 | `/x/mi` | `regex`, pattern `x`, `RegexFlags: "mi"` |
 | `${name}` | `variable`, unchanged `${name}` |
