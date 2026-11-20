@@ -1393,6 +1393,8 @@ func HasComplexWhereConditions(result *ParseResult) bool {
 
 // GetEventTypeFromConditions detects Windows Event types based on EventID/EventCode conditions.
 // Returns event type strings like "windows_4688", "sysmon_1", etc.
+// Only positive =, IN and IIN matches select an event; a query that matches
+// several event IDs has no single event type and returns "".
 func GetEventTypeFromConditions(result *ParseResult) string {
 	if result == nil {
 		return ""
@@ -1403,9 +1405,16 @@ func GetEventTypeFromConditions(result *ParseResult) string {
 		fieldLower := strings.ToLower(cond.Field)
 
 		// Check for EventID or EventCode
-		if fieldLower == "eventid" || fieldLower == "eventcode" {
-			eventID = cond.Value
+		if fieldLower != "eventid" && fieldLower != "eventcode" {
+			continue
 		}
+		if cond.Negated || (cond.Operator != "=" && cond.Operator != "in" && cond.Operator != "iin") {
+			continue
+		}
+		if eventID != "" && cond.Value != eventID {
+			return ""
+		}
+		eventID = cond.Value
 	}
 
 	if eventID == "" {
