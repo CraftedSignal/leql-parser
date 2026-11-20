@@ -1380,6 +1380,8 @@ func HasComplexWhereConditions(result *ParseResult) bool {
 	}
 	complexOperators := map[string]bool{
 		"regex": true,
+		"=~":    true,
+		"!~":    true,
 		"cidr":  true,
 	}
 
