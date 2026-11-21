@@ -71,53 +71,63 @@ func (e *conditionExtractor) isKnownField(name string) bool {
 }
 
 // Only adjacent leaves at an implicit-AND boundary select this shorthand.
-// The grammar may put surrounding explicit-AND terms inside either child;
-// following only their boundary spines leaves OR, grouping and NOT intact.
+// Explicit AND binds tighter than implicit AND, which is left-associative, so
+// the terms of one conjunction sit in nested AND and implicit-AND nodes. When a
+// pair meets at this boundary, the conjunction is rebuilt term by term in
+// source order, forming every adjacent pair; OR, grouping and NOT stay intact
+// inside their own terms.
 func (e *conditionExtractor) knownFieldRegexExpression(expressions []IExpressionContext) (*ConditionExpression, bool) {
 	if len(e.knownFields) == 0 || len(expressions) != 2 {
 		return nil, false
 	}
-	leftBoundary := e.andBoundary(expressions[0], false)
-	rightBoundary := e.andBoundary(expressions[1], true)
-	left, ok := leftBoundary.(*ConditionExprContext)
-	if !ok || left.Condition() == nil {
+	if _, _, ok := e.knownRegexPair(e.andBoundary(expressions[0], false), e.andBoundary(expressions[1], true)); !ok {
 		return nil, false
+	}
+	terms := e.andTerms(expressions[1], e.andTerms(expressions[0], nil))
+	previousLogicalOp := e.currentLogicalOp
+	var expression *ConditionExpression
+	for i := 0; i < len(terms); {
+		term, used := e.buildKnownRegexTerm(terms[i:])
+		e.currentLogicalOp = "AND"
+		expression = e.combineKnownRegexAnd(expression, term)
+		i += used
+	}
+	e.currentLogicalOp = previousLogicalOp
+	return expression, true
+}
+
+// knownRegexPair reports a known bare name directly followed by a regex literal.
+func (e *conditionExtractor) knownRegexPair(leftTerm, rightTerm IExpressionContext) (string, *RegexPatternContext, bool) {
+	left, ok := leftTerm.(*ConditionExprContext)
+	if !ok || left.Condition() == nil {
+		return "", nil, false
 	}
 	bare, ok := left.Condition().(*FieldExistsConditionContext)
 	if !ok || bare.IDENTIFIER() == nil {
-		return nil, false
+		return "", nil, false
 	}
-	right, ok := rightBoundary.(*RegexExprContext)
+	right, ok := rightTerm.(*RegexExprContext)
 	if !ok || right.RegexSearch() == nil {
-		return nil, false
+		return "", nil, false
 	}
 	literal, ok := right.RegexSearch().(*RegexPatternContext)
 	if !ok || literal.REGEX() == nil {
-		return nil, false
+		return "", nil, false
 	}
 	if bare.IDENTIFIER().GetSymbol().GetTokenIndex()+1 != literal.REGEX().GetSymbol().GetTokenIndex() {
-		return nil, false
+		return "", nil, false
 	}
 	name := bare.IDENTIFIER().GetText()
 	if !e.isKnownField(name) {
-		return nil, false
+		return "", nil, false
 	}
-	previousLogicalOp := e.currentLogicalOp
-	leftExpression := e.buildKnownRegexAndSide(expressions[0], leftBoundary, name, literal)
-	e.currentLogicalOp = "AND"
-	rightExpression := e.buildKnownRegexAndSide(expressions[1], rightBoundary, "", nil)
-	e.currentLogicalOp = previousLogicalOp
-	return e.combineKnownRegexAnd(leftExpression, rightExpression), true
+	return name, literal, true
 }
 
 func (e *conditionExtractor) andBoundary(expression IExpressionContext, left bool) IExpressionContext {
 	for {
 		e.budget.step()
-		and, ok := expression.(*AndExprContext)
-		if !ok {
-			return expression
-		}
-		children := and.AllExpression()
+		children := andOperands(expression)
 		if len(children) != 2 {
 			return expression
 		}
@@ -129,35 +139,45 @@ func (e *conditionExtractor) andBoundary(expression IExpressionContext, left boo
 	}
 }
 
-// Replace the matched bare leaf and omit the matched regex leaf, rebuilding
-// only explicit-AND nodes and retaining all other subtrees in their own scope.
-func (e *conditionExtractor) buildKnownRegexAndSide(expression, target IExpressionContext, name string, literal *RegexPatternContext) *ConditionExpression {
+// andTerms appends the terms of nested explicit and implicit AND nodes in
+// source order.
+func (e *conditionExtractor) andTerms(expression IExpressionContext, terms []IExpressionContext) []IExpressionContext {
 	e.budget.step()
-	if expression == target {
-		if literal == nil {
-			return nil
-		}
-		text := literal.REGEX().GetText()
-		flags := regexLiteralFlags(text)
-		e.budget.reserveOutput(1)
-		rhs := &Operand{Kind: OperandRegex, Value: stripRegexSlashes(text), RegexFlags: flags}
-		start := len(e.conditions)
-		e.addOperandConditions([]string{name}, "=~", rhs, e.negated, "OR", strings.Contains(flags, "i"), flags)
-		e.budget.reserveOutput(1)
-		return e.conditionRangeExpression(start, len(e.conditions))
+	children := andOperands(expression)
+	if len(children) != 2 {
+		return append(terms, expression)
 	}
-	if and, ok := expression.(*AndExprContext); ok {
-		children := and.AllExpression()
-		if len(children) == 2 {
-			left := e.buildKnownRegexAndSide(children[0], target, name, literal)
-			previousLogicalOp := e.currentLogicalOp
-			e.currentLogicalOp = "AND"
-			right := e.buildKnownRegexAndSide(children[1], target, name, literal)
-			e.currentLogicalOp = previousLogicalOp
-			return e.combineKnownRegexAnd(left, right)
+	return e.andTerms(children[1], e.andTerms(children[0], terms))
+}
+
+func andOperands(expression IExpressionContext) []IExpressionContext {
+	switch and := expression.(type) {
+	case *AndExprContext:
+		return and.AllExpression()
+	case *ImplicitAndExprContext:
+		return and.AllExpression()
+	}
+	return nil
+}
+
+// buildKnownRegexTerm builds the first term and reports how many terms it used:
+// a known bare name and the regex literal directly after it form one fielded
+// regex predicate; any other term keeps its own scope.
+func (e *conditionExtractor) buildKnownRegexTerm(terms []IExpressionContext) (*ConditionExpression, int) {
+	e.budget.step()
+	if len(terms) > 1 {
+		if name, literal, ok := e.knownRegexPair(terms[0], terms[1]); ok {
+			text := literal.REGEX().GetText()
+			flags := regexLiteralFlags(text)
+			e.budget.reserveOutput(1)
+			rhs := &Operand{Kind: OperandRegex, Value: stripRegexSlashes(text), RegexFlags: flags}
+			start := len(e.conditions)
+			e.addOperandConditions([]string{name}, "=~", rhs, e.negated, "OR", strings.Contains(flags, "i"), flags)
+			e.budget.reserveOutput(1)
+			return e.conditionRangeExpression(start, len(e.conditions)), 2
 		}
 	}
-	return e.buildExpression(expression)
+	return e.buildExpression(terms[0]), 1
 }
 
 func (e *conditionExtractor) combineKnownRegexAnd(left, right *ConditionExpression) *ConditionExpression {
