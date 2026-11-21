@@ -140,6 +140,12 @@ func (s *BaseLEQLParserListener) EnterListStringCondition(ctx *ListStringConditi
 // ExitListStringCondition is called when production listStringCondition is exited.
 func (s *BaseLEQLParserListener) ExitListStringCondition(ctx *ListStringConditionContext) {}
 
+// EnterNotEqualListCondition is called when production notEqualListCondition is entered.
+func (s *BaseLEQLParserListener) EnterNotEqualListCondition(ctx *NotEqualListConditionContext) {}
+
+// ExitNotEqualListCondition is called when production notEqualListCondition is exited.
+func (s *BaseLEQLParserListener) ExitNotEqualListCondition(ctx *NotEqualListConditionContext) {}
+
 // EnterNegatedComparisonCondition is called when production negatedComparisonCondition is entered.
 func (s *BaseLEQLParserListener) EnterNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) {
 }

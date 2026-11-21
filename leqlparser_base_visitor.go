@@ -87,6 +87,10 @@ func (v *BaseLEQLParserVisitor) VisitListStringCondition(ctx *ListStringConditio
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitNotEqualListCondition(ctx *NotEqualListConditionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
