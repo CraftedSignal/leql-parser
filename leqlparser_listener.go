@@ -148,6 +148,9 @@ type LEQLParserListener interface {
 	// EnterComparisonOp is called when entering the comparisonOp production.
 	EnterComparisonOp(c *ComparisonOpContext)
 
+	// EnterBangOrderingOp is called when entering the bangOrderingOp production.
+	EnterBangOrderingOp(c *BangOrderingOpContext)
+
 	// EnterRegexMatchOp is called when entering the regexMatchOp production.
 	EnterRegexMatchOp(c *RegexMatchOpContext)
 
@@ -354,6 +357,9 @@ type LEQLParserListener interface {
 
 	// ExitComparisonOp is called when exiting the comparisonOp production.
 	ExitComparisonOp(c *ComparisonOpContext)
+
+	// ExitBangOrderingOp is called when exiting the bangOrderingOp production.
+	ExitBangOrderingOp(c *BangOrderingOpContext)
 
 	// ExitRegexMatchOp is called when exiting the regexMatchOp production.
 	ExitRegexMatchOp(c *RegexMatchOpContext)

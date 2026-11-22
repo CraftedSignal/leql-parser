@@ -321,6 +321,12 @@ func (s *BaseLEQLParserListener) EnterComparisonOp(ctx *ComparisonOpContext) {}
 // ExitComparisonOp is called when production comparisonOp is exited.
 func (s *BaseLEQLParserListener) ExitComparisonOp(ctx *ComparisonOpContext) {}
 
+// EnterBangOrderingOp is called when production bangOrderingOp is entered.
+func (s *BaseLEQLParserListener) EnterBangOrderingOp(ctx *BangOrderingOpContext) {}
+
+// ExitBangOrderingOp is called when production bangOrderingOp is exited.
+func (s *BaseLEQLParserListener) ExitBangOrderingOp(ctx *BangOrderingOpContext) {}
+
 // EnterRegexMatchOp is called when production regexMatchOp is entered.
 func (s *BaseLEQLParserListener) EnterRegexMatchOp(ctx *RegexMatchOpContext) {}
 

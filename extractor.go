@@ -719,10 +719,11 @@ func (e *conditionExtractor) visitRegexPattern(ctx *RegexPatternContext) {
 // --- Condition visitors ---
 
 func (e *conditionExtractor) visitComparisonCondition(ctx *ComparisonConditionContext) {
-	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
+	if ctx.FieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.Value() == nil {
 		return
 	}
-	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), e.negated, "OR")
+	operator, negated := predicateComparison(ctx, e.negated)
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), operator, ctx.Value(), negated, "OR")
 }
 
 func (e *conditionExtractor) visitRegexMatchCondition(ctx *RegexMatchConditionContext) {
@@ -773,10 +774,11 @@ func (e *conditionExtractor) visitListStringCondition(ctx *ListStringConditionCo
 }
 
 func (e *conditionExtractor) visitNegatedComparisonCondition(ctx *NegatedComparisonConditionContext) {
-	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
+	if ctx.FieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.Value() == nil {
 		return
 	}
-	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), !e.negated, "OR")
+	operator, negated := predicateComparison(ctx, !e.negated)
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), operator, ctx.Value(), negated, "OR")
 }
 
 func (e *conditionExtractor) visitNegatedStringCondition(ctx *NegatedStringConditionContext) {
@@ -808,10 +810,11 @@ func (e *conditionExtractor) visitNegatedListStringCondition(ctx *NegatedListStr
 // Postfix negation: field NOT op value (e.g., field NOT IN [...])
 
 func (e *conditionExtractor) visitPostfixNegatedComparisonCondition(ctx *PostfixNegatedComparisonConditionContext) {
-	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
+	if ctx.FieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.Value() == nil {
 		return
 	}
-	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), !e.negated, "OR")
+	operator, negated := predicateComparison(ctx, !e.negated)
+	e.addFieldValueConditions(extractFieldNames(ctx.FieldList()), operator, ctx.Value(), negated, "OR")
 }
 
 func (e *conditionExtractor) visitPostfixNegatedStringCondition(ctx *PostfixNegatedStringConditionContext) {
@@ -841,24 +844,23 @@ func (e *conditionExtractor) visitPostfixNegatedListStringCondition(ctx *Postfix
 }
 
 func (e *conditionExtractor) visitNocaseCondition(ctx *NocaseConditionContext) {
-	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.NocaseValue() == nil {
+	if ctx.FieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.NocaseValue() == nil {
 		return
 	}
-	operator := extractComparisonOp(ctx.ComparisonOp())
+	operator, negated := predicateComparison(ctx, e.negated)
 	rhs := valueOperand(ctx.NocaseValue().Value(), "", e.budget)
 	rhs.Wrapper = OperandNoCase
-	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, e.negated, "OR", !isKeyComparison(operator), "")
+	e.addOperandConditions(extractFieldNames(ctx.FieldList()), operator, rhs, negated, "OR", !isKeyComparison(operator), "")
 }
 
 func (e *conditionExtractor) visitIpCondition(ctx *IpConditionContext) {
-	if ctx.FieldList() == nil || ctx.ComparisonOp() == nil || ctx.IpValue() == nil {
+	if ctx.FieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.IpValue() == nil {
 		return
 	}
-	operator := extractComparisonOp(ctx.ComparisonOp())
+	operator, negated := predicateComparison(ctx, e.negated)
 	e.budget.reserveOutput(1)
 	operand := ipOperand(ctx.IpValue(), e.budget)
 	rhs := &operand
-	negated := e.negated
 	switch operator {
 	case "=":
 		operator = "cidr"
@@ -898,10 +900,11 @@ func (e *conditionExtractor) visitNotEqualListCondition(ctx *NotEqualListConditi
 }
 
 func (e *conditionExtractor) visitAllFieldsComparisonCondition(ctx *AllFieldsComparisonConditionContext) {
-	if ctx.AllFieldList() == nil || ctx.ComparisonOp() == nil || ctx.Value() == nil {
+	if ctx.AllFieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.Value() == nil {
 		return
 	}
-	e.addFieldValueConditions(extractAllFieldNames(ctx.AllFieldList()), extractComparisonOp(ctx.ComparisonOp()), ctx.Value(), e.negated, "AND")
+	operator, negated := predicateComparison(ctx, e.negated)
+	e.addFieldValueConditions(extractAllFieldNames(ctx.AllFieldList()), operator, ctx.Value(), negated, "AND")
 }
 
 func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditionContext) {
@@ -914,13 +917,13 @@ func (e *conditionExtractor) visitAllFieldsSetCondition(ctx *AllFieldsSetConditi
 }
 
 func (e *conditionExtractor) visitAllFieldsNocaseCondition(ctx *AllFieldsNocaseConditionContext) {
-	if ctx.AllFieldList() == nil || ctx.ComparisonOp() == nil || ctx.NocaseValue() == nil {
+	if ctx.AllFieldList() == nil || (ctx.ComparisonOp() == nil && ctx.BangOrderingOp() == nil) || ctx.NocaseValue() == nil {
 		return
 	}
-	operator := extractComparisonOp(ctx.ComparisonOp())
+	operator, negated := predicateComparison(ctx, e.negated)
 	rhs := valueOperand(ctx.NocaseValue().Value(), "", e.budget)
 	rhs.Wrapper = OperandNoCase
-	e.addOperandConditions(extractAllFieldNames(ctx.AllFieldList()), operator, rhs, e.negated, "AND", !isKeyComparison(operator), "")
+	e.addOperandConditions(extractAllFieldNames(ctx.AllFieldList()), operator, rhs, negated, "AND", !isKeyComparison(operator), "")
 }
 
 func (e *conditionExtractor) visitFieldExistsCondition(ctx *FieldExistsConditionContext) {
@@ -1086,6 +1089,27 @@ func extractAllFieldNames(ctx IAllFieldListContext) []string {
 }
 
 // extractComparisonOp returns the operator string from a comparisonOp context.
+// predicateComparison keeps exclusion local to the predicate leaf: NOT P,
+// without claiming the missing/null complement semantics of an inverse operator.
+func predicateComparison(ctx interface {
+	ComparisonOp() IComparisonOpContext
+	BangOrderingOp() IBangOrderingOpContext
+}, negated bool) (string, bool) {
+	if bang := ctx.BangOrderingOp(); bang != nil {
+		switch {
+		case bang.GT() != nil:
+			return ">", !negated
+		case bang.GTE() != nil:
+			return ">=", !negated
+		case bang.LT() != nil:
+			return "<", !negated
+		case bang.LTE() != nil:
+			return "<=", !negated
+		}
+	}
+	return extractComparisonOp(ctx.ComparisonOp()), negated
+}
+
 func extractComparisonOp(ctx IComparisonOpContext) string {
 	if ctx == nil {
 		return ""
