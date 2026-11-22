@@ -195,6 +195,10 @@ func (v *BaseLEQLParserVisitor) VisitComparisonOp(ctx *ComparisonOpContext) inte
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseLEQLParserVisitor) VisitBangOrderingOp(ctx *BangOrderingOpContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseLEQLParserVisitor) VisitRegexMatchOp(ctx *RegexMatchOpContext) interface{} {
 	return v.VisitChildren(ctx)
 }

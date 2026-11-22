@@ -33,6 +33,12 @@ conditions; these checks do not add a hard ANTLR preemption guarantee.
 
 ## Typed comparison operands
 
+Predicate comparisons also accept `!>`, `!>=`, `!<` and `!<=`. They retain
+the positive ordering operator with `Negated: true`; surrounding NOT toggles
+that leaf polarity. Comma keys remain OR and ALL keys remain AND; outer NOT
+inverts the connective and each leaf. HAVING does not accept these bang forms.
+This representation does not assert inverse-inequality missing/null semantics.
+
 Unambiguous bare-key RHS operands in `<`, `>`, `<=` and `>=` comparisons carry
 `OperandField`,
 as documented in Rapid7's [Tips and Tricks comparison table](https://docs.rapid7.com/insightidr/tips-and-tricks-for-building-queries/).

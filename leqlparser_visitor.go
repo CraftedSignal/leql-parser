@@ -148,6 +148,9 @@ type LEQLParserVisitor interface {
 	// Visit a parse tree produced by LEQLParser#comparisonOp.
 	VisitComparisonOp(ctx *ComparisonOpContext) interface{}
 
+	// Visit a parse tree produced by LEQLParser#bangOrderingOp.
+	VisitBangOrderingOp(ctx *BangOrderingOpContext) interface{}
+
 	// Visit a parse tree produced by LEQLParser#regexMatchOp.
 	VisitRegexMatchOp(ctx *RegexMatchOpContext) interface{}
 

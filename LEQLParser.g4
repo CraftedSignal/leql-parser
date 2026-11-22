@@ -48,28 +48,28 @@ expression
 
 // Key-value pair conditions
 condition
-    : fieldList comparisonOp value                      # comparisonCondition
+    : fieldList (comparisonOp | bangOrderingOp) value                      # comparisonCondition
     | fieldList regexMatchOp value                      # regexMatchCondition
     | fieldList stringOp value                          # stringCondition
     | fieldList setOp valueList                         # setCondition
     | fieldList listStringOp valueList                  # listStringCondition
     | fieldList NEQ valueList                           # notEqualListCondition
-    | NOT fieldList comparisonOp value                  # negatedComparisonCondition
+    | NOT fieldList (comparisonOp | bangOrderingOp) value                  # negatedComparisonCondition
     | NOT fieldList regexMatchOp value                  # negatedRegexMatchCondition
     | NOT fieldList stringOp value                      # negatedStringCondition
     | NOT fieldList setOp valueList                     # negatedSetCondition
     | NOT fieldList listStringOp valueList              # negatedListStringCondition
-    | fieldList NOT comparisonOp value                  # postfixNegatedComparisonCondition
+    | fieldList NOT (comparisonOp | bangOrderingOp) value                  # postfixNegatedComparisonCondition
     | fieldList NOT regexMatchOp value                  # postfixNegatedRegexMatchCondition
     | fieldList NOT stringOp value                      # postfixNegatedStringCondition
     | fieldList NOT setOp valueList                     # postfixNegatedSetCondition
     | fieldList NOT listStringOp valueList              # postfixNegatedListStringCondition
-    | fieldList comparisonOp nocaseValue                # nocaseCondition
-    | fieldList comparisonOp ipValue                    # ipCondition
+    | fieldList (comparisonOp | bangOrderingOp) nocaseValue                # nocaseCondition
+    | fieldList (comparisonOp | bangOrderingOp) ipValue                    # ipCondition
     | fieldList setOp valueList                          # ipSetCondition
-    | allFieldList comparisonOp value                   # allFieldsComparisonCondition
+    | allFieldList (comparisonOp | bangOrderingOp) value                   # allFieldsComparisonCondition
     | allFieldList setOp valueList                      # allFieldsSetCondition
-    | allFieldList comparisonOp nocaseValue              # allFieldsNocaseCondition
+    | allFieldList (comparisonOp | bangOrderingOp) nocaseValue              # allFieldsNocaseCondition
     | IDENTIFIER                                        # fieldExistsCondition
     | NUMBER                                            # numberKeywordCondition
     | VARIABLE                                          # variableCondition
@@ -118,6 +118,11 @@ fieldName
 // Comparison operators
 comparisonOp
     : EQ | NEQ | STRICT_EQ | STRICT_NEQ | GT | GTE | LT | LTE
+    ;
+
+// Predicate-local exclusion leaves HAVING's comparison operators unchanged.
+bangOrderingOp
+    : BANG (GT | GTE | LT | LTE)
     ;
 
 // Regex match operators: =~ (match) and !~ (not match)
