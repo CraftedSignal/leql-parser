@@ -70,6 +70,18 @@ func valueOperand(value IValueContext, operator string, budget *parseBudget) *Op
 	operand := scalarOperand(value, budget)
 	if isKeyComparison(operator) && directFieldOperand(value) {
 		operand.Kind = OperandField
+	} else if literal, ok := value.(*ValueContext); ok && literal.IDENTIFIER() != nil {
+		// IDENTIFIER also admits unit-like values such as 10MB. Preserve the
+		// ambiguous digit/sign-digit prefix rather than inventing its key role.
+		text := operand.Value
+		numericLooking := len(text) > 0 && text[0] >= '0' && text[0] <= '9' ||
+			len(text) > 1 && (text[0] == '-' || text[0] == '+') && text[1] >= '0' && text[1] <= '9'
+		if !numericLooking {
+			switch operator {
+			case "<", ">", "<=", ">=":
+				operand.Kind = OperandField
+			}
+		}
 	}
 	return &operand
 }
