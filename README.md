@@ -54,3 +54,11 @@ types, coercion, missing/null behavior or query execution. Rapid7's separate
 [Components table](https://docs.rapid7.com/insightidr/components-for-building-a-query/)
 describes ordering using numeric examples; this narrow bare-key role follows the
 explicit key examples in Tips rather than expanding quoted or numeric key roles.
+
+## Query corpus
+
+Collected Rapid7 documentation and community queries, Sigma-derived LEQL
+examples, and focused regression tests exercise comparisons, Boolean
+precedence, negation, regex and IP operands, typed values, known-field
+shorthand, aggregation, and malformed-input boundaries. Generated template
+rows are not counted as real-world corpus coverage.

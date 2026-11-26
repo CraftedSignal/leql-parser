@@ -119,53 +119,21 @@ func TestCorpus(t *testing.T) {
 	}
 }
 
-// TestGeneratedCorpus runs the parser against the combined corpus:
-// real-world queries from Rapid7 docs + analytic packs + cheat sheets (~300),
-// plus generated queries (~49k) for comprehensive coverage.
-// Total must exceed 49,000 queries with 100% parse success.
-func TestGeneratedCorpus(t *testing.T) {
-	genPath := "testdata/corpus_generated.json"
-	realPath := "testdata/corpus.json"
-
-	if _, err := os.Stat(genPath); os.IsNotExist(err) {
-		t.Skip("Generated corpus not available — run: go run testdata/generate_corpus.go > testdata/corpus_generated.json")
-	}
-
-	genData, err := os.ReadFile(genPath)
+// TestSigmaConvertedCorpus checks LEQL output derived from real Sigma rules.
+func TestSigmaConvertedCorpus(t *testing.T) {
+	const sigmaPath = "testdata/corpus_sigma.json"
+	sigmaData, err := os.ReadFile(sigmaPath)
 	if err != nil {
-		t.Fatalf("Failed to read generated corpus: %v", err)
+		t.Fatalf("Failed to read Sigma-converted corpus: %v", err)
 	}
 
 	var entries []corpusEntry
-	if err := json.Unmarshal(genData, &entries); err != nil {
-		t.Fatalf("Failed to parse generated corpus JSON: %v", err)
+	if err := json.Unmarshal(sigmaData, &entries); err != nil {
+		t.Fatalf("Failed to parse Sigma-converted corpus JSON: %v", err)
 	}
-
-	genCount := len(entries)
-
-	// Also load real-world corpus
-	realCount := 0
-	if realData, err := os.ReadFile(realPath); err == nil {
-		var realEntries []corpusEntry
-		if err := json.Unmarshal(realData, &realEntries); err == nil {
-			entries = append(entries, realEntries...)
-			realCount = len(realEntries)
-		}
+	if len(entries) == 0 {
+		t.Fatal("Sigma-converted corpus is empty")
 	}
-
-	// Also load Sigma-converted corpus
-	sigmaPath := "testdata/corpus_sigma.json"
-	sigmaCount := 0
-	if sigmaData, err := os.ReadFile(sigmaPath); err == nil {
-		var sigmaEntries []corpusEntry
-		if err := json.Unmarshal(sigmaData, &sigmaEntries); err == nil {
-			entries = append(entries, sigmaEntries...)
-			sigmaCount = len(sigmaEntries)
-		}
-	}
-
-	t.Logf("Loaded %d real-world + %d generated + %d sigma = %d total queries",
-		realCount, genCount, sigmaCount, len(entries))
 
 	var success, partial, failed, panicked int
 	var sampleErrors []string
@@ -207,7 +175,7 @@ func TestGeneratedCorpus(t *testing.T) {
 	successRate := float64(success) * 100 / float64(total)
 
 	t.Logf("")
-	t.Logf("=== Combined Corpus Results ===")
+	t.Logf("=== Sigma-converted Corpus Results ===")
 	t.Logf("Total:    %d", total)
 	t.Logf("Success:  %d (%.1f%%)", success, successRate)
 	t.Logf("Partial:  %d (%.2f%%)", partial, float64(partial)*100/float64(total))
@@ -228,9 +196,6 @@ func TestGeneratedCorpus(t *testing.T) {
 	}
 	if successRate < 99 {
 		t.Errorf("Success rate %.1f%% is below 99%% threshold", successRate)
-	}
-	if total < 49000 {
-		t.Errorf("Corpus too small: got %d, want at least 49000", total)
 	}
 }
 
