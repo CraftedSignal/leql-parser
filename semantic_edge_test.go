@@ -177,6 +177,15 @@ func TestClauseCommandsKeywordAndParserDiagnostics(t *testing.T) {
 	}
 }
 
+func TestSelectAliasRequiresAsKeyword(t *testing.T) {
+	if result := ExtractConditions(`select(hostname as alias)`); len(result.Errors) != 0 {
+		t.Fatalf("valid select alias produced errors: %v", result.Errors)
+	}
+	if result := ExtractConditions(`select(hostname bogus alias)`); len(result.Errors) == 0 {
+		t.Fatal("select alias without AS should be rejected")
+	}
+}
+
 func TestAdditionalHelperAndVisitorGuardEdges(t *testing.T) {
 	if got := DeduplicateConditions(nil); got != nil {
 		t.Fatalf("nil conditions should dedupe to nil, got %v", got)

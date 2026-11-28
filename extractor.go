@@ -432,8 +432,17 @@ func leqlCalcFunctionWithFieldName(ctx ICalcFunctionWithFieldContext) string {
 // visitSelectClause handles the select(...) clause.
 //
 //go:noinline
-func (e *conditionExtractor) visitSelectClause(_ *SelectClauseContext) {
+func (e *conditionExtractor) visitSelectClause(ctx *SelectClauseContext) {
 	e.commands = append(e.commands, "select")
+	if ctx == nil || ctx.SelectFieldList() == nil {
+		return
+	}
+	for _, field := range ctx.SelectFieldList().AllSelectField() {
+		identifiers := field.AllIDENTIFIER()
+		if len(identifiers) == 2 && !strings.EqualFold(identifiers[0].GetText(), "as") {
+			e.errors = append(e.errors, "expected AS before select alias "+identifiers[1].GetText())
+		}
+	}
 }
 
 // visitSortClause handles the sort(...) clause.
